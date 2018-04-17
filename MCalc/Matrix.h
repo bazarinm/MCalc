@@ -87,7 +87,7 @@ private:
 
 template <typename T>
 void Matrix<T>::display() const {
-	for (const std::vector<T> row : _entries) {
+	for (const std::vector<T>& row : _entries) {
 		for (T entry : row)
 			std::cout << entry << " ";
 		std::cout << std::endl;
