@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <exception>
+#include <iostream>
 #include <string>
 
 enum MatrixTypes {
@@ -28,7 +29,7 @@ public:
 	//CONSTRUCTORS
 	Matrix(Dimension size, std::vector<T> entries);
 	Matrix(std::size_t size, MatrixTypes type);
-	Matrix(Dimension size, FULL);
+	//Matrix(Dimension size, FULL);
 	Matrix(const Matrix& other);
 	Matrix(std::vector<std::vector<T>> entries);
 	//Matrix(Dimension);
@@ -37,15 +38,18 @@ public:
 
 	//for double indexing
 	class Proxy {
-		Proxy(std::vector<T>& row): _row(row) {}
+	public:
+		Proxy(std::vector<T>& row): _row(&row) {}
+		Proxy(const std::vector<T>& row) : _row_const(&row) {}
 		T& operator[](std::size_t index) {
-			return _row[index];
+			return (*_row)[index];
 		}
 		T operator[](std::size_t index) const {
-			return _row[index];
+			return (*_row_c)[index];
 		}
 	private:
-		std::vector<int>& _row;
+		std::vector<T>* _row;
+		const std::vector<T>* _row_const;
 	};
 
 	//GETTERS
@@ -54,18 +58,18 @@ public:
 	const Proxy operator[](std::size_t row) const;
 
 	//OPERATORS
-	Matrix& operator+(const Matrix& other) const; //sum or residual of 2 matrices
-	Matrix& operator-(const Matrix& other) const;
+	Matrix operator+(const Matrix& other) const; //sum or residual of 2 matrices
+	Matrix operator-(const Matrix& other) const;
 	Matrix& operator+=(const Matrix& other);
 	Matrix& operator-=(const Matrix& other);
 
-	Matrix& operator*(const Matrix& other) const; //product of 2 matrices
-	Matrix& operator/(const Matrix& other) const; //multiplication by an inverse of other matrix
+	Matrix operator*(const Matrix& other) const; //product of 2 matrices
+	Matrix operator/(const Matrix& other) const; //multiplication by an inverse of other matrix
 	Matrix& operator*=(const Matrix& other);
 	Matrix& operator/=(const Matrix& other);
 
-	Matrix& operator*(T scalar) const; //multiplication by a scalar
-	Matrix& operator/(T scalar) const;
+	Matrix operator*(T scalar) const; //multiplication by a scalar
+	Matrix operator/(T scalar) const;
 	Matrix& operator*=(T scalar);
 	Matrix& operator/=(T scalar);
 
@@ -73,10 +77,21 @@ public:
 
 	T determinant() const;
 	Matrix inverse() const;
+
+	void display() const; //temporary
 private:
 	Dimension _size;
 	std::vector<std::vector<T>> _entries;
 };
+
+template <typename T>
+void Matrix<T>::display() const {
+	for (const std::vector<T> row : _entries) {
+		for (T entry : row)
+			std::cout << entry << " ";
+		std::cout << std::endl;
+	}
+}
 
 //CONSTRUCTORS
 template <typename T>
@@ -85,7 +100,7 @@ Matrix<T>::Matrix(std::vector<std::vector<T>> entries) : _entries(entries) {
 		throw std::exception("initializer matrix is empty");
 
 	_size.rows = _entries.size();
-	_size.columns = _entries[0];
+	_size.columns = _entries[0].size();
 	for (std::vector<T>& row : _entries)
 		if (row.size() != _size.columns)
 			throw std::exception("initializer matrix is not of a rectangular shape");
@@ -93,22 +108,25 @@ Matrix<T>::Matrix(std::vector<std::vector<T>> entries) : _entries(entries) {
 
 template <typename T>
 Matrix<T>::Matrix(Dimension size, std::vector<T> entries) : _size(size) {
-	_entries = std::vector<std::vector<T>>(std::vector<T>(size.columns), size.rows);
+	_entries = std::vector<std::vector<T>>(size.rows, std::vector<T>(size.columns));
 
+	std::size_t i = 0;
 	for (std::vector<T>& row : _entries)
-		for (T& entry : row)
-			entry = entries;
+		for (T& entry : row) {
+			entry = entries[i];
+			++i;
+		}
 }
 
 //GETTERS
 template <typename T>
-Matrix<T>::Proxy Matrix<T>::operator[](std::size_t row) {
-	return Proxy(entries[row]);
+typename Matrix<T>::Proxy Matrix<T>::operator[](std::size_t row) {
+	return Proxy(_entries[row]);
 }
 
 template <typename T>
-const Matrix<T>::Proxy Matrix<T>::operator[](std::size_t row) const {
-	return Proxy(entries[row]);
+typename const Matrix<T>::Proxy Matrix<T>::operator[](std::size_t row) const {
+	return Proxy(_entries[row]);
 }
 
 template <typename T>
@@ -118,7 +136,7 @@ Dimension Matrix<T>::getSize() const {
 
 //OPERATORS
 template <typename T> 
-Matrix<T>& Matrix<T>::operator+(const Matrix<T>& other) const { //sum of 2 matrices
+Matrix<T> Matrix<T>::operator+(const Matrix<T>& other) const { //sum of 2 matrices
 	if (_size != other._size)
 		throw std::exception("Matrix dimensions must agree");
 
@@ -143,24 +161,25 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& other) {
 }
 
 template <typename T>
-Matrix<T>& Matrix<T>::operator*(const Matrix<T>& other) const { //product of 2 matrices
+Matrix<T> Matrix<T>::operator*(const Matrix<T>& other) const { //product of 2 matrices
 	if (_size.columns != other._size.rows)
 		throw std::exception("Dimensions do not agree");
 
 	std::vector<std::vector<T>> product_entries(
-		std::vector<T>(other._size.columns, 0), 
-		other._size.rows);
+		_size.rows,
+		std::vector<T>(other._size.columns, 0)
+	);
 
 	for (std::size_t i = 0; i < _size.rows; ++i)
-		for (std::size_t j = 0; i < _size.columns; ++j)
+		for (std::size_t j = 0; j < other._size.columns; ++j)
 			for (std::size_t k = 0; k < _size.columns; ++k)
-				product_entries[i][j] += *this[i][k] + other[k][j];
+				product_entries[i][j] += ( (*this)[i][k] * other[k][j] );
 
 	return Matrix<T>(product_entries);
 }
 
 template <typename T>
-Matrix<T>& Matrix<T>::operator/(const Matrix<T>& other) const { 
+Matrix<T> Matrix<T>::operator/(const Matrix<T>& other) const { 
 	return (*this) * other.inverse();
 }
 #endif
