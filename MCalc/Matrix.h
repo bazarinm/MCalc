@@ -6,9 +6,13 @@
 #include <iostream>
 #include <string>
 
-enum MatrixTypes {
+enum SquareTypes {
 	UPPER_TRIANGLE, LOWER_TRIANGLE,
-	SYMMETRIC, DIAGONAL, FULL
+	SYMMETRIC, DIAGONAL
+};
+
+enum RectangleTypes {
+	FULL
 };
 
 struct Dimension {
@@ -28,28 +32,25 @@ class Matrix {
 public:
 	//CONSTRUCTORS
 	Matrix(Dimension size, std::vector<T> entries);
-	Matrix(std::size_t size, MatrixTypes type);
-	//Matrix(Dimension size, FULL);
-	Matrix(const Matrix& other);
 	Matrix(std::vector<std::vector<T>> entries);
-	//Matrix(Dimension);
-	//Matrix(int, MType);
-	//Matrix(std::vector<std::vector<T>>);
 
-	//for double indexing
-	class Proxy {
+	Matrix(Dimension size, RectangleTypes type);
+	Matrix(std::size_t size, SquareTypes type);
+
+	Matrix(const Matrix& other); //copy
+
+	//AUX
+	class Proxy { //for double indexing
 	public:
-		Proxy(std::vector<T>& row): _row(&row) {}
-		Proxy(const std::vector<T>& row) : _row_const(&row) {}
+		Proxy(const std::vector<T>& row) : _row(const_cast<std::vector<T>&>(row)) {}
 		T& operator[](std::size_t index) {
-			return (*_row)[index];
+			return _row[index];
 		}
 		T operator[](std::size_t index) const {
-			return (*_row_c)[index];
+			return _row[index];
 		}
 	private:
-		std::vector<T>* _row;
-		const std::vector<T>* _row_const;
+		std::vector<T>& _row;
 	};
 
 	//GETTERS

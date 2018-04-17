@@ -8,7 +8,7 @@ int main() {
 	B.display();
 	std::cout << std::endl;
 	Matrix<double> C = A * B;
-	Matrix<double> D();
+	//Matrix<double> D();
 	C.display();
 	std::cin.get();
 }
