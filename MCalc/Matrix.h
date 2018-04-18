@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+const double ERROR = 1E-9;
+
 enum SquareTypes {
 	UPPER_TRIANGLE, LOWER_TRIANGLE,
 	SYMMETRIC, DIAGONAL
@@ -52,6 +54,7 @@ public:
 	private:
 		std::vector<T>& _row;
 	};
+	void display() const; //temporary
 
 	//GETTERS
 	Dimension getSize() const;
@@ -78,13 +81,12 @@ public:
 
 	T determinant() const;
 	Matrix inverse() const;
-
-	void display() const; //temporary
 private:
 	Dimension _size;
 	std::vector<std::vector<T>> _entries;
 };
 
+//AUX
 template <typename T>
 void Matrix<T>::display() const {
 	for (const std::vector<T>& row : _entries) {
@@ -136,7 +138,7 @@ Dimension Matrix<T>::getSize() const {
 }
 
 //OPERATORS
-template <typename T> 
+template <typename T>
 Matrix<T> Matrix<T>::operator+(const Matrix<T>& other) const { //sum of 2 matrices
 	if (_size != other._size)
 		throw std::exception("Matrix dimensions must agree");
@@ -149,8 +151,8 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T>& other) const { //sum of 2 matric
 	return Matrix<T>(sum_entries);
 }
 
-template <typename T> 
-Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& other) { 
+template <typename T>
+Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& other) {
 	if (_size != other._size)
 		throw std::exception("Matrix dimensions must agree");
 
@@ -174,13 +176,50 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& other) const { //product of 2 ma
 	for (std::size_t i = 0; i < _size.rows; ++i)
 		for (std::size_t j = 0; j < other._size.columns; ++j)
 			for (std::size_t k = 0; k < _size.columns; ++k)
-				product_entries[i][j] += ( (*this)[i][k] * other[k][j] );
+				product_entries[i][j] += ((*this)[i][k] * other[k][j]);
 
 	return Matrix<T>(product_entries);
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator/(const Matrix<T>& other) const { 
+Matrix<T> Matrix<T>::operator/(const Matrix<T>& other) const {
 	return (*this) * other.inverse();
+}
+
+template<>
+double Matrix<double>::determinant() const {
+	double det = 1;
+
+	std::vector<std::vector<double>> entries_copy = _entries;
+	std::vector<double> temp;
+
+	for (std::size_t i = 0; i < _size.rows; ++i) {
+		std::size_t k = i;
+		for (std::size_t j = i + 1; j < _size.columns; ++j)
+			if (abs(entries_copy[j][i]) > abs(entries_copy[k][i])) k = j;
+
+		if (abs(entries_copy[k][i]) < ERROR) {
+			det = 0;
+			break;
+		}
+
+		temp = entries_copy[i];
+		entries_copy[i] = entries_copy[k];
+		entries_copy[k] = temp;
+
+		if (i != k) det *= -1;
+
+		det *= entries_copy[i][i];
+
+		for (std::size_t j = i + 1; j < _size.columns; ++j)
+			entries_copy[i][j] /= entries_copy[i][i];
+
+		for (std::size_t j = 0; j < _size.columns; ++j)
+			if (j != i && abs(entries_copy[j][i]) > ERROR)
+				for (std::size_t k = i + 1; k < _size.columns; ++k)
+					entries_copy[j][k] -= entries_copy[i][k] * entries_copy[j][i];
+	}
+
+	return det;
 }
 #endif
