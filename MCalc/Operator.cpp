@@ -11,7 +11,7 @@ namespace Operator {
 	}
 
 	Matrix product(const Matrix& left, const Matrix& right) {
-		left * right;
+		return left * right;
 	}
 
 	double determinant(const Matrix& matrix) {
