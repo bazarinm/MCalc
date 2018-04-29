@@ -18,9 +18,18 @@
     <ClInclude Include="Matrix.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Operator.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Operator.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>

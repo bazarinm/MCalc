@@ -66,8 +66,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Operator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Operator.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
