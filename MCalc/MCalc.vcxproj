@@ -65,13 +65,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Function.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Operator.h" />
+    <ClInclude Include="Variable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Function.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Operator.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

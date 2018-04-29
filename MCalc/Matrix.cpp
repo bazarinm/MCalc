@@ -17,6 +17,8 @@ void Matrix::display() const {
 }
 
 //CONSTRUCTORS
+Matrix::Matrix() : _size({ 0, 0 }), _entries(std::vector<double>()) {}
+
 Matrix::Matrix(std::size_t size) : Matrix(ZERO, size) {}
 
 Matrix::Matrix(std::vector<std::vector<double>> entries) {
