@@ -18,11 +18,11 @@ enum PredefinedTypes {
 };
 
 struct Dimension {
-	std::size_t rows;
-	std::size_t columns;
+	std::size_t _rows;
+	std::size_t _columns;
 
 	bool operator==(const Dimension& other) const {
-		return rows == other.rows && columns == other.columns;
+		return _rows == other._rows && _columns == other._columns;
 	}
 	bool operator!=(const Dimension& other) const {
 		return !(*this == other);
@@ -32,6 +32,7 @@ struct Dimension {
 class Matrix {
 public:
 	//CONSTRUCTORS
+	Matrix(std::size_t size);
 	Matrix(Dimension size, std::vector<double> entries);
 	Matrix(std::vector<std::vector<double>> entries);
 
@@ -68,12 +69,13 @@ public:
 
 	Matrix& operator=(const Matrix& other) = default;
 
-	void swapRows(std::size_t row_1, std::size_t row_2);
 	double determinant() const;
 	Matrix inverse() const;
 private:
 	Dimension _size;
 	std::vector<double> _entries;
+
+	void swapRows(std::size_t row_1, std::size_t row_2);
 };
 
 #endif
