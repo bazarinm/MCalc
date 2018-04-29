@@ -5,14 +5,15 @@
 
 class Variable {
 public:
-    enum Type {MATRIX, SCALAR};
+    enum Type { MATRIX, SCALAR, VOID };
 
+    Variable();
     Variable(Matrix&);
     Variable(double);
 
     Type getType() const;
-    Matrix& getMatrix();
-    double& getScalar();
+    Matrix& matrix();
+    double& scalar();
 
 private:
     Type _type;

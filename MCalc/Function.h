@@ -4,6 +4,7 @@
 #include "Variable.h"
 #include <functional>
 #include <vector>
+#include <map>
 #include <string>
 
 class Function
@@ -11,13 +12,20 @@ class Function
 public:
     Function(std::string);
     
-    Variable operator()(std::vector<Variable&>) const;
+    Variable operator()(std::vector<Variable>);
 private:
-    std::function<Variable(std::vector<Variable&>)> _function;
-    std::vector<Variable::Type> _argument_types; //left to right
+    std::map<
+        std::vector<Variable::Type>, //left to right
+        std::function<Variable(std::vector<Variable>)>
+    > _function;
+
+    std::map<
+        std::vector<Variable::Type>, //left to right
+        bool
+    > _argument_types; 
+
     Variable::Type _return_type;
     unsigned _priority;
-    unsigned _arity;
 };
 
 #endif
