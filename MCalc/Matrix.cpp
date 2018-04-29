@@ -1,5 +1,4 @@
 #include "Matrix.h"
-#include "Operator.h"
 #include <algorithm>
 #include <vector>
 #include <exception>
