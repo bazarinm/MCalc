@@ -219,18 +219,53 @@ Matrix Matrix::inverse() const {
 	Dimension size = getSize();
 	Matrix inverse(IDENTITY, size._rows);
 
-	/*std::vector<double> augmented_entries = getEntries();
-	augmented_entries.insert(
-		std::end(augmented_entries),
-		std::begin(inverse.getEntries()),
-		std::end(inverse.getEntries())
-	);
-	Matrix augmented(
-		{ size._rows, size._columns * 2},
-		augmented_entries
-	);	*/
+	//REMAKE THIS
+	/*double temp = 0;
 
-	//WTF??
+	std::vector<std::vector<double>> inverse_entries;
+	std::size_t augm_entr_size = _size.rows + _size.rows;
+	std::vector<std::vector<double>> augmented_entries = _entries;
+
+	inverse_entries.resize(_size.rows, std::vector<double>(_size.rows));
+
+	augmented_entries.resize(augm_entr_size);
+	for (std::size_t i = 0; i < augm_entr_size; ++i)
+		augmented_entries[i].resize(augm_entr_size);
+
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			if (j == (i + _size.rows))
+				augmented_entries[i][j] = 1;
+
+	for (std::size_t i = _size.rows; i > 1; --i)
+		if (augmented_entries[i - 1][1] < augmented_entries[i][1])
+			for (std::size_t j = 0; j < augm_entr_size; ++j) {
+				temp = augmented_entries[i][j];
+				augmented_entries[i][j] = augmented_entries[i - 1][j];
+				augmented_entries[i - 1][j] = temp;
+			}
+
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			if (j != i) {
+				temp = augmented_entries[j][i] / augmented_entries[i][i];
+				for (std::size_t k = 0; k < augm_entr_size; ++k)
+					augmented_entries[j][k] -= augmented_entries[i][k] * temp;
+			}
+
+	for (std::size_t i = 0; i < _size.rows; ++i) {
+		temp = augmented_entries[i][i];
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			augmented_entries[i][j] = augmented_entries[i][j] / temp;
+	}
+
+	for (std::size_t i = 0; i < _size.rows; ++i) {
+		for (std::size_t j = 0; j < _size.rows; ++j)
+			inverse_entries[i][j] = augmented_entries[i][j + _size.rows];
+		std::cout << std::endl;
+	}
+
+	return inverse_entries;*/
 
 	return inverse;
 }
