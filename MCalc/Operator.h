@@ -6,7 +6,6 @@
 
 namespace Operator {
 
-	const double ERROR = 1E-9;
 
 	Matrix plus(const Matrix& left, const Matrix& right);
 	Matrix minus(const Matrix& left, const Matrix& right);
@@ -14,9 +13,7 @@ namespace Operator {
 	Matrix product(const Matrix& left, const Matrix& right);
 	Matrix product(double scalar);
 
-	Matrix& swapRows(Matrix&, std::size_t row_1, std::size_t row_2);
-
-	double determinant(Matrix);
+	double determinant(const Matrix&);
 	Matrix inverse(const Matrix&);
 
 }

@@ -68,6 +68,7 @@ public:
 
 	Matrix& operator=(const Matrix& other) = default;
 
+	void swapRows(std::size_t row_1, std::size_t row_2);
 	double determinant() const;
 	Matrix inverse() const;
 private:

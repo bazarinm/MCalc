@@ -17,5 +17,13 @@ int main() {
 	D.display();
 	std::cout << std::endl;
 
+	(B*C).display();
+	std::cout << std::endl;
+	((B*C) + Matrix(IDENTITY, 3)).display();
+	std::cout << std::endl;
+	std::cout << B.determinant() << std::endl;
+	std::cout << C.determinant() << std::endl;
+	std::cout << (B * C).determinant() << std::endl;
+
 	std::cin.get();
 }
