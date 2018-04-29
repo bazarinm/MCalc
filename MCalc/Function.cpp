@@ -8,6 +8,7 @@ Function::Function(std::string name)
 {
     if (name == "det") {
         _priority = 0;
+
         _argument_types[{ Variable::MATRIX }] = true; 
 
         _function[{ Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
@@ -16,6 +17,7 @@ Function::Function(std::string name)
     }
     else if (name == "+") {
         _priority = 0;
+
         _argument_types[{ Variable::MATRIX, Variable::MATRIX }] = true;
         _argument_types[{ Variable::SCALAR, Variable::SCALAR }] = true;
 
@@ -31,18 +33,14 @@ Function::Function(std::string name)
 }
 
 Variable Function::operator()(std::vector<Variable> args) {
-    /*if (args.size() != _arity)
-        throw std::exception("Wrong number of parameters");*/
-
     std::vector<Variable::Type> arg_types;
-
     for (Variable& arg : args)
         arg_types.push_back(arg.getType());
 
     if (!_argument_types[arg_types])
-        throw std::exception("Wrong parameters"); 
+        throw std::exception("Wrong arguments"); 
 
-    _function[arg_types](args);
+    return _function[arg_types](args);
 }
 
 

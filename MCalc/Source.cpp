@@ -1,4 +1,5 @@
 #include "Matrix.h"
+#include "Function.h"
 #include <iostream>
 
 int main() {
@@ -24,6 +25,13 @@ int main() {
 	std::cout << B.determinant() << std::endl;
 	std::cout << C.determinant() << std::endl;
 	std::cout << (B * C).determinant() << std::endl;
+
+    Function det("det");
+    Function add("+");
+
+    std::cout << det({ B }).scalar() << std::endl;
+    std::cout << add({ 1.8, 2.3 }).scalar() << std::endl;
+    add({ B, C }).matrix().display();
 
 	std::cin.get();
 }

@@ -24,7 +24,6 @@ private:
         bool
     > _argument_types; 
 
-    Variable::Type _return_type;
     unsigned _priority;
 };
 
