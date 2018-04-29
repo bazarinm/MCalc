@@ -2,10 +2,8 @@
 #define OPERATOR_H
 
 #include "Matrix.h"
-#include <cstddef>
 
 namespace Operator {
-
 
 	Matrix plus(const Matrix& left, const Matrix& right);
 	Matrix minus(const Matrix& left, const Matrix& right);

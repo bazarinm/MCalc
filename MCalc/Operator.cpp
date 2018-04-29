@@ -1,8 +1,5 @@
 #include "Operator.h"
-#include <vector>
-#include <string>
-#include <exception>
-#include <cstddef>
+#include "Matrix.h"
 
 namespace Operator {
 
