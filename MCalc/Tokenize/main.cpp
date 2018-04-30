@@ -30,11 +30,8 @@ vector<string> tokenize(string str) {
 
 
 int main() {
-  int aaa222aaa = 1;
-  vector<string> vec = tokenize("___-0.16*-4p.+..1oa_AAeu-23.234a_o ...++....e oea-u /  ^^^&&&& -0.aaa 4aoe   uo-aeu213oe");
-  printVec(vec);
-  printVec(tokenize("det(matrixName)"));
-  printVec(tokenize("det([ ...matrix...])"));
+  string test = "_name+-0.123* +/*aa* ( --1) det( aaa, [...someMatrix...] aaa^^^bbb& &-&2 name123_aaaa-123 eee0.123eee";
+  printVec(tokenize(test));
 
   return 0;
 }
