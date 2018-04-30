@@ -69,6 +69,7 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="MCalc.h" />
     <ClInclude Include="Operand.h" />
     <ClInclude Include="Operator.h" />
     <ClInclude Include="Token.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="MCalc.cpp" />
     <ClCompile Include="Operand.cpp" />
     <ClCompile Include="Operator.cpp" />
     <ClCompile Include="Token.cpp" />
