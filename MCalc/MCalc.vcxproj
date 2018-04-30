@@ -65,16 +65,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FSM.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Functions.h" />
+    <ClInclude Include="Operand.h" />
     <ClInclude Include="Operator.h" />
+    <ClInclude Include="Token.h" />
     <ClInclude Include="Variable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Function.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Functions.cpp" />
+    <ClCompile Include="Operand.cpp" />
     <ClCompile Include="Operator.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Token.cpp" />
     <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

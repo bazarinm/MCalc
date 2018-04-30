@@ -1,20 +1,23 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
-#include "Matrix.h"
+#include "Token.h"
 
-namespace Operator {
+#include "Function.h"
+#include "Variable.h"
+#include <vector>
 
-	Matrix plus(const Matrix& left, const Matrix& right);
-	Matrix minus(const Matrix& left, const Matrix& right);
+class Operator :
+    public Token
+{
+public:
+    Operator(std::string name);
+    virtual ~Operator() = default;
 
-	Matrix product(const Matrix& left, const Matrix& right);
-	Matrix product(const Matrix& left, double right);
+    Variable invoke(std::vector<Variable>);
+private:
+    Function _function;
+};
 
-	double determinant(const Matrix&);
-	Matrix inverse(const Matrix&);
-
-}
-
-#endif // !OPERATOR_H
+#endif
 

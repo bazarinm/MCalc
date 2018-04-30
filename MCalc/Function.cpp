@@ -1,6 +1,6 @@
 #include "Function.h"
 
-#include "Operator.h"
+#include "Functions.h"
 #include <string>
 #include <exception>
 
@@ -12,7 +12,7 @@ Function::Function(std::string name)
         _argument_types[{ Variable::MATRIX }] = true; 
 
         _function[{ Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Operator::determinant(args[0].matrix());
+            return Functions::determinant(args[0].matrix());
         };
     }
     else if (name == "+") {
@@ -22,7 +22,7 @@ Function::Function(std::string name)
         _argument_types[{ Variable::SCALAR, Variable::SCALAR }] = true;
 
         _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Operator::plus(args[0].matrix(), args[1].matrix());
+            return Functions::plus(args[0].matrix(), args[1].matrix());
         };
         _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
             return args[0].scalar() + args[1].scalar();
@@ -37,16 +37,16 @@ Function::Function(std::string name)
         _argument_types[{ Variable::SCALAR, Variable::MATRIX }] = true;
 
         _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Operator::product(args[0].matrix(), args[1].matrix());
+            return Functions::product(args[0].matrix(), args[1].matrix());
         };
         _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
             return args[0].scalar() * args[1].scalar();
         };
         _function[{ Variable::MATRIX, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
-            return Operator::product(args[0].matrix(), args[1].scalar());
+            return Functions::product(args[0].matrix(), args[1].scalar());
         };
         _function[{ Variable::SCALAR, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Operator::product(args[1].matrix(), args[0].scalar());
+            return Functions::product(args[1].matrix(), args[0].scalar());
         };
     }
 

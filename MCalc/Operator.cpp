@@ -1,26 +1,11 @@
 #include "Operator.h"
-#include "Matrix.h"
 
-namespace Operator {
+#include "Function.h"
+#include "Variable.h"
+#include <vector>
 
-	Matrix plus(const Matrix& left, const Matrix& right) {
-		return left + right;
-	}
+Operator::Operator(std::string name) : Token(OPERATOR), _function(Function(name)) {}
 
-	Matrix product(const Matrix& left, const Matrix& right) {
-		return left * right;
-	}
-
-    Matrix product(const Matrix& left, double right) {
-        return left * right;
-    }
-
-	double determinant(const Matrix& matrix) {
-		return matrix.determinant();
-	}
-
-	Matrix inverse(const Matrix& matrix) {
-		return matrix.inverse();
-	}
-
+Variable Operator::invoke(std::vector<Variable> v) {
+    return _function(v);
 }
