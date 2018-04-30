@@ -14,7 +14,7 @@ Function::Function(const std::string& name) : _name(name)
         _priority = 1;
         _associativity = RIGHT;
 
-        _arguments[{ Variable::MATRIX }] = true; 
+        _arguments[{ Variable::MATRIX }] = true;
 
         _function[{ Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
             return args[0].matrix().determinant();
@@ -58,6 +58,8 @@ Function::Function(const std::string& name) : _name(name)
             return args[1].matrix() * args[0].scalar();
         };
     }
+    else
+        throw std::exception("Not a function");
 
     //AND SO ON. ANY NEW FUNCTION MUST BE DESCRIBED HERE.
 }

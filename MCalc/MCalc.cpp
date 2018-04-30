@@ -13,7 +13,7 @@ void MCalc::start() {
 
 }
 
-std::vector<Token> MCalc::tokenize(std::string input) {
+std::vector<Token> MCalc::tokenize(std::string& input) {
     FSM parsing_machine;
 
     for (auto ch : input) {
@@ -26,5 +26,5 @@ std::vector<Token> MCalc::tokenize(std::string input) {
         if (isVariable(name))
             tokens.push_back(Operand(_variables[name]));
     }
-
+    return tokens;
 }

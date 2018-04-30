@@ -41,7 +41,7 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
 
 
 std::vector<std::string> tokenize(std::string str) {
-
+    return {};
 }
 
 int main() {
