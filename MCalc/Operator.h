@@ -9,7 +9,7 @@ namespace Operator {
 	Matrix minus(const Matrix& left, const Matrix& right);
 
 	Matrix product(const Matrix& left, const Matrix& right);
-	Matrix product(double scalar);
+	Matrix product(const Matrix& left, double right);
 
 	double determinant(const Matrix&);
 	Matrix inverse(const Matrix&);

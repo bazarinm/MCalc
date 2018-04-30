@@ -28,6 +28,27 @@ Function::Function(std::string name)
             return args[0].scalar() + args[1].scalar();
         };
     }
+    else if (name == "*") {
+        _priority = 0;
+
+        _argument_types[{ Variable::MATRIX, Variable::MATRIX }] = true;
+        _argument_types[{ Variable::SCALAR, Variable::SCALAR }] = true;
+        _argument_types[{ Variable::MATRIX, Variable::SCALAR }] = true;
+        _argument_types[{ Variable::SCALAR, Variable::MATRIX }] = true;
+
+        _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
+            return Operator::product(args[0].matrix(), args[1].matrix());
+        };
+        _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
+            return args[0].scalar() * args[1].scalar();
+        };
+        _function[{ Variable::MATRIX, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
+            return Operator::product(args[0].matrix(), args[1].scalar());
+        };
+        _function[{ Variable::SCALAR, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
+            return Operator::product(args[1].matrix(), args[0].scalar());
+        };
+    }
 
     //AND SO ON. ANY NEW FUNCTION MUST BE DESCRIBED HERE.
 }

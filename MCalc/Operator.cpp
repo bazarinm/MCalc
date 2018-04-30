@@ -11,6 +11,10 @@ namespace Operator {
 		return left * right;
 	}
 
+    Matrix product(const Matrix& left, double right) {
+        return left * right;
+    }
+
 	double determinant(const Matrix& matrix) {
 		return matrix.determinant();
 	}

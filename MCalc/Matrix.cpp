@@ -119,11 +119,11 @@ std::vector<double> Matrix::getEntries() const {
 }
 
 double& Matrix::at(std::size_t row, std::size_t column) {
-	return _entries[row * _size._rows + column];
+	return _entries[row * _size._columns + column];
 }
 
 double Matrix::at(std::size_t row, std::size_t column) const {
-	return _entries[row * _size._rows + column];
+	return _entries[row * _size._columns + column];
 }
 
 //OPERATORS
@@ -165,6 +165,16 @@ Matrix Matrix::operator*(const Matrix& other) const { //product of 2 matrices
 				product.at(i, j) += at(i, k) * other.at(k, j);
 
 	return product;
+}
+
+Matrix Matrix::operator*(double scalar) const { //product of 2 matrices
+    Matrix product = *this;
+
+    for (std::size_t i = 0; i < getSize()._rows; ++i)
+        for (std::size_t j = 0; j < getSize()._columns; ++j)
+            product.at(i, j) *= scalar;
+
+    return product;
 }
 
 Matrix Matrix::operator/(const Matrix& other) const {
