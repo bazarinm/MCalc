@@ -1,67 +1,101 @@
 #include "Function.h"
 
-#include "Functions.h"
 #include <string>
+#include <vector>
+#include <map>
 #include <exception>
 
-Function::Function(std::string name)
+Function::Function(const std::string& name) : _name(name)
 {
-    if (name == "det") {
-        _priority = 0;
+    //DATABASE GOES HERE:
 
-        _argument_types[{ Variable::MATRIX }] = true; 
+    if (name == "det") {
+        _arity = 1;
+        _priority = 1;
+        _associativity = RIGHT;
+
+        _arguments[{ Variable::MATRIX }] = true; 
 
         _function[{ Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Functions::determinant(args[0].matrix());
+            return args[0].matrix().determinant();
         };
     }
     else if (name == "+") {
-        _priority = 0;
+        _arity = 2;
+        _priority = 1;
+        _associativity = BOTH;
 
-        _argument_types[{ Variable::MATRIX, Variable::MATRIX }] = true;
-        _argument_types[{ Variable::SCALAR, Variable::SCALAR }] = true;
+        _arguments[{ Variable::MATRIX, Variable::MATRIX }] = true;
+        _arguments[{ Variable::SCALAR, Variable::SCALAR }] = true;
 
         _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Functions::plus(args[0].matrix(), args[1].matrix());
+            return args[0].matrix() + args[1].matrix();
         };
         _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
             return args[0].scalar() + args[1].scalar();
         };
     }
     else if (name == "*") {
-        _priority = 0;
+        _arity = 2;
+        _priority = 2;
+        _associativity = BOTH;
 
-        _argument_types[{ Variable::MATRIX, Variable::MATRIX }] = true;
-        _argument_types[{ Variable::SCALAR, Variable::SCALAR }] = true;
-        _argument_types[{ Variable::MATRIX, Variable::SCALAR }] = true;
-        _argument_types[{ Variable::SCALAR, Variable::MATRIX }] = true;
+        _arguments[{ Variable::MATRIX, Variable::MATRIX }] = true;
+        _arguments[{ Variable::SCALAR, Variable::SCALAR }] = true;
+        _arguments[{ Variable::MATRIX, Variable::SCALAR }] = true;
+        _arguments[{ Variable::SCALAR, Variable::MATRIX }] = true;
 
         _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Functions::product(args[0].matrix(), args[1].matrix());
+            return args[0].matrix() * args[1].matrix();
         };
         _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
             return args[0].scalar() * args[1].scalar();
         };
         _function[{ Variable::MATRIX, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
-            return Functions::product(args[0].matrix(), args[1].scalar());
+            return args[0].matrix() * args[1].scalar();
         };
         _function[{ Variable::SCALAR, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return Functions::product(args[1].matrix(), args[0].scalar());
+            return args[1].matrix() * args[0].scalar();
         };
     }
 
     //AND SO ON. ANY NEW FUNCTION MUST BE DESCRIBED HERE.
 }
 
-Variable Function::operator()(std::vector<Variable> args) {
-    std::vector<Variable::Type> arg_types;
-    for (Variable& arg : args)
-        arg_types.push_back(arg.getType());
+Variable Function::operator()(std::vector<Variable> arguments) {
+    std::vector<Variable::Type> argument_types;
+    for (Variable& argument : arguments)
+        argument_types.push_back(argument.getType());
 
-    if (!_argument_types[arg_types])
+    if (!_arguments[argument_types])
         throw std::exception("Wrong arguments"); 
 
-    return _function[arg_types](args);
+    return _function[argument_types](arguments);
 }
+
+unsigned Function::getName() const {
+    return _name;
+}
+
+unsigned Function::getArity() const {
+    return _arity;
+}
+
+unsigned Function::getPriority() const {
+    return _priority;
+}
+
+bool Function::isLeftAssociative() const {
+    return _associativity != RIGHT;
+}
+
+bool Function::isRightAssociative() const {
+    return _associativity != LEFT;
+}
+
+bool Function::isOperator() const {
+    return _invocation == OPERATOR;
+}
+
 
 

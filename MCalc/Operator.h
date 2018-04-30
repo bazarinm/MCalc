@@ -13,10 +13,8 @@ class Operator :
 public:
     Operator(std::string name);
     virtual ~Operator() = default;
-
-    Variable invoke(std::vector<Variable>);
-private:
-    Function _function;
+    
+    Function invoke;
 };
 
 #endif

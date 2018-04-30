@@ -41,14 +41,7 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
 
 
 std::vector<std::string> tokenize(std::string str) {
-  FSM fsm;
 
-  for (auto ch : str) {
-    fsm.process(ch);
-  }
-  fsm.endOfStr();
-
-  return fsm.getResult();
 }
 
 int main() {
