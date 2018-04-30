@@ -73,7 +73,7 @@ Variable Function::operator()(std::vector<Variable> arguments) {
     return _function[argument_types](arguments);
 }
 
-unsigned Function::getName() const {
+std::string Function::getName() const {
     return _name;
 }
 
