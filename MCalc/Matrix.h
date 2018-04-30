@@ -32,6 +32,7 @@ struct Dimension {
 class Matrix {
 public:
 	//CONSTRUCTORS
+    Matrix();
 	Matrix(std::size_t size);
 	Matrix(Dimension size, std::vector<double> entries);
 	Matrix(std::vector<std::vector<double>> entries);
