@@ -5,7 +5,7 @@
 
 Operand::Operand(const Variable& variable) : Token(OPERAND), _variable(variable) {}
 
-Operand::Operand(const std::string& name) : Token(OPERAND, name), _variable(name) {};
+Operand::Operand(const std::string& name) : Token(OPERAND, name), _variable(Variable(name)) {};
 
 
 Variable Operand::getVariable() const {

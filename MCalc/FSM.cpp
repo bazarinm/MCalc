@@ -31,36 +31,36 @@ std::vector<Token> FSM::getResult() const {
 
 
 
-void FSM::pending(const std::string& ch) {
-    if (ch == "-") {
-        _buffer += ch;
+void FSM::pending(const std::string& str) {
+    if (str == "-") {
+        _buffer += str;
         _state = MINUS;
     }
-    else if (Function::isOperator(ch)) {
-        _buffer += ch;
+    else if (Function::isOperator(str)) {
+        _buffer += str;
         _state = _OPERATOR;
     }
-    else if (isDigit(ch)) {
-        _buffer += ch;
+    else if (isDigit(str)) {
+        _buffer += str;
         _state = INTEGER_PART;
     }
-    else if (isAlpha(ch) || ch == "_") {
-        _buffer += ch;
+    else if (isAlpha(str) || str == "_") {
+        _buffer += str;
         _state = WORD;
     }
-    else if (isBracket(ch)) {
-        _buffer += ch;
+    else if (isBracket(str)) {
+        _buffer += str;
         _state = BRACKET;
     }
-    else if (ch == "[") {
-        _buffer += ch;
+    else if (str == "[") {
+        _buffer += str;
         _state = MATRIX;
     }
 }
 
-void FSM::minus(const std::string& ch) {
-    if (isDigit(ch)) {
-        _buffer += ch;
+void FSM::minus(const std::string& str) {
+    if (isDigit(str)) {
+        _buffer += str;
         _state = INTEGER_PART;
     }
     else {
@@ -68,46 +68,46 @@ void FSM::minus(const std::string& ch) {
             _result.push_back(Operator(_buffer));
         _buffer = "";
         _state = PENDING;
-        process(ch);
+        process(str);
     }
 }
 
-void FSM::integer_part(const std::string& ch) {
-    if (ch == ".") {
-        _buffer += ch;
+void FSM::integer_part(const std::string& str) {
+    if (str == ".") {
+        _buffer += str;
         _state = FRACTIONAL_PART;
     }
-    else if (isDigit(ch))
-        _buffer += ch;
+    else if (isDigit(str))
+        _buffer += str;
     else {
         _result.push_back(Operand(std::stod(_buffer)));
         _buffer = "";
         _state = PENDING;
-        process(ch);
+        process(str);
     }
 }
 
-void FSM::fractional_part(const std::string& ch) {
-    if (isDigit(ch))
-        _buffer += ch;
+void FSM::fractional_part(const std::string& str) {
+    if (isDigit(str))
+        _buffer += str;
     else {
         _result.push_back(Operand(std::stod(_buffer)));
         _buffer = "";
         _state = PENDING;
-        process(ch);
+        process(str);
     }
 }
 
-void FSM::_operator(const std::string& ch) {
+void FSM::_operator(const std::string& str) {
     _result.push_back(Operator(_buffer));
     _buffer = "";
     _state = PENDING;
-    process(ch);
+    process(str);
 }
 
-void FSM::word(const std::string& ch) {
-    if (isAlpha(ch) || isDigit(ch) || ch == "_")
-        _buffer += ch;
+void FSM::word(const std::string& str) {
+    if (isAlpha(str) || isDigit(str) || str == "_")
+        _buffer += str;
     else {
         if (Variable::isVariable(_buffer))
             _result.push_back(Operand(_buffer));
@@ -115,26 +115,26 @@ void FSM::word(const std::string& ch) {
             _result.push_back(Operator(_buffer));
         _buffer = "";
         _state = PENDING;
-        process(ch);
+        process(str);
     }
 }
 
-void FSM::bracket(const std::string& ch) {
+void FSM::bracket(const std::string& str) {
     //_result.push_back(_buffer);              BRACKETS
     _buffer = "";
     _state = PENDING;
-    process(ch);
+    process(str);
 }
 
-void FSM::matrix(const std::string& ch) {
-    if (ch == "]") {
-        _buffer += ch;
+void FSM::matrix(const std::string& str) {
+    if (str == "]") {
+        _buffer += str;
         //_result.push_back(_buffer);      STR TO MATRIX
         _buffer = "";
         _state = PENDING;
     }
     else
-        _buffer += ch;
+        _buffer += str;
 }
 
 

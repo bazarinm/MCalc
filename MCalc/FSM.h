@@ -1,5 +1,5 @@
-#ifndef TEMP_FSM_H
-#define TEMP_FSM_H
+#ifndef FSM_H
+#define FSM_H
 
 #include "Token.h"
 #include <vector>
@@ -43,4 +43,4 @@ private:
     void endOfStr();
 };
 
-#endif //TEMP_FSM_H
+#endif //FSM_H

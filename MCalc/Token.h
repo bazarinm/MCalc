@@ -6,17 +6,17 @@
 class Token
 {
 public:
-    enum Type {OPERATOR, OPERAND};
+    enum Types {OPERATOR, OPERAND};
 
     virtual ~Token() = default;
 
-    Type getType() const;
+    Types getType() const;
     std::string getName() const;
 protected:
-    Token(Type);
-    Token(Type, const std::string&);
+    Token(Types);
+    Token(Types, const std::string&);
 private:
-    Type _type;
+    Types _type;
     std::string _name;
 };
 

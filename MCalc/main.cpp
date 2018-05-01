@@ -39,7 +39,7 @@ std::ostream& operator<<(std::ostream& o, Variable& v) {
 
 template <typename T>
 std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
-    for (T& el : v)
+    for (const T& el : v)
         std::cout << el << ", ";
 
     return o;
@@ -48,7 +48,7 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
 std::vector<Token> tokenize(const std::string& str) {
     FSM parsing_machine;
 
-    for (auto ch : str)
+    for (char ch : str)
         parsing_machine.process(std::string(1, ch));
 
     return parsing_machine.getResult();
@@ -58,9 +58,9 @@ int main() {
     Variable::newVariable("ab", 2);
     Variable::newVariable("v", Matrix(IDENTITY, 3));
     Variable::newVariable("C", Matrix(IDENTITY, 4));
-    std::vector<Token> tokens = tokenize("ab + v - 2 * 3 / det(C) ");
-    for (Token& token : tokens)
-        std::cout << token << ", ";
+    std::vector<Token> tokens = tokenize("ab + v -2 + v * 3 / det(C) ");
+    
+    std::cout << tokens;
 
     std::cin.get();
     return 0;
