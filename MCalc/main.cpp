@@ -1,13 +1,11 @@
 #include "FSM.h"
 #include "Matrix.h"
 #include "Function.h"
-#include "Operator.h"
-#include "Operand.h"
 #include <iostream>
 #include <vector>
 #include <string>
 
-std::ostream& operator<<(std::ostream& o, Matrix& m) {
+std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     Dimension size = m.getSize();
     for (std::size_t i = 0; i < size._rows; ++i) {
         for (std::size_t j = 0; j < size._columns; ++j)
@@ -18,61 +16,51 @@ std::ostream& operator<<(std::ostream& o, Matrix& m) {
     return o;
 }
 
-std::ostream& operator<<(std::ostream& o, Variable& v) {
-    switch (v.getType()) {
-    case Variable::MATRIX:
-        o << v.matrix();
-        break;
-    case Variable::SCALAR:
-        o << v.scalar();
-        break;
+std::ostream& operator<<(std::ostream& o, const Token& t) {
+    o << t.getName();
+    if (t.isOperand()) {
+        o << " = ";
+        switch (t.getVariable().getType()) {
+        case Variable::MATRIX:
+            o << std::endl << t.getVariable().getMatrix();
+            break;
+        case Variable::SCALAR:
+            o << t.getVariable().getScalar();
+            break;
+        }
     }
+    else if (t.isOperator())
+        o << " is a function ";
 
     return o;
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
-    for (T& el : v)
-        std::cout << el << ", ";
+std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
+    for (const T& el : v)
+        std::cout << std::endl << el << std::endl;
 
     return o;
 }
 
+std::vector<Token> tokenize(const std::string& str) {
+    FSM parsing_machine;
 
-std::vector<std::string> tokenize(std::string str) {
-  FSM fsm;
+    for (char ch : str)
+        parsing_machine.process(std::string(1, ch));
+    parsing_machine.endOfStr();
 
-  for (auto ch : str) {
-    fsm.process(ch);
-  }
-  fsm.endOfStr();
-
-  return fsm.getResult();
+    return parsing_machine.getResult();
 }
 
 int main() {
-  std::string test = "3.32 * 2.87";
-  std::vector<std::string> str = tokenize(test);
+    Variable::newVariable("ab", 2);
+    Variable::newVariable("v", Matrix(IDENTITY, 3));
+    Variable::newVariable("C", Matrix(IDENTITY, 4));
+    std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
 
-  std::vector<Token*> tokens;
+    std::cout << tokens;
 
-  for (std::string& c : str)
-      if (c == "+" || c == "*")
-          tokens.push_back(new Operator(c));
-      else
-          tokens.push_back(new Operand(std::stod(c)));
-    
-  std::cout << dynamic_cast<Operator*>(tokens[1])->invoke(
-      {
-          dynamic_cast<Operand*>(tokens[0])->getVariable(),
-          dynamic_cast<Operand*>(tokens[2])->getVariable()
-      }
-  );
-
-  for (Token* t : tokens)
-      delete(t);
-
-  std::cin.get();
-  return 0;
+    std::cin.get();
+    return 0;
 }
