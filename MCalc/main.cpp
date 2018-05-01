@@ -11,7 +11,8 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     for (std::size_t i = 0; i < size._rows; ++i) {
         for (std::size_t j = 0; j < size._columns; ++j)
             o << m.at(i, j) << " ";
-        std::cout << std::endl;
+        if (i != size._rows - 1)
+            std::cout << std::endl;
     }
 
     return o;
@@ -55,9 +56,9 @@ std::vector<Token> tokenize(const std::string& str) {
 }
 
 int main() {
-    Variable::initialize("ab", 2);
-    Variable::initialize("v", Matrix(IDENTITY, 3));
-    Variable::initialize("C", Matrix(IDENTITY, 4));
+    Variable::assign("ab", 2);
+    Variable::assign("v", Matrix(IDENTITY, 3));
+    Variable::assign("C", Matrix(IDENTITY, 4));
     std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
 
     std::cout << tokens;
