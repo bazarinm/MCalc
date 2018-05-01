@@ -2,8 +2,6 @@
 
 #include "FSM.h"
 #include "Token.h"
-#include "Operator.h"
-#include "Operand.h"
 
 MCalc::MCalc()
 {

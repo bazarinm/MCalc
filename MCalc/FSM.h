@@ -9,19 +9,22 @@ class FSM
 {
 public:
     enum States {
-        PENDING, MINUS,
+        PENDING, 
+        MINUS,
         INTEGER_PART,
         FRACTIONAL_PART,
-        _OPERATOR, WORD,
-        BRACKET, MATRIX,
+        _OPERATOR, 
+        WORD,
+        BRACKET,
+        MATRIX,
     };
 
     FSM();
 
     void process(const std::string&);
+    void endOfStr();
 
     std::vector<Token> getResult() const;
-    void endOfStr();
 private:
     States _state;
     std::string _buffer;
@@ -40,7 +43,6 @@ private:
     bool isDigit(const std::string&);
     bool isAlpha(const std::string&);
     bool isBracket(const std::string&);
-
 };
 
 #endif //FSM_H
