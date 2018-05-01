@@ -7,11 +7,10 @@
 #include "Token.h"
 
 bool normal(Token a, Token b) {
-	return (a.getPriority() < b.getPriority()); // || (a.getPriority() == b.getPriority() && b.isRi
+	return (a.getPriority() < b.getPriority()) || (a.getPriority() == b.getPriority() && b.isRightAssociative());
 }
-
 bool notNormal(Token a, Token b) {
-	return (a.getPriority() > b.getPriority()); // || (a.getPriority() == b.getPriority() && b.isRi
+	return (a.getPriority() > b.getPriority()) || (a.getPriority() == b.getPriority() && b.isLeftAssociative());
 }
 
 std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
@@ -22,8 +21,15 @@ std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
 		if (token.isOperand()) {
 			output.push_back(token);
 		}
-		else if (token.isBracket()) {
-			continue;
+		else if (token.isBracket() && token.isOpenBracket()) {
+			stack.push(token);
+		}
+		else if (token.isBracket() && token.isCloseBracket()) {
+			while (!stack.top().isOpenBracket()) {
+				output.push_back(stack.top());
+				stack.pop();
+			}
+			stack.pop();
 		}
 		else if (stack.empty() || stack.top().isBracket()) {
 			stack.push(token);
