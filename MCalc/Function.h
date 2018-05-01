@@ -7,6 +7,21 @@
 #include <map>
 #include <string>
 
+using ArgumentTypesVector = std::vector<Variable::Type>;
+using FunctionBody = std::function<Variable(std::vector<Variable>)>;
+
+struct FunctionInfo {
+    enum InvocationType { FUNCTION, OPERATOR };
+    enum AssociativityType { LEFT, RIGHT, BOTH };
+
+    unsigned _arity;
+    unsigned _priority;
+    InvocationType _invocation;
+    AssociativityType _associativity;
+
+    std::map<ArgumentTypesVector, FunctionBody> _function;
+};
+
 class Function
 {
 public:
@@ -31,12 +46,9 @@ public:
     static bool isRightAssociative(const std::string&);
 private:
     std::string _name;
-    unsigned _arity;
-    unsigned _priority;
-    FunctionInfo::InvocationType _invocation;
-    FunctionInfo::AssociativityType _associativity;
+    //std::map<ArgumentTypesVector, FunctionBody> _function;
 
-    std::map<ArgumentTypesVector, FunctionBody> _function;
+    static std::map<std::string, FunctionInfo> _database;
 };
 
 #endif
