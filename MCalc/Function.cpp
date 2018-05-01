@@ -26,7 +26,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "det", 
         {
-            1, 2,
+            1, 3,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
