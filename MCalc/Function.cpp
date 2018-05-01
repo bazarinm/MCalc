@@ -92,7 +92,7 @@ Function::Function(const std::string& name) : _name(name) {
         throw std::runtime_error("No such function");
 }
 
-Variable Function::operator()(const std::vector<Variable>& arguments) {
+Variable Function::operator()(const std::vector<Variable>& arguments) const {
     ArgumentTypesVector argument_types;
     for (const Variable& argument : arguments)
         argument_types.push_back(argument.getType());

@@ -61,7 +61,18 @@ int main() {
     Variable::assign("C", Matrix(IDENTITY, 4));
     std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
 
-    std::cout << tokens;
+    Token mult(Token::OPERATOR, "*");
+    std::cout << mult.invoke(
+        { Token(Token::OPERAND, "ab").getVariable(), 
+        Token(Token::OPERAND, "C").getVariable() }) << std::endl << std::endl;
+    std::cout << mult.invoke(
+        { Token(Token::OPERAND, "v").getVariable(), 
+        Token(Token::OPERAND, "ab").getVariable() }) << std::endl << std::endl;
+    std::cout << mult.invoke(
+        { Token(Token::OPERAND, "ab").getVariable(), 
+        Token(Token::OPERAND, "ab").getVariable() }) << std::endl << std::endl;
+
+    std::cout << "tokens: " << tokens;
 
     std::cin.get();
     return 0;

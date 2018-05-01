@@ -28,7 +28,7 @@ public:
     Function();
     Function(const std::string&);
     
-    Variable operator()(const std::vector<Variable>&);
+    Variable operator()(const std::vector<Variable>&) const;
 
     std::string getName() const;
     unsigned getArity() const;

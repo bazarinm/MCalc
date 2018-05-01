@@ -18,7 +18,7 @@ public:
     std::string getName() const;
 
     Variable getVariable() const;
-    Variable invoke(const std::vector<Variable>&);
+    Variable invoke(const std::vector<Variable>&) const;
 
     bool isOperand() const;
     bool isOperator() const;
