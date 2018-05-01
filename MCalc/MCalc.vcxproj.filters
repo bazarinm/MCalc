@@ -27,9 +27,6 @@
     <ClInclude Include="Token.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Database.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Lexer.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
