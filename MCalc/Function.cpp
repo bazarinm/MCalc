@@ -1,9 +1,11 @@
 #include "Function.h"
 
+#include "Variable.h"
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 #include <exception>
+#include <functional>
 
 std::map<std::string, FunctionInfo> Function::_database = {
     {
@@ -67,10 +69,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
 
 Function::Function(const std::string& name) : _name(name) {
     auto search = _database.find(name);
-    if (search != _database.end()) {
-        //_function = search->second._function;
-    }
-    else
+    if (search == _database.end()) 
         throw std::runtime_error("No such function");
 }
 
@@ -98,20 +97,54 @@ unsigned Function::getPriority() const {
     return _database[_name]._priority;
 }
 
+FunctionInfo::InvocationType Function::getInvocationType() const
+{
+    return _database[_name]._invocation;
+}
+
+FunctionInfo::AssociativityType Function::getAssociativityType() const
+{
+    return _database[_name]._associativity;
+}
+
 bool Function::isOperator(const std::string& name) {
+    bool is_operator = false;
+
     auto search = _database.find(name);
     if (search != _database.end())
-        return search->second._invocation == FunctionInfo::OPERATOR;
-    else
-        return false;
+        is_operator = search->second._invocation == FunctionInfo::OPERATOR;
+
+    return is_operator;
 }
 
 bool Function::isFunction(const std::string& name) {
+    bool is_function = false;
+
     auto search = _database.find(name);
     if (search != _database.end())
-        return search->second._invocation == FunctionInfo::FUNCTION;
+        is_function = search->second._invocation == FunctionInfo::FUNCTION;
+   
+    return is_function;
+}
+
+bool Function::isLeftAssociative(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity != FunctionInfo::RIGHT;
+    }
     else
-        return false;
+        throw std::runtime_error("No such function");
+}
+
+bool Function::isRightAssociative(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity != FunctionInfo::LEFT;
+    }
+    else
+        throw std::runtime_error("No such function");
 }
 
 bool Function::isLeftAssociative() const {
@@ -122,8 +155,53 @@ bool Function::isRightAssociative() const {
     return _database[_name]._associativity != FunctionInfo::LEFT;
 }
 
+unsigned Function::getArity(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._arity;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+unsigned Function::getPriority(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._priority;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+FunctionInfo::InvocationType Function::getInvocationType(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._invocation;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+FunctionInfo::AssociativityType Function::getAssociativityType(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
 bool Function::isOperator() const {
     return _database[_name]._invocation == FunctionInfo::OPERATOR;
+}
+
+bool Function::isFunction() const
+{
+    return _database[_name]._invocation == FunctionInfo::FUNCTION;
 }
 
 

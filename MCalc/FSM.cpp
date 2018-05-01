@@ -9,7 +9,6 @@
 FSM::FSM() : _state(PENDING) {}
 
 
-
 void FSM::process(const std::string& ch) {
     switch (_state) {
     case PENDING: pending(ch); break;
@@ -26,6 +25,10 @@ void FSM::process(const std::string& ch) {
 std::vector<Token> FSM::getResult() const {
     return _result;
 };
+
+void FSM::endOfStr() {
+    process("\n");
+}
 
 
 
@@ -157,8 +160,3 @@ bool FSM::isBracket(const std::string& str) {
     return str == "(" || str == ")";
 }
 
-
-
-void FSM::endOfStr() {
-    process("\n");
-}
