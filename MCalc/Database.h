@@ -12,20 +12,12 @@ using FunctionBody = std::function<Variable(std::vector<Variable>)>;
 
 struct FunctionInfo {
     enum InvocationType { FUNCTION, OPERATOR };
-    enum AccotiativityType { LEFT, RIGHT, BOTH };
-
-    FunctionInfo(
-        unsigned arity, unsigned priority,
-        InvocationType invocation, AccotiativityType associativity,
-        std::vector<std::pair<ArgumentTypesVector, FunctionBody>> function
-    ) : _arity(arity), _priority(priority),
-        _invocation(invocation), _associativity(associativity),
-        _function(function) {};
+    enum AssociativityType { LEFT, RIGHT, BOTH };
 
     unsigned _arity;
     unsigned _priority;
     InvocationType _invocation;
-    AccotiativityType _associativity;
+    AssociativityType _associativity;
 
     std::vector<std::pair<ArgumentTypesVector, FunctionBody>> _function;
 };
@@ -33,21 +25,22 @@ struct FunctionInfo {
 static std::map<std::string, FunctionInfo> database = {
     {
         "det", //name
-        FunctionInfo(
+        {
             1, 2,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX },
                     [](std::vector<Variable> args) -> Variable { return args[0].matrix().determinant(); }
                 }
             }
-        )
+        }
     },
+
     {
         "*", //name
-        FunctionInfo(
-            2, 2, 
+        {
+            2, 2,
             FunctionInfo::OPERATOR, FunctionInfo::BOTH,
             {
                 {
@@ -67,11 +60,12 @@ static std::map<std::string, FunctionInfo> database = {
                     [](std::vector<Variable> args) -> Variable { return args[1].matrix() * args[0].scalar(); }
                 },
             }
-        )
+        }
     },
+
     {
         "+", //name
-        FunctionInfo(
+        {
             2, 1,
             FunctionInfo::OPERATOR, FunctionInfo::BOTH,
             {
@@ -84,7 +78,7 @@ static std::map<std::string, FunctionInfo> database = {
                     [](std::vector<Variable> args) -> Variable { return args[0].scalar() + args[1].scalar(); }
                 },
             }
-        )
+        }
     }
 };
 

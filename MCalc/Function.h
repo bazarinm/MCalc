@@ -26,7 +26,7 @@ private:
     unsigned _arity;
     unsigned _priority;
     FunctionInfo::InvocationType _invocation;
-    FunctionInfo::AccotiativityType _associativity;
+    FunctionInfo::AssociativityType _associativity;
 
     std::map<ArgumentTypesVector, FunctionBody> _function;
 };

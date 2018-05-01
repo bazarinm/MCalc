@@ -57,7 +57,7 @@ Function::Function(const std::string& name) : _name(name) {
         };
     }
     else
-        throw std::exception("Not a function");*/
+        throw std::runtime_error("Not a function");*/
 
     auto search = database.find(name);
     if (search != database.end()) {
@@ -70,7 +70,7 @@ Function::Function(const std::string& name) : _name(name) {
             _function[function.first] = function.second;
     }
     else
-        throw std::exception("No such function");
+        throw std::runtime_error("No such function");
 }
 
 Variable Function::operator()(std::vector<Variable> arguments) {
@@ -82,7 +82,7 @@ Variable Function::operator()(std::vector<Variable> arguments) {
     if (search != _function.end()) 
         return search->second(arguments);
     else
-        throw std::exception("Wrong arguments");
+        throw std::runtime_error("Wrong arguments");
 }
 
 std::string Function::getName() const {

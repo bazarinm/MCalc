@@ -42,8 +42,9 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
 
 int main() {
     Function mult("*");
-    std::cout << mult({ 3, 4 }) << std::endl;
-    std::cout << Function::isOperator("*");
+    Variable::newVariable("A", 3);
+    Variable::newVariable("B", Matrix(IDENTITY, 3));
+    std::cout << mult({ Variable("A"), Variable("B") });
 
     std::cin.get();
     return 0;
