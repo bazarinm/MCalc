@@ -9,6 +9,21 @@
 
 std::map<std::string, FunctionInfo> Function::_database = {
     {
+        "", //aux
+        {
+            0, 0,
+            FunctionInfo::FUNCTION, FunctionInfo::BOTH,
+            {
+                {
+                    { },
+                    [](std::vector<Variable> args) -> Variable { return Variable(); }
+                }
+            }
+        }
+    },
+
+    //DATABASE GOES HERE:
+    {
         "det", 
         {
             1, 2,
@@ -65,7 +80,11 @@ std::map<std::string, FunctionInfo> Function::_database = {
             }
         }
     }
+
+    //AND SO ON
 };
+
+Function::Function() : _name("") {}
 
 Function::Function(const std::string& name) : _name(name) {
     auto search = _database.find(name);

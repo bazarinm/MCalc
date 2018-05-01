@@ -25,7 +25,7 @@ struct FunctionInfo {
 class Function
 {
 public:
-    Function() = default;
+    Function();
     Function(const std::string&);
     
     Variable operator()(const std::vector<Variable>&);
