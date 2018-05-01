@@ -1,4 +1,4 @@
-#include "FSM.h"
+#include "Tokenize.h"
 #include "Matrix.h"
 #include "Function.h"
 #include <iostream>
@@ -43,24 +43,13 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
     return o;
 }
 
-std::vector<Token> tokenize(const std::string& str) {
-    FSM parsing_machine;
-
-    for (char ch : str)
-        parsing_machine.process(std::string(1, ch));
-    parsing_machine.endOfStr();
-
-    return parsing_machine.getResult();
-}
-
 int main() {
     Variable::newVariable("ab", 2);
     Variable::newVariable("v", Matrix(IDENTITY, 3));
     Variable::newVariable("C", Matrix(IDENTITY, 4));
-    std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
+    std::vector<Token> tokens = tokenize("ab + (v -2.23 )+ v * 3 / det(C) 0.123");
 
     std::cout << tokens;
-
-    std::cin.get();
+	std::cin.get();
     return 0;
 }
