@@ -54,11 +54,11 @@ std::vector<Token> tokenize(const std::string& str) {
     return parsing_machine.getResult();
 }
 
-
 int main() {
     Variable::newVariable("ab", 2);
     Variable::newVariable("v", Matrix(IDENTITY, 3));
-    std::vector<Token> tokens = tokenize("ab + C * det(v) - 3");
+    Variable::newVariable("C", Matrix(IDENTITY, 4));
+    std::vector<Token> tokens = tokenize("ab + v - 2 * 3 / det(C) ");
     for (Token& token : tokens)
         std::cout << token << ", ";
 
