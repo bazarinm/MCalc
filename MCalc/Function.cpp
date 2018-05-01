@@ -1,15 +1,13 @@
 #include "Function.h"
 
+#include "Database.h"
 #include <string>
 #include <vector>
 #include <map>
 #include <exception>
 
-Function::Function(const std::string& name) : _name(name)
-{
-    //DATABASE GOES HERE:
-
-    if (name == "det") {
+Function::Function(const std::string& name) : _name(name) {
+    /*if (name == "det") {
         _arity = 1;
         _priority = 1;
         _associativity = RIGHT;
@@ -59,20 +57,32 @@ Function::Function(const std::string& name) : _name(name)
         };
     }
     else
-        throw std::exception("Not a function");
+        throw std::exception("Not a function");*/
 
-    //AND SO ON. ANY NEW FUNCTION MUST BE DESCRIBED HERE.
+    auto search = database.find(name);
+    if (search != database.end()) {
+        FunctionInfo entry = search->second;
+        _arity = entry._arity;
+        _priority = entry._priority;
+        _invocation = entry._invocation;
+        _associativity = entry._associativity;
+        for (std::pair<ArgumentTypesVector, FunctionBody> function : entry._function) 
+            _function[function.first] = function.second;
+    }
+    else
+        throw std::exception("No such function");
 }
 
 Variable Function::operator()(std::vector<Variable> arguments) {
-    std::vector<Variable::Type> argument_types;
-    for (Variable& argument : arguments)
+    ArgumentTypesVector argument_types;
+    for (Variable argument : arguments)
         argument_types.push_back(argument.getType());
 
-    if (!_arguments[argument_types])
-        throw std::exception("Wrong arguments"); 
-
-    return _function[argument_types](arguments);
+    auto search = _function.find(argument_types);
+    if (search != _function.end()) 
+        return search->second(arguments);
+    else
+        throw std::exception("Wrong arguments");
 }
 
 std::string Function::getName() const {
@@ -87,16 +97,24 @@ unsigned Function::getPriority() const {
     return _priority;
 }
 
+bool Function::isOperator(const std::string& name) {
+    auto search = database.find(name);
+    if (search != database.end())
+        return search->second._invocation == FunctionInfo::OPERATOR;
+    else
+        return false;
+}
+
 bool Function::isLeftAssociative() const {
-    return _associativity != RIGHT;
+    return _associativity != FunctionInfo::RIGHT;
 }
 
 bool Function::isRightAssociative() const {
-    return _associativity != LEFT;
+    return _associativity != FunctionInfo::LEFT;
 }
 
 bool Function::isOperator() const {
-    return _invocation == OPERATOR;
+    return _invocation == FunctionInfo::OPERATOR;
 }
 
 

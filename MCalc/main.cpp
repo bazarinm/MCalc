@@ -40,32 +40,11 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
 }
 
 
-std::vector<std::string> tokenize(std::string str) {
-    return {};
-}
-
 int main() {
-  std::string test = "3.32 * 2.87";
-  std::vector<std::string> str = tokenize(test);
+    Function mult("*");
+    std::cout << mult({ 3, 4 }) << std::endl;
+    std::cout << Function::isOperator("*");
 
-  std::vector<Token*> tokens;
-
-  for (std::string& c : str)
-      if (c == "+" || c == "*")
-          tokens.push_back(new Operator(c));
-      else
-          tokens.push_back(new Operand(std::stod(c)));
-    
-  std::cout << dynamic_cast<Operator*>(tokens[1])->invoke(
-      {
-          dynamic_cast<Operand*>(tokens[0])->getVariable(),
-          dynamic_cast<Operand*>(tokens[2])->getVariable()
-      }
-  );
-
-  for (Token* t : tokens)
-      delete(t);
-
-  std::cin.get();
-  return 0;
+    std::cin.get();
+    return 0;
 }

@@ -7,8 +7,6 @@
 #include <string>
 #include <map>
 
-struct FunctionInfo;
-
 class MCalc
 {
 public:
@@ -17,7 +15,6 @@ public:
     void start();
 private:
     std::map<std::string, Variable> _variables;
-    std::map<std::string, FunctionInfo> _functions;
 
     std::vector<Token> tokenize(std::string&);
     std::vector<Token> sort(std::vector<Token>);

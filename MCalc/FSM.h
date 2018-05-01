@@ -1,9 +1,9 @@
 #ifndef TEMP_FSM_H
 #define TEMP_FSM_H
+
 #include <iostream>
 #include <vector>
 #include <string>
-
 
 template <typename T>
 bool includes(std::vector<T> coll, T item) {

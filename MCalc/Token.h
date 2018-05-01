@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TOKEN_H
+#define TOKEN_H
+
 class Token
 {
 public:
@@ -11,4 +13,6 @@ protected:
 private:
     Type _type;
 };
+
+#endif
 
