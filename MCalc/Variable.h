@@ -18,7 +18,8 @@ public:
     double getScalar() const;
 
     static bool isVariable(const std::string&);
-    static void newVariable(const std::string& name, const Variable&);
+    static void initialize(const std::string& name, const Variable&);
+    static void assign(const std::string& name, const Variable&);
 private:
     Type _type;
     Matrix _matrix;

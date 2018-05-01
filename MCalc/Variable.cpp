@@ -34,10 +34,18 @@ bool Variable::isVariable(const std::string& name) {
     return result;
 }
 
-void Variable::newVariable(const std::string& name, const Variable& v) {
+void Variable::initialize(const std::string& name, const Variable& v) {
     auto search = _variables.find(name);
     if (search != _variables.end())
         throw std::runtime_error("This variable already exists");
+    else
+        _variables[name] = v;
+}
+
+void Variable::assign(const std::string& name, const Variable& v) {
+    auto search = _variables.find(name);
+    if (search == _variables.end())
+        throw std::runtime_error("This variable does not exist");
     else
         _variables[name] = v;
 }

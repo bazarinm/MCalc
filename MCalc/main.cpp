@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 
 std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     Dimension size = m.getSize();
@@ -54,9 +55,9 @@ std::vector<Token> tokenize(const std::string& str) {
 }
 
 int main() {
-    Variable::newVariable("ab", 2);
-    Variable::newVariable("v", Matrix(IDENTITY, 3));
-    Variable::newVariable("C", Matrix(IDENTITY, 4));
+    Variable::initialize("ab", 2);
+    Variable::initialize("v", Matrix(IDENTITY, 3));
+    Variable::initialize("C", Matrix(IDENTITY, 4));
     std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
 
     std::cout << tokens;
