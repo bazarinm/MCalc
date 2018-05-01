@@ -32,6 +32,14 @@ Variable Token::getVariable() const {
         throw std::runtime_error("Token is not a variable");
 }
 
+Function Token::getFunction() const
+{
+    if (_type == OPERATOR)
+        return _function;
+    else
+        throw std::runtime_error("Token is not a function");
+}
+
 Variable Token::invoke(const std::vector<Variable>& arguments) const {
     if (_type == OPERATOR)
         return _function(arguments);
