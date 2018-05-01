@@ -73,9 +73,9 @@ Function::Function(const std::string& name) : _name(name) {
         throw std::runtime_error("No such function");
 }
 
-Variable Function::operator()(std::vector<Variable> arguments) {
+Variable Function::operator()(const std::vector<Variable>& arguments) {
     ArgumentTypesVector argument_types;
-    for (Variable argument : arguments)
+    for (const Variable& argument : arguments)
         argument_types.push_back(argument.getType());
 
     auto search = _function.find(argument_types);

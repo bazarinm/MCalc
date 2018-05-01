@@ -16,11 +16,11 @@ Variable::Type Variable::getType() const {
     return _type;
 }
 
-Matrix& Variable::matrix() {
+Matrix Variable::getMatrix() const {
     return _matrix;
 }
 
-double& Variable::scalar() {
+double Variable::getScalar() const {
     return _scalar;
 }
 

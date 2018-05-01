@@ -14,8 +14,8 @@ public:
     Variable(const std::string&);
 
     Type getType() const;
-    Matrix& matrix();
-    double& scalar();
+    Matrix getMatrix() const;
+    double getScalar() const;
 
     static bool isVariable(const std::string&);
     static void newVariable(const std::string& name, const Variable&);

@@ -2,8 +2,6 @@
 
 #include "Function.h"
 #include "Variable.h"
-#include "Operand.h"
-#include "Operator.h"
 #include <vector>
 #include <string>
 #include <cctype>
@@ -65,7 +63,7 @@ void FSM::minus(const std::string& str) {
     }
     else {
         if (Function::isOperator("-"))
-            _result.push_back(Operator(_buffer));
+            _result.emplace_back(Token::OPERATOR, _buffer);
         _buffer = "";
         _state = PENDING;
         process(str);
@@ -80,7 +78,7 @@ void FSM::integer_part(const std::string& str) {
     else if (isDigit(str))
         _buffer += str;
     else {
-        _result.push_back(Operand(std::stod(_buffer)));
+        _result.emplace_back(std::stod(_buffer));
         _buffer = "";
         _state = PENDING;
         process(str);
@@ -91,7 +89,7 @@ void FSM::fractional_part(const std::string& str) {
     if (isDigit(str))
         _buffer += str;
     else {
-        _result.push_back(Operand(std::stod(_buffer)));
+        _result.emplace_back(std::stod(_buffer));
         _buffer = "";
         _state = PENDING;
         process(str);
@@ -99,7 +97,7 @@ void FSM::fractional_part(const std::string& str) {
 }
 
 void FSM::_operator(const std::string& str) {
-    _result.push_back(Operator(_buffer));
+    _result.emplace_back(Token::OPERATOR, _buffer);
     _buffer = "";
     _state = PENDING;
     process(str);
@@ -110,9 +108,9 @@ void FSM::word(const std::string& str) {
         _buffer += str;
     else {
         if (Variable::isVariable(_buffer))
-            _result.push_back(Operand(_buffer));
+            _result.emplace_back(Token::OPERAND, _buffer);
         else if (Function::isFunction(_buffer))
-            _result.push_back(Operator(_buffer));
+            _result.emplace_back(Token::OPERATOR, _buffer);
         _buffer = "";
         _state = PENDING;
         process(str);

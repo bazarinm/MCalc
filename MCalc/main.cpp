@@ -1,8 +1,6 @@
 #include "FSM.h"
 #include "Matrix.h"
 #include "Function.h"
-#include "Operator.h"
-#include "Operand.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,27 +18,33 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m) {
 
 std::ostream& operator<<(std::ostream& o, const Token& t) {
     o << t.getName();
-
-    return o;
-}
-
-std::ostream& operator<<(std::ostream& o, Variable& v) {
-    switch (v.getType()) {
-    case Variable::MATRIX:
-        o << v.matrix();
-        break;
-    case Variable::SCALAR:
-        o << v.scalar();
-        break;
+    if (t.isOperand()) {
+        o << " = ";
+        switch (t.getVariable().getType()) {
+        case Variable::MATRIX:
+            o << std::endl << t.getVariable().getMatrix();
+            break;
+        case Variable::SCALAR:
+            o << t.getVariable().getScalar();
+            break;
+        }
     }
+    else if (t.isOperator())
+        o << " is a function ";
 
     return o;
 }
+
+//std::ostream& operator<<(std::ostream& o, const Variable& v) {
+// 
+//
+//    return o;
+//}
 
 template <typename T>
-std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
+std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
     for (const T& el : v)
-        std::cout << el << ", ";
+        std::cout << std::endl << el << std::endl;
 
     return o;
 }
@@ -50,6 +54,7 @@ std::vector<Token> tokenize(const std::string& str) {
 
     for (char ch : str)
         parsing_machine.process(std::string(1, ch));
+    parsing_machine.endOfStr();
 
     return parsing_machine.getResult();
 }

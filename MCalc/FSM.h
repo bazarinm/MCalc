@@ -21,6 +21,7 @@ public:
     void process(const std::string&);
 
     std::vector<Token> getResult() const;
+    void endOfStr();
 private:
     States _state;
     std::string _buffer;
@@ -40,7 +41,6 @@ private:
     bool isAlpha(const std::string&);
     bool isBracket(const std::string&);
 
-    void endOfStr();
 };
 
 #endif //FSM_H

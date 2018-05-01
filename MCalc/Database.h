@@ -31,7 +31,7 @@ static std::map<std::string, FunctionInfo> database = {
             {
                 {
                     { Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].matrix().determinant(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix().determinant(); }
                 }
             }
         }
@@ -45,19 +45,19 @@ static std::map<std::string, FunctionInfo> database = {
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].matrix() * args[1].matrix(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getMatrix(); }
                 },
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].scalar() * args[1].scalar(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() * args[1].getScalar(); }
                 },
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].matrix() * args[1].scalar(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getScalar(); }
                 },
                 {
                     { Variable::SCALAR, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[1].matrix() * args[0].scalar(); }
+                    [](std::vector<Variable> args) -> Variable { return args[1].getMatrix() * args[0].getScalar(); }
                 },
             }
         }
@@ -71,11 +71,11 @@ static std::map<std::string, FunctionInfo> database = {
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].matrix() + args[1].matrix(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() + args[1].getMatrix(); }
                 },
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].scalar() + args[1].scalar(); }
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() + args[1].getScalar(); }
                 },
             }
         }
