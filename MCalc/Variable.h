@@ -9,7 +9,7 @@ public:
     enum Type { MATRIX, SCALAR, VOID };
 
     Variable();
-    Variable(Matrix&);
+    Variable(const Matrix&);
     Variable(double);
     Variable(const std::string&);
 

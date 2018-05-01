@@ -11,7 +11,7 @@ class Operator :
     public Token
 {
 public:
-    Operator(std::string name);
+    Operator(const std::string& name);
     virtual ~Operator() = default;
     
     Function invoke;

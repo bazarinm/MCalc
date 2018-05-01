@@ -4,12 +4,14 @@
 #include "Token.h"
 
 #include "Variable.h"
+#include <string>
 
 class Operand :
     public Token
 {
 public:
-    Operand(Variable);
+    Operand(const Variable&);
+    Operand(const std::string& name);
     virtual ~Operand() = default;
 
     Variable getVariable() const;

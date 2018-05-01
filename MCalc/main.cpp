@@ -44,7 +44,10 @@ int main() {
     Function mult("*");
     Variable::newVariable("A", 3);
     Variable::newVariable("B", Matrix(IDENTITY, 3));
-    std::cout << mult({ Variable("A"), Variable("B") });
+    std::cout << mult({ Variable("A"), Variable("B") }) << std::endl;
+
+    Operand op(Matrix({ {1, 2, 3} }));
+    std::cout << op.getVariable();
 
     std::cin.get();
     return 0;
