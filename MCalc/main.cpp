@@ -35,12 +35,6 @@ std::ostream& operator<<(std::ostream& o, const Token& t) {
     return o;
 }
 
-//std::ostream& operator<<(std::ostream& o, const Variable& v) {
-// 
-//
-//    return o;
-//}
-
 template <typename T>
 std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
     for (const T& el : v)
@@ -63,8 +57,8 @@ int main() {
     Variable::newVariable("ab", 2);
     Variable::newVariable("v", Matrix(IDENTITY, 3));
     Variable::newVariable("C", Matrix(IDENTITY, 4));
-    std::vector<Token> tokens = tokenize("ab + v -2 + v * 3 / det(C) ");
-    
+    std::vector<Token> tokens = tokenize("ab + (v -2 )+ v * 3 / det(C) ");
+
     std::cout << tokens;
 
     std::cin.get();

@@ -8,7 +8,7 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name) {
     case OPERAND : _variable = Variable(name); break;
     case OPERATOR : _function = Function(name); break;
     case BRACKET : 
-        if (name != ")" || name != "(")
+        if (name != ")" && name != "(")
             throw std::runtime_error("Char is not a bracket");
     }
 }

@@ -118,7 +118,7 @@ void FSM::word(const std::string& str) {
 }
 
 void FSM::bracket(const std::string& str) {
-    //_result.push_back(_buffer);              BRACKETS
+    _result.emplace_back(Token::BRACKET, _buffer);    
     _buffer = "";
     _state = PENDING;
     process(str);
