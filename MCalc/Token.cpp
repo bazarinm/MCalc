@@ -32,7 +32,7 @@ Variable Token::getVariable() const {
         throw std::runtime_error("Token is not a variable");
 }
 
-Variable Token::invoke(const std::vector<Variable>& arguments) {
+Variable Token::invoke(const std::vector<Variable>& arguments) const {
     if (_type == OPERATOR)
         return _function(arguments);
     else

@@ -65,7 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Database.h" />
+
     <ClInclude Include="Function.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Matrix.h" />
