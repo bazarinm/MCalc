@@ -44,9 +44,6 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    Variable::newVariable("ab", 2);
-    Variable::newVariable("v", Matrix(IDENTITY, 3));
-    Variable::newVariable("C", Matrix(IDENTITY, 4));
     std::vector<Token> tokens = tokenize("ab + (v -2.23 )+ v * 3 / det(C) 0.123");
 
     std::cout << tokens;
