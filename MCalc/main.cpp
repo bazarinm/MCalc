@@ -1,6 +1,7 @@
 #include "Tokenize.h"
 #include "Matrix.h"
 #include "Function.h"
+#include "shunting-yard.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -43,10 +44,16 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 	return o;
 }
 
-int main() {
-    std::vector<Token> tokens = tokenize("ab + (v -2.23 )+ v * 3 / det(C) 0.123");
+int fib(int n, int next, int prev) {
+	if (n == 0)
+		return next;
+	else
+		return fib(n - 1, next + prev, next);
+}
 
-    std::cout << tokens;
+int main() {
+    std::vector<Token> tokens = tokenize("4 * -1.2 + det(2)");
+    std::cout << shunting_yard(tokens);
 	std::cin.get();
     return 0;
 }
