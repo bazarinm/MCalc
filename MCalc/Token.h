@@ -15,15 +15,17 @@ public:
     Token(const Function&);
 
     Types getType() const;
-    std::string getName() const;
 
+    std::string getName() const;
     Variable getVariable() const;
     Function getFunction() const;
-    Variable invoke(const std::vector<Variable>&) const;
 
     bool isOperand() const;
     bool isOperator() const;
     bool isBracket() const;
+
+    Variable invoke(const std::vector<Variable>&) const;
+
     bool isOpenBracket() const;
     bool isCloseBracket() const;
 
