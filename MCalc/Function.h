@@ -19,6 +19,7 @@ public:
     unsigned getPriority() const;
     bool isOperator() const;
     static bool isOperator(const std::string& name);
+    static bool isFunction(const std::string& name);
     bool isLeftAssociative() const;
     bool isRightAssociative() const;
 private:

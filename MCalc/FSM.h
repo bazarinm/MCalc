@@ -1,177 +1,182 @@
 #ifndef TEMP_FSM_H
 #define TEMP_FSM_H
 
-#include <iostream>
+#include "Function.h"
+#include "Variable.h"
+#include "Token.h"
+#include "Operand.h"
+#include "Operator.h"
 #include <vector>
+#include <cctype>
 #include <string>
 
-template <typename T>
-bool includes(std::vector<T> coll, T item) {
-  for (auto el : coll) {
-    if (el == item) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-enum STATE {
-  PENDING,
-  MINUS,
-  INTEGER_PART,
-  FRACTIONAL_PART,
-  _OPERATOR,
-  WORD,
-  BRACKET,
-  MATRIX,
+enum States {
+    PENDING, MINUS,
+    INTEGER_PART,
+    FRACTIONAL_PART,
+    _OPERATOR, WORD,
+    BRACKET, MATRIX,
 };
 
 
-class FSM {
- public:
+class FSM 
+{
+public:
+    
+    FSM() : _state(PENDING) {}
 
-  STATE state = PENDING;
-  std::string buffer;
+    std::vector<Token> getResult() {
+        return _result;
+    };
 
-  std::vector<std::string> result;
-  std::vector<std::string> getResult() {
-    return result;
-  };
-  bool isOperator(char ch) {
-    std::vector<std::string> operators = {"+", "-", "*", "/"};
-    return includes(operators, std::string(1, ch));
-  }
-  bool isBracket(char ch) {
-    return ch == '(' || ch == ')';
-  }
-  void endOfStr() {
-    process('\n');
-  }
-
-  void process(char ch) {
-    switch (state) {
-      case PENDING:
-        pending(ch);
-        break;
-      case MINUS:
-        minus(ch);
-        break;
-      case INTEGER_PART:
-        integer_part(ch);
-        break;
-      case FRACTIONAL_PART:
-        fractional_part(ch);
-        break;
-      case _OPERATOR:
-        _operator(ch);
-        break;
-      case WORD:
-        word(ch);
-        break;
-      case BRACKET:
-        bracket(ch);
-        break;
-      case MATRIX:
-        matrix(ch);
-        break;
+    void process(const std::string& ch) {
+        switch (_state) {
+        case PENDING : pending(ch); break;
+        case MINUS : minus(ch); break;
+        case INTEGER_PART : integer_part(ch); break;
+        case FRACTIONAL_PART : fractional_part(ch); break;
+        case _OPERATOR: _operator(ch); break;
+        case WORD: word(ch); break;
+        case BRACKET: bracket(ch); break;
+        case MATRIX: matrix(ch); break;
+        }
     }
-  }
 
-  void pending(char ch) {
-    if (ch == '-') {
-      buffer.push_back(ch);
-      state = MINUS;
-    } else if (isOperator(ch)) {
-      buffer.push_back(ch);
-      state = _OPERATOR;
-    } else if (isdigit(ch)) {
-      buffer.push_back(ch);
-      state = INTEGER_PART;
-    } else if (isalpha(ch) || ch == '_') {
-      buffer.push_back(ch);
-      state = WORD;
-    } else if (isBracket(ch)) {
-      buffer.push_back(ch);
-      state = BRACKET;
-    } else if (ch == '[') {
-      buffer.push_back(ch);
-      state = MATRIX;
+private:
+    States _state;
+    std::string _buffer;
+    std::vector<Token> _result;
+
+    void pending(const std::string& ch) {
+        if (ch == "-") {
+            _buffer += ch;
+            _state = MINUS;
+        } 
+        else if (Function::isOperator(ch)) {
+            _buffer += ch;
+            _state = _OPERATOR;
+        } 
+        else if (isDigit(ch)) {
+            _buffer += ch;
+            _state = INTEGER_PART;
+        } 
+        else if (isAlpha(ch) || ch == "_") {
+            _buffer += ch;
+            _state = WORD;
+        } 
+        else if (isBracket(ch)) {
+            _buffer += ch;
+            _state = BRACKET;
+        } 
+        else if (ch == "[") {
+            _buffer += ch;
+            _state = MATRIX;
+        }
     }
-  }
 
-  void minus(char ch) {
-    if (isdigit(ch)) {
-      buffer.push_back(ch);
-      state = INTEGER_PART;
-    } else {
-      result.push_back(buffer);
-      buffer = "";
-      state = PENDING;
-      process(ch);
+    void minus(const std::string& ch) {
+        if (isDigit(ch)) {
+            _buffer += ch;
+            _state = INTEGER_PART;
+        } 
+        else {
+            if (Function::isOperator("-"))
+                _result.push_back(Operator(_buffer));
+            _buffer = "";
+            _state = PENDING;
+            process(ch);
+        }
     }
-  }
 
-  void integer_part(char ch) {
-    if (ch == '.') {
-      buffer.push_back(ch);
-      state = FRACTIONAL_PART;
-    } else if (isdigit(ch)) {
-      buffer.push_back(ch);
-    } else {
-      result.push_back(buffer);
-      buffer = "";
-      state = PENDING;
-      process(ch);
+    void integer_part(const std::string& ch) {
+        if (ch == ".") {
+            _buffer += ch;
+            _state = FRACTIONAL_PART;
+        } 
+        else if (isDigit(ch))
+            _buffer += ch;
+        else {
+            _result.push_back(Operand(std::stod(_buffer)));
+            _buffer = "";
+            _state = PENDING;
+            process(ch);
+        }
     }
-  }
 
-  void fractional_part(char ch) {
-    if (isdigit(ch)) {
-      buffer.push_back(ch);
-    } else {
-      result.push_back(buffer);
-      buffer = "";
-      state = PENDING;
-      process(ch);
+    void fractional_part(const std::string& ch) {
+        if (isDigit(ch))
+            _buffer += ch;
+        else {
+            _result.push_back(Operand(std::stod(_buffer)));
+            _buffer = "";
+            _state = PENDING;
+            process(ch);
+        }
     }
-  }
 
-  void _operator(char ch) {
-    result.push_back(buffer);
-    buffer = "";
-    state = PENDING;
-    process(ch);
-  }
-
-  void word(char ch) {
-    if (isalnum(ch) || ch == '_') {
-      buffer.push_back(ch);
-    } else {
-      result.push_back(buffer);
-      buffer = "";
-      state = PENDING;
-      process(ch);
+    void _operator(const std::string& ch) {
+        _result.push_back(Operator(_buffer));
+        _buffer = "";
+        _state = PENDING;
+        process(ch);
     }
-  }
 
-  void bracket(char ch) {
-    result.push_back(buffer);
-    buffer = "";
-    state = PENDING;
-    process(ch);
-  }
-
-  void matrix(char ch) {
-    if (ch == ']') {
-      buffer.push_back(ch);
-      result.push_back(buffer);
-      buffer = "";
-      state = PENDING;
-    } else {
-      buffer.push_back(ch);
+    void word(const std::string& ch) {
+        if (isAlpha(ch) || isDigit(ch) || ch == "_")
+            _buffer += ch;
+        else {
+            if (Variable::isVariable(_buffer))
+                _result.push_back(Operand(_buffer));
+            else if (Function::isFunction(_buffer))
+                _result.push_back(Operator(_buffer));
+            _buffer = "";
+            _state = PENDING;
+            process(ch);
+        }
     }
-  }
+
+    void bracket(const std::string& ch) {
+        //_result.push_back(_buffer);              BRACKETS
+        _buffer = "";
+        _state = PENDING;
+        process(ch);
+    }
+
+    void matrix(const std::string& ch) {
+        if (ch == "]") {
+            _buffer += ch;
+            //_result.push_back(_buffer);      STR TO MATRIX
+            _buffer = "";
+            _state = PENDING;
+        } 
+        else 
+            _buffer += ch;
+    }
+
+    bool isDigit(const std::string& str) {
+        bool isDigit = true;
+
+        if (str.length() != 1 || !isdigit(str[0]))
+            isDigit = false;
+
+        return isDigit;
+    }
+    bool isAlpha(const std::string& str) {
+        bool isAlpha = true;
+
+        if (str.length() != 1 || !isalpha(str[0]))
+            isAlpha = false;
+
+        return isAlpha;
+    }
+    bool isBracket(const std::string& str) {
+        return str == "(" || str == ")";
+    }
+
+    void endOfStr() {
+         process("\n");
+    }
+
 };
 
 #endif //TEMP_FSM_H

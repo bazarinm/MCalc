@@ -105,6 +105,14 @@ bool Function::isOperator(const std::string& name) {
         return false;
 }
 
+bool Function::isFunction(const std::string& name) {
+    auto search = database.find(name);
+    if (search != database.end())
+        return search->second._invocation == FunctionInfo::FUNCTION;
+    else
+        return false;
+}
+
 bool Function::isLeftAssociative() const {
     return _associativity != FunctionInfo::RIGHT;
 }

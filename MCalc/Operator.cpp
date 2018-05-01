@@ -4,4 +4,4 @@
 #include "Variable.h"
 #include <vector>
 
-Operator::Operator(const std::string& name) : Token(OPERATOR), invoke(Function(name)) {}
+Operator::Operator(const std::string& name) : Token(OPERATOR, name), invoke(Function(name)) {}

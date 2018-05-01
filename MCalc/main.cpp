@@ -7,13 +7,19 @@
 #include <vector>
 #include <string>
 
-std::ostream& operator<<(std::ostream& o, Matrix& m) {
+std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     Dimension size = m.getSize();
     for (std::size_t i = 0; i < size._rows; ++i) {
         for (std::size_t j = 0; j < size._columns; ++j)
             o << m.at(i, j) << " ";
         std::cout << std::endl;
     }
+
+    return o;
+}
+
+std::ostream& operator<<(std::ostream& o, const Token& t) {
+    o << t.getName();
 
     return o;
 }
@@ -39,15 +45,22 @@ std::ostream& operator<<(std::ostream& o, std::vector<T>& v) {
     return o;
 }
 
+std::vector<Token> tokenize(const std::string& str) {
+    FSM parsing_machine;
+
+    for (auto ch : str)
+        parsing_machine.process(std::string(1, ch));
+
+    return parsing_machine.getResult();
+}
+
 
 int main() {
-    Function mult("*");
-    Variable::newVariable("A", 3);
-    Variable::newVariable("B", Matrix(IDENTITY, 3));
-    std::cout << mult({ Variable("A"), Variable("B") }) << std::endl;
-
-    Operand op(Matrix({ {1, 2, 3} }));
-    std::cout << op.getVariable();
+    Variable::newVariable("ab", 2);
+    Variable::newVariable("v", Matrix(IDENTITY, 3));
+    std::vector<Token> tokens = tokenize("ab + C * det(v) - 3");
+    for (Token& token : tokens)
+        std::cout << token << ", ";
 
     std::cin.get();
     return 0;
