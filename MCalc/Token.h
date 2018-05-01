@@ -29,6 +29,8 @@ public:
 
     unsigned getArity() const;
     unsigned getPriority() const;
+    bool isLeftAssociative() const;
+    bool isRightAssociative() const;
 private:
     Types _type;
     std::string _name;

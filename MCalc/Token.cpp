@@ -80,3 +80,19 @@ unsigned Token::getPriority() const {
     else
         throw std::runtime_error("Token is not a function");
 }
+
+bool Token::isLeftAssociative() const
+{
+    if (_type == OPERATOR)
+        return _function.isLeftAssociative();
+    else
+        throw std::runtime_error("Token is not a function");
+}
+
+bool Token::isRightAssociative() const
+{
+    if (_type == OPERATOR)
+        return _function.isRightAssociative();
+    else
+        throw std::runtime_error("Token is not a function");
+}
