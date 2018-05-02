@@ -60,11 +60,11 @@ bool Token::isBracket() const {
 }
 
 bool Token::isOpenBracket() const {
-    return _name == "(";
+    return isBracket() && _name == "(";
 }
 
 bool Token::isCloseBracket() const {
-    return _name == ")";
+    return isBracket() && _name == ")";
 }
 
 unsigned Token::getArity() const {
@@ -83,16 +83,16 @@ unsigned Token::getPriority() const {
 
 bool Token::isLeftAssociative() const
 {
+    bool isLeftAssociative = false;
     if (_type == OPERATOR)
-        return _function.isLeftAssociative();
-    else
-        throw std::runtime_error("Token is not a function");
+        isLeftAssociative = _function.isLeftAssociative();
+    return isLeftAssociative;
 }
 
 bool Token::isRightAssociative() const
 {
+    bool isRightAssociative = false;
     if (_type == OPERATOR)
-        return _function.isRightAssociative();
-    else
-        throw std::runtime_error("Token is not a function");
+        isRightAssociative = _function.isRightAssociative();
+    return isRightAssociative;
 }
