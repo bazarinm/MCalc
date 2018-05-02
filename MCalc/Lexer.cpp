@@ -146,7 +146,8 @@ void Lexer::word(const std::string& character) {
         if (Function::isFunction(_buffer)) {
             _result.emplace_back(Token::OPERATOR, _buffer);
         }
-        else { //variable
+        else {
+            // TODO: consider if yet undefined operand
             _result.emplace_back(Token::OPERAND, _buffer);
         }
         _buffer = "";
