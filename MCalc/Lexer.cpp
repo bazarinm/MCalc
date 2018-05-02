@@ -1,6 +1,9 @@
 #include <vector>
 #include <string>
 #include <cctype>
+
+#include <iostream>
+
 #include "Lexer.h"
 #include "Function.h"
 #include "Variable.h"
@@ -26,6 +29,7 @@ bool Lexer::isSpace(const std::string& character) {
 
 bool Lexer::isUnprocessable(const std::string& character) {
     return !(isWordCharacter(character)
+            || isSpace(character)
             || isBracket(character)
             || isSpace(character)
             || Function::isOperator(character)
@@ -176,10 +180,14 @@ void Lexer::fractional_part(const std::string& character) {
 }
 
 void Lexer::symbol(const std::string& character) {
-    _result.emplace_back(Token::OPERATOR, _buffer);
-    _buffer = "";
-    _state = PENDING;
-    process(character);
+    if (Function::isOperator(_buffer)) {
+        _result.emplace_back(Token::OPERATOR, _buffer);
+        _buffer = "";
+        _state = PENDING;
+        process(character);
+    }
+    else 
+        throw parsingError("parser: unknown symbol < " + _buffer + " >");
 }
 
 void Lexer::word(const std::string& character) {
@@ -222,9 +230,11 @@ void Lexer::matrix(const std::string& character) {
 void Lexer::unprocessable(const std::string& character) {
     if (isUnprocessable(character)) {
         _buffer.append(character);
-    }
+    } 
     else {
-        _buffer = "";
-        _state = PENDING;
+        //_buffer = "";
+        //_state = PENDING;
+
+        throw parsingError("parser: unknown symbol < " + _buffer + " >");
     }
 }
