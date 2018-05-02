@@ -63,6 +63,7 @@ Matrix Lexer::strToMatrix(const std::string& matrixString) {
             buffer.push_back(character);
         }
     }
+
     splitedMatrixStr.push_back(buffer);
     buffer = "";
 
@@ -87,7 +88,9 @@ Matrix Lexer::strToMatrix(const std::string& matrixString) {
             buffer = "";
             pending = true;
         }
-        matrixVector.push_back(bufferRow);
+        if (!bufferRow.empty()) {
+            matrixVector.push_back(bufferRow);
+        }
     }
 
     try { return Matrix(matrixVector); }
