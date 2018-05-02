@@ -9,7 +9,7 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name) {
     case OPERATOR : _function = Function(name); break;
     case BRACKET : 
         if (name != ")" && name != "(")
-            throw std::runtime_error("Char is not a bracket");
+            throw std::runtime_error(_name + " is not a bracket");
     }
 }
 
@@ -29,7 +29,7 @@ Variable Token::getVariable() const {
     if (_type == OPERAND)
         return _variable;
     else
-        throw std::runtime_error("Token is not a variable");
+        throw std::runtime_error("token" + _name + "is not a function");
 }
 
 Function Token::getFunction() const
@@ -37,14 +37,14 @@ Function Token::getFunction() const
     if (_type == OPERATOR)
         return _function;
     else
-        throw std::runtime_error("Token is not a function");
+        throw std::runtime_error("token" + _name + "is not a function");
 }
 
 Variable Token::invoke(const std::vector<Variable>& arguments) const {
     if (_type == OPERATOR)
         return _function(arguments);
     else
-        throw std::runtime_error("Token is not a function");
+        throw std::runtime_error("token" + _name + "is not a function");
 }
 
 bool Token::isOperand() const {
@@ -71,14 +71,14 @@ unsigned Token::getArity() const {
     if (_type == OPERATOR)
         return _function.getArity();
     else
-        throw std::runtime_error("Token is not a function");
+        throw std::runtime_error("token" + _name + "is not a function");
 }
 
 unsigned Token::getPriority() const {
     if (_type == OPERATOR)
         return _function.getPriority();
     else
-        throw std::runtime_error("Token is not a function");
+        throw std::runtime_error("token" + _name + "is not a function");
 }
 
 bool Token::isLeftAssociative() const

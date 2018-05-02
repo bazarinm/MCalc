@@ -3,6 +3,7 @@
 
 #include "Token.h"
 #include <algorithm>
+#include <string>
 #include <vector>
 #include <stack>
 
@@ -19,7 +20,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
         else if (token.isOperator()) {
             for (unsigned i = 0; i < token.getArity(); ++i) {
                 if (variable_tokens.empty())
-                    throw std::runtime_error("too many arguments");
+                    throw std::runtime_error("too few arguments for function " + token.getName());
 
                 arguments.push_back(variable_tokens.top().getVariable());
                 variable_tokens.pop();
@@ -30,7 +31,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             arguments.clear();
         }
         else
-            throw std::runtime_error("why brackets?");
+            throw std::runtime_error("parser fault, brackets in sorted input");
     }
 
     if (variable_tokens.size() == 1) {
@@ -41,7 +42,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             return result;
     }
     else
-        throw std::runtime_error("wtf");
+        throw std::runtime_error("there are extra variables");
 }
 
 

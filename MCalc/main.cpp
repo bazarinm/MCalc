@@ -70,7 +70,7 @@ int main() {
             std::cout << std::endl << evaluate(shuntingYard(tokenize(input)));
         }
         catch (const std::runtime_error& err) {
-            std::cout << err.what();
+            std::cout << "Error: " << err.what();
         }
         std::cout << std::endl;
     }

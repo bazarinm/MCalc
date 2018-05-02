@@ -23,13 +23,13 @@ Matrix::Matrix(std::size_t size) : Matrix(ZERO, size) {}
 
 Matrix::Matrix(std::vector<std::vector<double>> entries) {
     if (entries.size() == 0)
-        throw std::runtime_error("The initializer matrix is empty");
+        throw std::runtime_error("the initializer matrix is empty");
 
     _size._rows = entries.size();
     _size._columns = entries[0].size();
     for (std::vector<double>& row : entries) {
         if (row.size() != _size._columns)
-            throw std::runtime_error("The initializer matrix is not of a rectangular shape");
+            throw std::runtime_error("the initializer matrix is not of a rectangular shape");
 
         for (double entry : row)
             _entries.push_back(entry);
@@ -38,7 +38,7 @@ Matrix::Matrix(std::vector<std::vector<double>> entries) {
 
 Matrix::Matrix(Dimension size, std::vector<double> entries) : _size(size) {
     if (entries.size() != (size._rows * size._columns))
-        throw std::runtime_error("An unexpected number of elements");
+        throw std::runtime_error("an unexpected number of elements");
     
     _entries = entries;
 }
@@ -49,7 +49,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, std::vector<double> entries) 
     switch (type) {
     case DIAGONAL : 
         if (entries.size() != size)
-            throw std::runtime_error("An unexpected number of elements");
+            throw std::runtime_error("an unexpected number of elements");
 
         for (std::size_t i = 0; i < size; ++i)
             _entries[i * _size._rows + i] = entries[i];
@@ -57,7 +57,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, std::vector<double> entries) 
         break;
     case UPPER_TRIANGLE:
         if (entries.size() != (size * size + size) / 2)
-            throw std::runtime_error("An unexpected number of elements");
+            throw std::runtime_error("an unexpected number of elements");
 
         std::reverse(entries.begin(), entries.end());
         for (std::size_t i = 0; i < size; ++i)

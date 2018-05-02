@@ -137,7 +137,7 @@ Function::Function() : _name("") {}
 Function::Function(const std::string& name) : _name(name) {
     auto search = _database.find(name);
     if (search == _database.end()) 
-        throw std::runtime_error("No such function");
+        throw std::runtime_error("no function <" + name + ">");
 }
 
 Variable Function::operator()(const std::vector<Variable>& arguments) const {
@@ -148,8 +148,25 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const {
     auto search = _database[_name]._function.find(argument_types);
     if (search != _database[_name]._function.end())
         return search->second(arguments);
-    else
-        throw std::runtime_error("Wrong arguments");
+    else {
+        std::string error_message, description = "";
+        error_message += "function < " + _name + " >";
+        description += " does not take combination < ";
+        bool undefined_arguments = false;
+        for (auto argument_type : argument_types) {
+            switch (argument_type) {
+            case Variable::MATRIX: description += "Matrix "; break;
+            case Variable::SCALAR: description += "Scalar "; break;
+            case Variable::VOID: undefined_arguments = true; break;
+            }
+        }
+        if (undefined_arguments)
+            description = " has undefined arguments";
+        else
+            description += ">";
+
+        throw std::runtime_error(error_message + description);
+    }
 }
 
 std::string Function::getName() const {
@@ -229,7 +246,7 @@ unsigned Function::getArity(const std::string& name)
         return search->second._arity;
     }
     else
-        throw std::runtime_error("No such function");
+        throw std::runtime_error("no function <" + name + ">");
 }
 
 unsigned Function::getPriority(const std::string& name)
@@ -239,7 +256,7 @@ unsigned Function::getPriority(const std::string& name)
         return search->second._priority;
     }
     else
-        throw std::runtime_error("No such function");
+        throw std::runtime_error("no function <" + name + ">");
 }
 
 FunctionInfo::InvocationType Function::getInvocationType(const std::string& name)
@@ -249,7 +266,7 @@ FunctionInfo::InvocationType Function::getInvocationType(const std::string& name
         return search->second._invocation;
     }
     else
-        throw std::runtime_error("No such function");
+        throw std::runtime_error("no function <" + name + ">");
 }
 
 FunctionInfo::AssociativityType Function::getAssociativityType(const std::string& name)
@@ -259,7 +276,7 @@ FunctionInfo::AssociativityType Function::getAssociativityType(const std::string
         return search->second._associativity;
     }
     else
-        throw std::runtime_error("No such function");
+        throw std::runtime_error("no function <" + name + ">");
 }
 
 bool Function::isOperator() const {

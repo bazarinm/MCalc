@@ -1,6 +1,9 @@
 #include <vector>
 #include <string>
 #include <cctype>
+
+#include <iostream>
+
 #include "Lexer.h"
 #include "Function.h"
 #include "Variable.h"
@@ -25,6 +28,7 @@ bool Lexer::isSpace(const std::string& character) {
 
 bool Lexer::isUnprocessable(const std::string& character) {
     return !(isWordCharacter(character)
+            || isSpace(character)
             || isBracket(character)
             || Function::isOperator(character)
             || isSquareBracket(character)
