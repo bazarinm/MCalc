@@ -41,7 +41,7 @@ std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
             output.push_back(stack.top());
             stack.pop();
 
-            while (!stack.empty() && notNormal(stack.top(), token)) {
+            while (!(stack.empty() || stack.top().isOpenBracket()) && notNormal(stack.top(), token)) {
                 output.push_back(stack.top());
                 stack.pop();
             }
