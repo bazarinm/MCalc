@@ -26,6 +26,7 @@ bool Lexer::isSpace(const std::string& character) {
 bool Lexer::isUnprocessable(const std::string& character) {
     return !(isWordCharacter(character)
             || isBracket(character)
+			|| isSpace(character)
             || Function::isOperator(character)
             || isSquareBracket(character)
             || character == "-");
@@ -86,7 +87,8 @@ void Lexer::pending(const std::string& character) {
     else if (character == "[") {
         _buffer.append(character);
         _state = MATRIX;
-    } else if (!isSpace(character)) {
+    }
+	else if (isUnprocessable(character)) {
         _buffer.append(character);
         _state = UNPROCESSABLE;
     }
@@ -130,7 +132,7 @@ void Lexer::fractional_part(const std::string& character) {
         process(character);
     }
 }
--
+
 void Lexer::symbol(const std::string& character) {
     _result.emplace_back(Token::OPERATOR, _buffer);
     _buffer = "";
@@ -179,7 +181,8 @@ void Lexer::matrix(const std::string& character) {
 void Lexer::unprocessable(const std::string& character) {
     if (isUnprocessable(character)) {
         _buffer.append(character);
-    } else {
+    } 
+	else {
         _buffer = "";
         _state = PENDING;
     }
