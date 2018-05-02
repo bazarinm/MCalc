@@ -96,7 +96,8 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
 Matrix::Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns) : _size({ rows, columns }) {
     _entries = std::vector<double>(_size.rows * _size.columns, 0);
 
-    std::default_random_engine rand;
+    std::random_device seed;
+    std::default_random_engine rand(seed());
     std::uniform_int_distribution<int> discrete(0, 9);
     switch (type) {
     case RANDOM:
