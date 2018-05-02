@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& o, const Token& t) {
             o << t.getVariable().getScalar();
             break;
         case Variable::VOID:
-            o << " is undefuned";
+            o << t.getName() << " is undefuned";
             break;
         }
     }
