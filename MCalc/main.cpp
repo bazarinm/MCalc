@@ -53,7 +53,7 @@ int fib(int n, int next, int prev) {
 }
 
 int main() {
-    std::cout << evaluate(shunting_yard(tokenize("6 * 1 / 2 / 3 + 0.5")));
+    std::cout << evaluate(shunting_yard(tokenize("6 / 7 + (4.3 * 2.1) / 2 + 3 + 1 / (5 + 6)")));
 	std::cin.get();
     return 0;
 }
