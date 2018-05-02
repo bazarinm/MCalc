@@ -162,22 +162,22 @@ bool Function::isFunction(const std::string& name) {
 
 bool Function::isLeftAssociative(const std::string& name)
 {
+    bool isLeftAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        return search->second._associativity != FunctionInfo::RIGHT;
+        isLeftAssociative = search->second._associativity != FunctionInfo::RIGHT;
     }
-    else
-        throw std::runtime_error("No such function");
+    return isLeftAssociative;
 }
 
 bool Function::isRightAssociative(const std::string& name)
 {
+    bool isRightAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        return search->second._associativity != FunctionInfo::LEFT;
+        isRightAssociative = search->second._associativity != FunctionInfo::LEFT;
     }
-    else
-        throw std::runtime_error("No such function");
+    return isRightAssociative;
 }
 
 bool Function::isLeftAssociative() const {
