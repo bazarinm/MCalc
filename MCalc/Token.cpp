@@ -13,7 +13,7 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name) {
     }
 }
 
-Token::Token(const Variable& v) : _type(OPERAND), _variable(v), _name("const") {}
+Token::Token(const Variable& v) : _type(OPERAND), _variable(v), _name("") {}
 
 Token::Token(const Function& f) : _type(OPERATOR), _function(f), _name(f.getName()) {}
 

@@ -6,10 +6,10 @@
 #include <stack>
 #include "Token.h"
 
-bool normal(Token a, Token b) {
+bool normal(const Token& a, const Token& b) {
 	return (a.getPriority() < b.getPriority()) || (a.getPriority() == b.getPriority() && b.isRightAssociative());
 }
-bool notNormal(Token a, Token b) {
+bool notNormal(const Token& a, const Token& b) {
 	return (a.getPriority() > b.getPriority()) || (a.getPriority() == b.getPriority() && b.isLeftAssociative());
 }
 

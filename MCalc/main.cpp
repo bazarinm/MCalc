@@ -2,6 +2,7 @@
 #include "Matrix.h"
 #include "Function.h"
 #include "shunting-yard.h"
+#include "Evaluate.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -52,8 +53,7 @@ int fib(int n, int next, int prev) {
 }
 
 int main() {
-    std::vector<Token> tokens = tokenize("4 * -1.2 + det(2)");
-    std::cout << shunting_yard(tokens);
+    std::cout << evaluate(shunting_yard(tokenize("6 / 7 + (4.3 * 2.1) / 2 + 3 + 1 / (5 + 6)")));
 	std::cin.get();
     return 0;
 }

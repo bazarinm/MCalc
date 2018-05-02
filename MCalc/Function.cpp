@@ -79,6 +79,20 @@ std::map<std::string, FunctionInfo> Function::_database = {
                 },
             }
         }
+    },
+
+    {
+        "/",
+        {
+            2, 2,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
+                },
+            }
+        }   
     }
 
     //AND SO ON
