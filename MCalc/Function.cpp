@@ -117,7 +117,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "eye",
         {
             1, 3,
-            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR },
@@ -131,7 +131,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "diag",
         {
             1, 3,
-            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -145,7 +145,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "zeros",
         {
             1, 3,
-            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR },
@@ -159,7 +159,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "^",
         {
             2, 3,
-            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
