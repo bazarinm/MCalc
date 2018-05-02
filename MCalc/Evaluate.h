@@ -7,32 +7,37 @@
 #include <stack>
 
 Variable evaluate(const std::vector<Token>& sorted_input) {
-    std::stack<Token> variables;
+    std::stack<Token> variable_tokens;
     std::vector<Variable> arguments;
 
     for (const Token& token : sorted_input) {
         if (token.isOperand()) {
-            variables.push(token);
+            variable_tokens.push(token);
         }
         else if (token.isOperator()) {
             for (unsigned i = 0; i < token.getArity(); ++i) {
-                if (variables.empty())
+                if (variable_tokens.empty())
                     throw std::runtime_error("too many arguments");
 
-                arguments.push_back(variables.top().getVariable());
-                variables.pop();
+                arguments.push_back(variable_tokens.top().getVariable());
+                variable_tokens.pop();
             }
 
             std::reverse(arguments.begin(), arguments.end());
-            variables.push(token.invoke(arguments));
+            variable_tokens.push(token.invoke(arguments));
             arguments.clear();
         }
         else
             throw std::runtime_error("why brackets?");
     }
 
-    if (variables.size() == 1)
-        return variables.top().getVariable();
+    if (variable_tokens.size() == 1) {
+        Variable result = variable_tokens.top().getVariable();
+        if (result.isExpressionResult())
+            return Variable::assign("ans", result);
+        else
+            return result;
+    }
     else
         throw std::runtime_error("wtf");
 }

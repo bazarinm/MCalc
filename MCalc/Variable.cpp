@@ -43,6 +43,11 @@ double Variable::getScalar() const {
         throw std::runtime_error("Variable is not a scalar");
 }
 
+bool Variable::isExpressionResult() const
+{
+    return _name == constant_name;
+}
+
 bool Variable::isVariable(const std::string& name) {
     bool result = false;
 
