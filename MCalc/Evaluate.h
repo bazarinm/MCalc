@@ -25,7 +25,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
         else if (token.isOperator()) {
             for (unsigned i = 0; i < token.getArity(); ++i) {
                 if (variable_tokens.empty())
-                    throw evaluationError("input: too few arguments for function " + token.getName());
+                    throw evaluationError("input: too few variables ");
 
                 arguments.push_back(variable_tokens.top().getVariable());
                 variable_tokens.pop();
@@ -44,7 +44,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             arguments.clear();
         }
         else
-            throw std::runtime_error("program fault: brackets in sorted input");
+            throw std::runtime_error("program fault: brackets in sorted input ");
     }
 
     if (variable_tokens.size() == 1) {
@@ -55,7 +55,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             return result;
     }
     else
-        throw evaluationError("input: there are extra variables");
+        throw evaluationError("input: there are extra variables ");
 }
 
 

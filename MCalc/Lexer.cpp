@@ -136,10 +136,14 @@ void Lexer::fractional_part(const std::string& character) {
 }
 
 void Lexer::symbol(const std::string& character) {
-    _result.emplace_back(Token::OPERATOR, _buffer);
-    _buffer = "";
-    _state = PENDING;
-    process(character);
+    if (Function::isOperator(_buffer)) {
+        _result.emplace_back(Token::OPERATOR, _buffer);
+        _buffer = "";
+        _state = PENDING;
+        process(character);
+    }
+    else 
+        throw parsingError("parser: unknown symbol < " + _buffer + " >");
 }
 
 void Lexer::word(const std::string& character) {
@@ -184,7 +188,9 @@ void Lexer::unprocessable(const std::string& character) {
     if (isUnprocessable(character)) {
         _buffer.append(character);
     } else {
-        _buffer = "";
-        _state = PENDING;
+        //_buffer = "";
+        //_state = PENDING;
+
+        throw parsingError("parser: unknown symbol < " + _buffer + " >");
     }
 }
