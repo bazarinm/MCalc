@@ -63,18 +63,24 @@ int main() {
 
     std::string input;
     while (1) {
-        std::cout << std::endl << ">: ";
+        std::cout << std::endl << "MCalc>: ";
         std::getline(std::cin, input);
         if (input.empty())
             break;
         try {
             std::cout << std::endl << evaluate(shuntingYard(tokenize(input)));
         }
+
         catch (const parsingError& err) {
             std::cout << "Parsing error: " << err.what();
         }
         catch (const evaluationError& err) {
             std::cout << "Evaluation error: " << err.what();
+        }
+        catch (const std::runtime_error& err) {
+            std::cout << "Fatal error: " << err.what();
+            std::cin.get();
+            break;
         }
 
         std::cout << std::endl;
