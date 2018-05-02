@@ -55,7 +55,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             return result;
     }
     else
-        throw evaluationError("input: there are extra variables ");
+        throw evaluationError("input: there are unused variables ");
 }
 
 
