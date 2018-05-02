@@ -17,6 +17,7 @@ public:
         WORD,
         BRACKET,
         MATRIX,
+        UNPROCESSABLE,
     };
 
     Lexer();
@@ -30,8 +31,15 @@ private:
     std::string _buffer;
     std::vector<Token> _result;
 
-    void pending(const std::string&);
+    bool isDigit(const std::string&);
+    bool isAlpha(const std::string&);
+    bool isBracket(const std::string&);
+    bool isSquareBracket(const std::string&);
+    bool isSpace(const std::string&);
+    bool isUnprocessable(const std::string&);
+    bool isWordCharacter(const std::string&);
 
+    void pending(const std::string&);
     void minus(const std::string&);
     void integer_part(const std::string&);
     void fractional_part(const std::string&);
@@ -39,11 +47,7 @@ private:
     void word(const std::string&);
     void bracket(const std::string&);
     void matrix(const std::string&);
-
-    bool isDigit(const std::string&);
-    bool isAlpha(const std::string&);
-    bool isBracket(const std::string&);
-    bool isWordCharacter(const std::string&);
+    void unprocessable(const std::string&);
 };
 
 #endif
