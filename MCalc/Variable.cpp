@@ -29,7 +29,7 @@ Matrix Variable::getMatrix() const {
     if (_type == MATRIX)
         return _matrix;
     else
-        throw std::runtime_error("program fault: variable " + _name + " is not a matrix ");
+        throw std::runtime_error("variable: " + _name + " is not a matrix ");
 }
 
 std::string Variable::getName() const {
@@ -40,7 +40,7 @@ double Variable::getScalar() const {
     if (_type == SCALAR)
         return _scalar;
     else
-        throw std::runtime_error("program fault: variable " + _name + " is not a matrix ");
+        throw std::runtime_error("variable: " + _name + " is not a matrix ");
 }
 
 bool Variable::isExpressionResult() const
@@ -68,7 +68,7 @@ bool Variable::isVariable(const std::string& name) {
 
 Variable Variable::assign(const std::string& name, const Variable& v) {
     if (name == constant_name)
-        throw std::runtime_error("can't assign value to an expression ");
+        throw std::runtime_error("variable: can't assign value to an expression ");
 
     Variable assignment = v;
     assignment._name = name;

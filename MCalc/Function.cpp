@@ -137,7 +137,7 @@ Function::Function() : _name("") {}
 Function::Function(const std::string& name) : _name(name) {
     auto search = _database.find(name);
     if (search == _database.end()) 
-        throw std::runtime_error("no function <" + name + "> ");
+        throw std::runtime_error("function: no function <" + name + "> ");
 }
 
 Variable Function::operator()(const std::vector<Variable>& arguments) const {

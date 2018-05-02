@@ -9,6 +9,11 @@
 
 const std::string answer_name = "ans";
 
+class evaluationError : public std::runtime_error {
+public:
+    evaluationError(const std::string& msg) : std::runtime_error(msg) {}
+};
+
 Variable evaluate(const std::vector<Token>& sorted_input) {
     std::stack<Token> variable_tokens;
     std::vector<Variable> arguments;
@@ -20,14 +25,22 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
         else if (token.isOperator()) {
             for (unsigned i = 0; i < token.getArity(); ++i) {
                 if (variable_tokens.empty())
-                    throw std::runtime_error("input: too few arguments for function " + token.getName());
+                    throw evaluationError("input: too few arguments for function " + token.getName());
 
                 arguments.push_back(variable_tokens.top().getVariable());
                 variable_tokens.pop();
             }
 
             std::reverse(arguments.begin(), arguments.end());
-            variable_tokens.push(token.invoke(arguments));
+
+            try {
+                Variable result = token.invoke(arguments);
+                variable_tokens.push(result);
+            }
+            catch (const std::runtime_error evaluation_error) {
+                throw evaluationError(evaluation_error.what());
+            }
+
             arguments.clear();
         }
         else
@@ -42,7 +55,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             return result;
     }
     else
-        throw std::runtime_error("input: there are extra variables");
+        throw evaluationError("input: there are extra variables");
 }
 
 
