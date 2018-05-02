@@ -56,8 +56,12 @@ int main() {
     Variable::assign("aY", aY);
     Variable::assign("_UU", _UU);
 
-    std::cout << evaluate(shunting_yard(tokenize("aY + det(ab * CvG) /  _UU")));
-    std::cout << evaluate(shunting_yard(tokenize("aY + det(ab) * det(CvG) / _UU")));
+    std::string input;
+    while (1) {
+        std::cout << std::endl << "> ";
+        std::getline(std::cin, input);
+        std::cout << evaluate(shunting_yard(tokenize(input)));
+    }
 
     std::cin.get();
     return 0;

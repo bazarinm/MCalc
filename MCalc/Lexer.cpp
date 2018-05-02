@@ -121,11 +121,11 @@ void Lexer::word(const std::string& character) {
         _buffer.append(character);
     }
     else {
-        if (Variable::isVariable(_buffer)) {
-            _result.emplace_back(Token::OPERAND, _buffer);
-        }
-        else if (Function::isFunction(_buffer)) {
+        if (Function::isFunction(_buffer)) {
             _result.emplace_back(Token::OPERATOR, _buffer);
+        }
+        else if (/*Variable::isVariable(_buffer)*/ 1) { //variable
+            _result.emplace_back(Token::OPERAND, _buffer);
         }
         _buffer = "";
         _state = PENDING;
