@@ -1,6 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "Matrix.h"
 #include "Token.h"
 #include <vector>
 #include <string>
@@ -38,6 +39,7 @@ private:
     bool isSpace(const std::string&);
     bool isUnprocessable(const std::string&);
     bool isWordCharacter(const std::string&);
+    Matrix strToMatrix(const std::string& character);
 
     void pending(const std::string&);
     void minus(const std::string&);
