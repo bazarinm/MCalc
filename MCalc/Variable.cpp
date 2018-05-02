@@ -10,11 +10,15 @@ Variable::Variable(const Matrix& matrix) : _type(MATRIX), _matrix(matrix) {}
 
 Variable::Variable(double scalar) : _type(SCALAR), _scalar(scalar) {}
 
-Variable::Variable(const std::string& name) : _name(name) {
-    if (isVariable(name))
-        *this = _variables[name];
-    else
+Variable::Variable(const std::string& name) {
+    auto search = _variables.find(name);
+    if (search != _variables.end())
+        *this = search->second;
+    else {
+        _name = name;
         _type = VOID;
+        assign(name, *this);
+    }
 }
 
 Variable::Type Variable::getType() const {
@@ -58,13 +62,7 @@ bool Variable::isVariable(const std::string& name) {
 //}
 
 Variable Variable::assign(const std::string& name, const Variable& v) {
-    //auto search = _variables.find(name);
-    //if (search == _variables.end())
-    //    throw std::runtime_error("This variable does not exist");
-    //else
-    //    _variables[name] = v;
-
-    _variables[name] = v;
-    _variables[name]._name = name;
-    return _variables[name];
+    Variable assignment = v;
+    assignment._name = name;
+    return _variables[name] = assignment;
 }

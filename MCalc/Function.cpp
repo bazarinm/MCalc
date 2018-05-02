@@ -96,7 +96,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
-    "=",
+        "=",
         {   
             2, 0,
             FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
