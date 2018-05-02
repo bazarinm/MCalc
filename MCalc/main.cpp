@@ -62,7 +62,12 @@ int main() {
         std::getline(std::cin, input);
         if (input.empty())
             break;
-        std::cout << evaluate(shunting_yard(tokenize(input)));
+        try {
+            std::cout << Variable::assign("ans", evaluate(shunting_yard(tokenize(input))));
+        }
+        catch (std::runtime_error err) {
+            std::cout << err.what();
+        }
     }
 
     //std::cin.get();
