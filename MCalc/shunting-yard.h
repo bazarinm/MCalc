@@ -32,11 +32,10 @@ std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
             stack.push(token);
         }
         else {
-            unsigned tokenPriority = token.getPriority();
-            unsigned stackTopPriority = stack.top().getPriority();
+            unsigned tkPriority = token.getPriority();
 
             while (!(stack.empty() || stack.top().isOpenBracket())
-                    && priorityIsGreaterOrEqualAndTokenIsLeftAssociative(stack.top(), token)) {
+                    && ((stack.top().getPriority() > tkPriority) || (stack.top().getPriority() == tkPriority && token.isLeftAssociative()))) {
                 output.push_back(stack.top());
                 stack.pop();
             }
