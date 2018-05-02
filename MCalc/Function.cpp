@@ -128,6 +128,34 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
+        "diag",
+        {
+            1, 3,
+            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return Matrix(DIAGONAL, args[0].getMatrix().getEntries().size(), args[0].getMatrix().getEntries()); }
+                },
+            }
+        }   
+    },
+
+    {
+        "zeros",
+        {
+            1, 3,
+            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return Matrix(ZERO, args[0].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
         "=",
         {   
             2, 0,
