@@ -45,13 +45,6 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
     return o;
 }
 
-int fib(int n, int next, int prev) {
-    if (n == 0)
-        return next;
-    else
-        return fib(n - 1, next + prev, next);
-}
-
 int main() {
     std::cout << evaluate(shunting_yard(tokenize("(6.0 + 2.7) * 6 / -2.12")));
     return 0;
