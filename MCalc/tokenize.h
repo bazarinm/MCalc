@@ -9,14 +9,14 @@
 
 
 std::vector<Token> tokenize(const std::string& str) {
-	Lexer parser;
+    Lexer parser;
 
-	for (char ch : str) {
-		parser.process(std::string(1, ch));
-	}
-	parser.endOfStr();
+    for (char ch : str) {
+        parser.process(std::string(1, ch));
+    }
+    parser.endOfStr();
 
-	return parser.getResult();
+    return parser.getResult();
 }
 
 #endif

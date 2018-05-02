@@ -1,4 +1,4 @@
-#include "Tokenize.h"
+#include "tokenize.h"
 #include "Matrix.h"
 #include "Function.h"
 #include "shunting-yard.h"
@@ -8,52 +8,51 @@
 #include <string>
 
 std::ostream& operator<<(std::ostream& o, const Matrix& m) {
-	Dimension size = m.getSize();
-	for (std::size_t i = 0; i < size._rows; ++i) {
-		for (std::size_t j = 0; j < size._columns; ++j)
-			o << m.at(i, j) << " ";
-		std::cout << std::endl;
-	}
+    Dimension size = m.getSize();
+    for (std::size_t i = 0; i < size._rows; ++i) {
+        for (std::size_t j = 0; j < size._columns; ++j)
+            o << m.at(i, j) << " ";
+        std::cout << std::endl;
+    }
 
-	return o;
+    return o;
 }
 
 std::ostream& operator<<(std::ostream& o, const Token& t) {
-	o << t.getName();
-	if (t.isOperand()) {
-		o << " = ";
-		switch (t.getVariable().getType()) {
-		case Variable::MATRIX:
-			o << std::endl << t.getVariable().getMatrix();
-			break;
-		case Variable::SCALAR:
-			o << t.getVariable().getScalar();
-			break;
-		}
-	}
-	else if (t.isOperator())
-		o << " is a function ";
+    o << t.getName();
+    if (t.isOperand()) {
+        o << " = ";
+        switch (t.getVariable().getType()) {
+        case Variable::MATRIX:
+            o << std::endl << t.getVariable().getMatrix();
+            break;
+        case Variable::SCALAR:
+            o << t.getVariable().getScalar();
+            break;
+        }
+    }
+    else if (t.isOperator())
+        o << " is a function ";
 
-	return o;
+    return o;
 }
 
 template <typename T>
 std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
-	for (const T& el : v)
-		std::cout << std::endl << el << std::endl;
+    for (const T& el : v)
+        std::cout << std::endl << el << std::endl;
 
-	return o;
+    return o;
 }
 
 int fib(int n, int next, int prev) {
-	if (n == 0)
-		return next;
-	else
-		return fib(n - 1, next + prev, next);
+    if (n == 0)
+        return next;
+    else
+        return fib(n - 1, next + prev, next);
 }
 
 int main() {
-    std::cout << evaluate(shunting_yard(tokenize("6 / 7 + (4.3 * 2.1) / 2 + 3 + 1 / (5 + 6)")));
-	std::cin.get();
+    std::cout << evaluate(shunting_yard(tokenize("(6.0 + 2.7) * 6 / -2.12")));
     return 0;
 }
