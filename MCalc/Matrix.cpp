@@ -194,8 +194,9 @@ Matrix Matrix::operator^(int power) const
             inverse = true;
             power *= -1;
         }
-        for (int i = 1; i < power; ++i)
-            result *= result;
+        for (int i = 1; i < power; ++i) 
+            result *= *this;
+
         if (inverse)
             result = result.inverse();
     }
