@@ -6,12 +6,8 @@
 #include <stack>
 #include "Token.h"
 
-bool priorityIsGreaterOrEqualAndTokenIsLeftAssociative(const Token& stackTop, const Token& token) {
-    return (stackTop.getPriority() > token.getPriority()) || (stackTop.getPriority() == token.getPriority() && token.isLeftAssociative());
-}
-
 std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
-        std::vector<Token> output;
+    std::vector<Token> output;
     std::stack<Token> stack;
 
     for (const auto& token : tokens) {
