@@ -7,6 +7,7 @@
 #include "Lexer.h"
 #include "Function.h"
 #include "Variable.h"
+#include "Matrix.h"
 
 Lexer::Lexer() : _state(PENDING) {}
 
@@ -30,8 +31,10 @@ bool Lexer::isUnprocessable(const std::string& character) {
     return !(isWordCharacter(character)
             || isSpace(character)
             || isBracket(character)
+            || isSpace(character)
             || Function::isOperator(character)
             || isSquareBracket(character)
+            || character == ","
             || character == "-");
 }
 
@@ -51,6 +54,47 @@ void Lexer::endOfStr() {
     process("\n");
 }
 
+Matrix Lexer::strToMatrix(const std::string& matrixString) {
+    std::vector<std::string> splitedMatrixStr;
+    std::string buffer;
+    for (char character : matrixString) {
+        if (character == ';') {
+            splitedMatrixStr.push_back(buffer);
+            buffer = "";
+        }
+        else {
+            buffer.push_back(character);
+        }
+    }
+    splitedMatrixStr.push_back(buffer);
+    buffer = "";
+
+    bool pending = true;
+    std::vector<std::vector<double>> matrixVector;
+    for (auto strRow : splitedMatrixStr) {
+        std::vector<double> bufferRow;
+        for (auto character : strRow) {
+            if (isspace(character) && !pending) {
+                bufferRow.push_back(std::stod(buffer));
+                buffer = "";
+                pending = true;
+            }
+            else if (!isspace(character)) {
+                buffer.push_back(character);
+                pending = false;
+            }
+
+        }
+        if (!buffer.empty()) {
+            bufferRow.push_back(std::stod(buffer));
+            buffer = "";
+            pending = true;
+        }
+        matrixVector.push_back(bufferRow);
+    }
+
+    return Matrix(matrixVector);
+};
 
 void Lexer::process(const std::string& character) {
     switch (_state) {
@@ -88,9 +132,9 @@ void Lexer::pending(const std::string& character) {
         _state = BRACKET;
     }
     else if (character == "[") {
-        _buffer.append(character);
+        // _buffer.append(character);
         _state = MATRIX;
-    } else if (!isSpace(character)) {
+    }   else if (isUnprocessable(character)) {
         _buffer.append(character);
         _state = UNPROCESSABLE;
     }
@@ -173,9 +217,8 @@ void Lexer::bracket(const std::string& character) {
 
 void Lexer::matrix(const std::string& character) {
     if (character == "]") {
-        _buffer.append(character);
         // TODO: str to matrix
-        //_result.push_back(_buffer);
+        _result.emplace_back(strToMatrix(_buffer));
         _buffer = "";
         _state = PENDING;
     }
@@ -187,7 +230,8 @@ void Lexer::matrix(const std::string& character) {
 void Lexer::unprocessable(const std::string& character) {
     if (isUnprocessable(character)) {
         _buffer.append(character);
-    } else {
+    } 
+    else {
         //_buffer = "";
         //_state = PENDING;
 
