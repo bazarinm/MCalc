@@ -6,15 +6,12 @@
 #include <stack>
 #include "Token.h"
 
-bool normal(const Token& a, const Token& b) {
-    return (a.getPriority() < b.getPriority()) || (a.getPriority() == b.getPriority() && b.isRightAssociative());
-}
-bool notNormal(const Token& a, const Token& b) {
-    return (a.getPriority() > b.getPriority()) || (a.getPriority() == b.getPriority() && b.isLeftAssociative());
+bool priorityIsGreaterOrEqualAndTokenIsLeftAssociative(const Token& stackTop, const Token& token) {
+    return (stackTop.getPriority() > token.getPriority()) || (stackTop.getPriority() == token.getPriority() && token.isLeftAssociative());
 }
 
 std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
-    std::vector<Token> output;
+        std::vector<Token> output;
     std::stack<Token> stack;
 
     for (const auto& token : tokens) {
@@ -34,14 +31,12 @@ std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
         else if (stack.empty() || stack.top().isOpenBracket()) {
             stack.push(token);
         }
-        else if (normal(stack.top(), token)) {
-            stack.push(token);
-        }
-        else if (notNormal(stack.top(), token)) {
-            output.push_back(stack.top());
-            stack.pop();
+        else {
+            unsigned tokenPriority = token.getPriority();
+            unsigned stackTopPriority = stack.top().getPriority();
 
-            while (!(stack.empty() || stack.top().isOpenBracket()) && notNormal(stack.top(), token)) {
+            while (!(stack.empty() || stack.top().isOpenBracket())
+                    && priorityIsGreaterOrEqualAndTokenIsLeftAssociative(stack.top(), token)) {
                 output.push_back(stack.top());
                 stack.pop();
             }
