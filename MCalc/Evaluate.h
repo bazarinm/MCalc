@@ -6,6 +6,8 @@
 #include <vector>
 #include <stack>
 
+const std::string answer_name = "ans";
+
 Variable evaluate(const std::vector<Token>& sorted_input) {
     std::stack<Token> variable_tokens;
     std::vector<Variable> arguments;
@@ -34,7 +36,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
     if (variable_tokens.size() == 1) {
         Variable result = variable_tokens.top().getVariable();
         if (result.isExpressionResult())
-            return Variable::assign("ans", result);
+            return Variable::assign(answer_name, result);
         else
             return result;
     }
