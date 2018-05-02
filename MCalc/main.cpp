@@ -46,6 +46,6 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    std::cout << evaluate(shunting_yard(tokenize("(6.0 + 2.7) * 6 / -2.12")));
+    std::cout << evaluate(shunting_yard(tokenize("((2 + 6 / 3 / 2) * 3 + 6) / (2 / 3)")));
     return 0;
 }
