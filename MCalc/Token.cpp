@@ -13,7 +13,7 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name) {
     }
 }
 
-Token::Token(const Variable& v) : _type(OPERAND), _variable(v), _name("const") {}
+Token::Token(const Variable& v) : _type(OPERAND), _variable(v), _name("") {}
 
 Token::Token(const Function& f) : _type(OPERATOR), _function(f), _name(f.getName()) {}
 
@@ -32,7 +32,15 @@ Variable Token::getVariable() const {
         throw std::runtime_error("Token is not a variable");
 }
 
-Variable Token::invoke(const std::vector<Variable>& arguments) {
+Function Token::getFunction() const
+{
+    if (_type == OPERATOR)
+        return _function;
+    else
+        throw std::runtime_error("Token is not a function");
+}
+
+Variable Token::invoke(const std::vector<Variable>& arguments) const {
     if (_type == OPERATOR)
         return _function(arguments);
     else
@@ -69,6 +77,22 @@ unsigned Token::getArity() const {
 unsigned Token::getPriority() const {
     if (_type == OPERATOR)
         return _function.getPriority();
+    else
+        throw std::runtime_error("Token is not a function");
+}
+
+bool Token::isLeftAssociative() const
+{
+    if (_type == OPERATOR)
+        return _function.isLeftAssociative();
+    else
+        throw std::runtime_error("Token is not a function");
+}
+
+bool Token::isRightAssociative() const
+{
+    if (_type == OPERATOR)
+        return _function.isRightAssociative();
     else
         throw std::runtime_error("Token is not a function");
 }

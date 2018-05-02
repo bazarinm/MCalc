@@ -17,11 +17,17 @@ Variable::Type Variable::getType() const {
 }
 
 Matrix Variable::getMatrix() const {
-    return _matrix;
+    if (_type == MATRIX)
+        return _matrix;
+    else
+        throw std::runtime_error("Variable is not a matrix");
 }
 
 double Variable::getScalar() const {
-    return _scalar;
+    if (_type == SCALAR)
+        return _scalar;
+    else
+        throw std::runtime_error("Variable is not a scalar");
 }
 
 bool Variable::isVariable(const std::string& name) {
@@ -34,10 +40,20 @@ bool Variable::isVariable(const std::string& name) {
     return result;
 }
 
-void Variable::newVariable(const std::string& name, const Variable& v) {
-    auto search = _variables.find(name);
-    if (search != _variables.end())
-        throw std::runtime_error("This variable already exists");
-    else
-        _variables[name] = v;
+//void Variable::initialize(const std::string& name, const Variable& v) {
+//    auto search = _variables.find(name);
+//    if (search != _variables.end())
+//        throw std::runtime_error("This variable already exists");
+//    else
+//        _variables[name] = v;
+//}
+
+void Variable::assign(const std::string& name, const Variable& v) {
+    //auto search = _variables.find(name);
+    //if (search == _variables.end())
+    //    throw std::runtime_error("This variable does not exist");
+    //else
+    //    _variables[name] = v;
+
+    _variables[name] = v;
 }

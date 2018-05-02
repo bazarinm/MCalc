@@ -1,85 +1,118 @@
 #include "Function.h"
 
-#include "Database.h"
+#include "Variable.h"
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 #include <exception>
+#include <functional>
+
+std::map<std::string, FunctionInfo> Function::_database = {
+    {
+        "", //aux
+        {
+            0, 0,
+            FunctionInfo::FUNCTION, FunctionInfo::BOTH,
+            {
+                {
+                    { },
+                    [](std::vector<Variable> args) -> Variable { return Variable(); }
+                }
+            }
+        }
+    },
+
+    //DATABASE GOES HERE:
+    {
+        "det", 
+        {
+            1, 3,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix().determinant(); }
+                }
+            }
+        }
+    },
+
+    {
+        "*", 
+        {
+            2, 2,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() * args[1].getScalar(); }
+                },
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getScalar(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return args[1].getMatrix() * args[0].getScalar(); }
+                },
+            }
+        }
+    },
+
+    {
+        "+", 
+        {
+            2, 1,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() + args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() + args[1].getScalar(); }
+                },
+            }
+        }
+    },
+
+    {
+        "/",
+        {
+            2, 2,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
+                },
+            }
+        }   
+    }
+
+    //AND SO ON
+};
+
+Function::Function() : _name("") {}
 
 Function::Function(const std::string& name) : _name(name) {
-    /*if (name == "det") {
-        _arity = 1;
-        _priority = 1;
-        _associativity = RIGHT;
-
-        _arguments[{ Variable::MATRIX }] = true;
-
-        _function[{ Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].matrix().determinant();
-        };
-    }
-    else if (name == "+") {
-        _arity = 2;
-        _priority = 1;
-        _associativity = BOTH;
-
-        _arguments[{ Variable::MATRIX, Variable::MATRIX }] = true;
-        _arguments[{ Variable::SCALAR, Variable::SCALAR }] = true;
-
-        _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].matrix() + args[1].matrix();
-        };
-        _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].scalar() + args[1].scalar();
-        };
-    }
-    else if (name == "*") {
-        _arity = 2;
-        _priority = 2;
-        _associativity = BOTH;
-
-        _arguments[{ Variable::MATRIX, Variable::MATRIX }] = true;
-        _arguments[{ Variable::SCALAR, Variable::SCALAR }] = true;
-        _arguments[{ Variable::MATRIX, Variable::SCALAR }] = true;
-        _arguments[{ Variable::SCALAR, Variable::MATRIX }] = true;
-
-        _function[{ Variable::MATRIX, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].matrix() * args[1].matrix();
-        };
-        _function[{ Variable::SCALAR, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].scalar() * args[1].scalar();
-        };
-        _function[{ Variable::MATRIX, Variable::SCALAR }] = [](std::vector<Variable> args) -> Variable {
-            return args[0].matrix() * args[1].scalar();
-        };
-        _function[{ Variable::SCALAR, Variable::MATRIX }] = [](std::vector<Variable> args) -> Variable {
-            return args[1].matrix() * args[0].scalar();
-        };
-    }
-    else
-        throw std::runtime_error("Not a function");*/
-
-    auto search = database.find(name);
-    if (search != database.end()) {
-        FunctionInfo entry = search->second;
-        _arity = entry._arity;
-        _priority = entry._priority;
-        _invocation = entry._invocation;
-        _associativity = entry._associativity;
-        for (std::pair<ArgumentTypesVector, FunctionBody> function : entry._function) 
-            _function[function.first] = function.second;
-    }
-    else
+    auto search = _database.find(name);
+    if (search == _database.end()) 
         throw std::runtime_error("No such function");
 }
 
-Variable Function::operator()(const std::vector<Variable>& arguments) {
+Variable Function::operator()(const std::vector<Variable>& arguments) const {
     ArgumentTypesVector argument_types;
     for (const Variable& argument : arguments)
         argument_types.push_back(argument.getType());
 
-    auto search = _function.find(argument_types);
-    if (search != _function.end()) 
+    auto search = _database[_name]._function.find(argument_types);
+    if (search != _database[_name]._function.end())
         return search->second(arguments);
     else
         throw std::runtime_error("Wrong arguments");
@@ -90,39 +123,118 @@ std::string Function::getName() const {
 }
 
 unsigned Function::getArity() const {
-    return _arity;
+    return _database[_name]._arity;
 }
 
 unsigned Function::getPriority() const {
-    return _priority;
+    return _database[_name]._priority;
+}
+
+FunctionInfo::InvocationType Function::getInvocationType() const
+{
+    return _database[_name]._invocation;
+}
+
+FunctionInfo::AssociativityType Function::getAssociativityType() const
+{
+    return _database[_name]._associativity;
 }
 
 bool Function::isOperator(const std::string& name) {
-    auto search = database.find(name);
-    if (search != database.end())
-        return search->second._invocation == FunctionInfo::OPERATOR;
-    else
-        return false;
+    bool is_operator = false;
+
+    auto search = _database.find(name);
+    if (search != _database.end())
+        is_operator = search->second._invocation == FunctionInfo::OPERATOR;
+
+    return is_operator;
 }
 
 bool Function::isFunction(const std::string& name) {
-    auto search = database.find(name);
-    if (search != database.end())
-        return search->second._invocation == FunctionInfo::FUNCTION;
+    bool is_function = false;
+
+    auto search = _database.find(name);
+    if (search != _database.end())
+        is_function = search->second._invocation == FunctionInfo::FUNCTION;
+   
+    return is_function;
+}
+
+bool Function::isLeftAssociative(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity != FunctionInfo::RIGHT;
+    }
     else
-        return false;
+        throw std::runtime_error("No such function");
+}
+
+bool Function::isRightAssociative(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity != FunctionInfo::LEFT;
+    }
+    else
+        throw std::runtime_error("No such function");
 }
 
 bool Function::isLeftAssociative() const {
-    return _associativity != FunctionInfo::RIGHT;
+    return _database[_name]._associativity != FunctionInfo::RIGHT;
 }
 
 bool Function::isRightAssociative() const {
-    return _associativity != FunctionInfo::LEFT;
+    return _database[_name]._associativity != FunctionInfo::LEFT;
+}
+
+unsigned Function::getArity(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._arity;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+unsigned Function::getPriority(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._priority;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+FunctionInfo::InvocationType Function::getInvocationType(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._invocation;
+    }
+    else
+        throw std::runtime_error("No such function");
+}
+
+FunctionInfo::AssociativityType Function::getAssociativityType(const std::string& name)
+{
+    auto search = _database.find(name);
+    if (search != _database.end()) {
+        return search->second._associativity;
+    }
+    else
+        throw std::runtime_error("No such function");
 }
 
 bool Function::isOperator() const {
-    return _invocation == FunctionInfo::OPERATOR;
+    return _database[_name]._invocation == FunctionInfo::OPERATOR;
+}
+
+bool Function::isFunction() const
+{
+    return _database[_name]._invocation == FunctionInfo::FUNCTION;
 }
 
 
