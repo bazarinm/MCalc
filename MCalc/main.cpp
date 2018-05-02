@@ -46,19 +46,6 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    Matrix ab(UPPER_TRIANGLE, 3, { 1, 2, 3, 4, 5, 6 });
-    Matrix CvG({ 3, 3 }, { 4, 3, 1, 0, -2, 11, -4, 5, 7 });
-    double aY = 3;
-    double _UU = 2;
-
-    Variable::assign("ab", ab);
-    Variable::assign("CvG", CvG);
-    Variable::assign("aY", aY);
-    Variable::assign("_UU", _UU);
-
-    std::cout << evaluate(shunting_yard(tokenize("aY + det(ab * CvG) /  _UU")));
-    std::cout << evaluate(shunting_yard(tokenize("aY + det(ab) * det(CvG) / _UU")));
-
-    std::cin.get();
+    std::cout << evaluate(shunting_yard(tokenize("((2 + 6 / 3 / 2) * 3 + 6) / (2 / 3)")));
     return 0;
 }
