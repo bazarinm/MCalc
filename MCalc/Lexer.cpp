@@ -1,9 +1,6 @@
 #include <vector>
 #include <string>
 #include <cctype>
-
-#include <iostream>
-
 #include "Lexer.h"
 #include "Function.h"
 #include "Variable.h"
@@ -93,7 +90,9 @@ Matrix Lexer::strToMatrix(const std::string& matrixString) {
         matrixVector.push_back(bufferRow);
     }
 
-    return Matrix(matrixVector);
+    try { return Matrix(matrixVector); }
+    catch (std::runtime_error err) 
+    { throw parsingError(err.what()); }
 };
 
 void Lexer::process(const std::string& character) {
