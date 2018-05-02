@@ -163,7 +163,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(IDENTITY, abs(args[0].getScalar())); }
+                    [](Arguments args) -> Variable { return Matrix(Matrix::IDENTITY, abs(args[0].getScalar())); }
                 },
             }
         }   
@@ -177,7 +177,10 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::MATRIX },
-                    [](Arguments args) -> Variable { return Matrix(DIAGONAL, args[0].getMatrix().getEntries().size(), args[0].getMatrix().getEntries()); }
+                    [](Arguments args) -> Variable 
+                    { return Matrix(Matrix::DIAGONAL, 
+                        args[0].getMatrix().getEntries().size(), 
+                        args[0].getMatrix().getEntries()); }
                 },
             }
         }   
@@ -186,12 +189,82 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "zeros",
         {
-            1, function_priority,
+            2, function_priority,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
-                    { Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(ZERO, abs(args[0].getScalar())); }
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return Matrix(Matrix::ZERO, args[0].getScalar(), args[1].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
+        "rand",
+        {
+            2, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return Matrix(Matrix::RANDOM, args[0].getScalar(), args[1].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
+        "'",
+        {
+            1, function_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().transpose(); }
+                },
+            }
+        }   
+    },
+
+    {
+        ":",
+        {
+            2, function_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().getRow(args[1].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
+        ";",
+        {
+            2, function_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().getColumn(args[1].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
+        "at",
+        {
+            3, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX, Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().at(args[1].getScalar(), args[2].getScalar()); }
                 },
             }
         }   

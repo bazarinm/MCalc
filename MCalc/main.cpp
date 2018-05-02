@@ -9,11 +9,11 @@
 #include <regex>
 
 std::ostream& operator<<(std::ostream& o, const Matrix& m) {
-    Dimension size = m.getSize();
-    for (std::size_t i = 0; i < size._rows; ++i) {
-        for (std::size_t j = 0; j < size._columns; ++j)
+    Matrix::Dimensions size = m.getSize();
+    for (std::size_t i = 0; i < size.rows; ++i) {
+        for (std::size_t j = 0; j < size.columns; ++j)
             o << m.at(i, j) << " ";
-        if (i != size._rows - 1)
+        if (i != size.rows - 1)
             std::cout << std::endl;
     }
 
