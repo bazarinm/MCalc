@@ -31,7 +31,7 @@ std::ostream& operator<<(std::ostream& o, const Token& t) {
             o << t.getVariable().getScalar();
             break;
         case Variable::VOID:
-            o << t.getName() << " is undefuned";
+            o << t.getName() << " is undefined";
             break;
         }
     }
@@ -86,6 +86,5 @@ int main() {
         std::cout << std::endl;
     }
 
-    //std::cin.get();
     return 0;
 }
