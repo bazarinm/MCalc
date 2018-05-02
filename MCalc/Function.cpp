@@ -82,6 +82,24 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
+        "-", 
+        {
+            2, 1,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() - args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() - args[1].getScalar(); }
+                },
+            }
+        }
+    },
+
+    {
         "/",
         {
             2, 2,

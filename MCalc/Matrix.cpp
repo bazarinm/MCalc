@@ -139,6 +139,19 @@ Matrix Matrix::operator+(const Matrix& other) const { //sum of 2 matrices
     return sum;
 }
 
+Matrix Matrix::operator-(const Matrix & other) const
+{
+    if (_size != other.getSize())
+        throw std::runtime_error("matrix: matrices' dimensions must agree ");
+
+    Matrix residual = *this;
+    for (std::size_t i = 0; i < _size._rows; ++i)
+        for (std::size_t j = 0; j < _size._columns; ++j)
+            residual.at(i, j) -= other.at(i, j);
+
+    return residual;
+}
+
 Matrix& Matrix::operator+=(const Matrix& other) {
     if (getSize() != other.getSize())
         throw std::runtime_error("matrix: matrices' dimensions must agree ");
