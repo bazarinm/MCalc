@@ -19,15 +19,18 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m) {
 }
 
 std::ostream& operator<<(std::ostream& o, const Token& t) {
-    o << t.getName();
     if (t.isOperand()) {
-        o << " = ";
         switch (t.getVariable().getType()) {
         case Variable::MATRIX:
+            o << t.getName() << " = ";
             o << std::endl << t.getVariable().getMatrix();
             break;
         case Variable::SCALAR:
+            o << t.getName() << " = ";
             o << t.getVariable().getScalar();
+            break;
+        case Variable::VOID:
+            o << " is undefuned";
             break;
         }
     }
@@ -63,7 +66,7 @@ int main() {
         if (input.empty())
             break;
         try {
-            std::cout << Variable::assign("ans", evaluate(shunting_yard(tokenize(input))));
+            std::cout << evaluate(shuntingYard(tokenize(input)));
         }
         catch (std::runtime_error err) {
             std::cout << err.what();

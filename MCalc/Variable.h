@@ -4,7 +4,7 @@
 #include "Matrix.h"
 #include <map>
 
-const std::string default_name = "ans";
+const std::string constant_name = "";
 
 class Variable {
 public:
@@ -19,6 +19,7 @@ public:
     std::string getName() const;
     Matrix getMatrix() const;
     double getScalar() const;
+    bool isExpressionResult() const;
 
     //static void initialize(const std::string& name, const Variable&);
     static Variable assign(const std::string& name, const Variable&);

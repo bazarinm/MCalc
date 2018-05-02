@@ -6,7 +6,7 @@
 #include <stack>
 #include "Token.h"
 
-std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
+std::vector<Token> shuntingYard(const std::vector<Token>& tokens) {
     std::vector<Token> output;
     std::stack<Token> stack;
 
@@ -28,10 +28,10 @@ std::vector<Token> shunting_yard(const std::vector<Token>& tokens) {
             stack.push(token);
         }
         else {
-            unsigned tkPriority = token.getPriority();
+            unsigned token_priority = token.getPriority();
 
             while (!(stack.empty() || stack.top().isOpenBracket())
-                    && ((stack.top().getPriority() > tkPriority) || (stack.top().getPriority() == tkPriority && token.isLeftAssociative()))) {
+                    && ((stack.top().getPriority() > token_priority) || (stack.top().getPriority() == token_priority && token.isLeftAssociative()))) {
                 output.push_back(stack.top());
                 stack.pop();
             }
