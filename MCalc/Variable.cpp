@@ -4,11 +4,11 @@
 
 std::map<std::string, Variable> Variable::_variables;
 
-Variable::Variable() : _type(VOID) {}
+Variable::Variable() : _type(VOID), _name(default_name) {}
 
-Variable::Variable(const Matrix& matrix) : _type(MATRIX), _matrix(matrix) {}
+Variable::Variable(const Matrix& matrix) : _type(MATRIX), _matrix(matrix), _name(default_name) {}
 
-Variable::Variable(double scalar) : _type(SCALAR), _scalar(scalar) {}
+Variable::Variable(double scalar) : _type(SCALAR), _scalar(scalar), _name(default_name) {}
 
 Variable::Variable(const std::string& name) {
     auto search = _variables.find(name);

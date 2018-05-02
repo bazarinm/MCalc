@@ -4,6 +4,8 @@
 #include "Matrix.h"
 #include <map>
 
+const std::string default_name = "ans";
+
 class Variable {
 public:
     enum Type { MATRIX, SCALAR, VOID };
