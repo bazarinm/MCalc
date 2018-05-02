@@ -44,7 +44,7 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             arguments.clear();
         }
         else
-            throw std::runtime_error("program fault: brackets in sorted input ");
+            throw evaluationError("evaluation: extra open bracket(s) ");
     }
 
     if (variable_tokens.size() == 1) {

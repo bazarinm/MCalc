@@ -6,6 +6,11 @@
 #include <stack>
 #include "Token.h"
 
+class sortingError : public std::runtime_error {
+public:
+    sortingError(const std::string& msg) : std::runtime_error(msg) {}
+};
+
 std::vector<Token> shuntingYard(const std::vector<Token>& tokens) {
     std::vector<Token> output;
     std::stack<Token> stack;
@@ -18,10 +23,13 @@ std::vector<Token> shuntingYard(const std::vector<Token>& tokens) {
             stack.push(token);
         }
         else if (token.isCloseBracket()) {
-            while (!stack.top().isOpenBracket()) {
+            while (!stack.empty() && !stack.top().isOpenBracket()) {
                 output.push_back(stack.top());
                 stack.pop();
             }
+
+            if (stack.empty())
+                throw sortingError("sorting: extra close bracket(s) ");
             stack.pop();
         }
         else if (stack.empty() || stack.top().isOpenBracket()) {

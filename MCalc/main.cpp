@@ -74,6 +74,9 @@ int main() {
         catch (const parsingError& err) {
             std::cout << "Parsing error: " << err.what();
         }
+        catch (const sortingError& err) {
+            std::cout << "Sorting error: " << err.what();
+        }
         catch (const evaluationError& err) {
             std::cout << "Evaluation error: " << err.what();
         }
