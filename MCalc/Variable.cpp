@@ -12,7 +12,7 @@ Variable::Variable(double scalar) : _type(SCALAR), _scalar(scalar) {}
 
 Variable::Variable(const std::string& name) : _name(name) {
     if (isVariable(name))
-        *this = Variable(_variables[name]);
+        *this = _variables[name];
     else
         _type = VOID;
 }
