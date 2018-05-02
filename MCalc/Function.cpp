@@ -114,6 +114,20 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
+        "eye",
+        {
+            1, 3,
+            FunctionInfo::FUNCTION, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return Matrix(IDENTITY, args[0].getScalar()); }
+                },
+            }
+        }   
+    },
+
+    {
         "=",
         {   
             2, 0,
