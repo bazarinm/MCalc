@@ -46,6 +46,30 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    std::cout << evaluate(shunting_yard(tokenize("((2 + 6 / 3 / 2) * 3 + 6) / (2 / 3)")));
+    Matrix ab(UPPER_TRIANGLE, 3, { 1, 2, 3, 4, 5, 6 });
+    Matrix CvG({ 3, 3 }, { 4, 3, 1, 0, -2, 11, -4, 5, 7 });
+    double aY = 3;
+    double _UU = 2;
+
+    Variable::assign("ab", ab);
+    Variable::assign("CvG", CvG);
+    Variable::assign("aY", aY);
+    Variable::assign("_UU", _UU);
+
+    std::string input;
+    while (1) {
+        std::cout << std::endl << "> ";
+        std::getline(std::cin, input);
+        if (input.empty())
+            break;
+        try {
+            std::cout << Variable::assign("ans", evaluate(shunting_yard(tokenize(input))));
+        }
+        catch (std::runtime_error err) {
+            std::cout << err.what();
+        }
+    }
+
+    //std::cin.get();
     return 0;
 }

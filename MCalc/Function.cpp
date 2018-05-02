@@ -93,6 +93,40 @@ std::map<std::string, FunctionInfo> Function::_database = {
                 },
             }
         }   
+    },
+
+    {
+        "=",
+        {   
+            2, 0,
+            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::VOID, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+                {
+                    { Variable::VOID, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+                {
+                    { Variable::SCALAR, Variable::MATRIX },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+            }
+        }
     }
 
     //AND SO ON
