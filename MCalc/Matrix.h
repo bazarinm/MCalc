@@ -59,6 +59,7 @@ public:
     Matrix& operator-=(const Matrix& other);
 
     Matrix operator*(const Matrix& other) const; //product of 2 matrices
+    Matrix operator^(int power) const; //product of 2 matrices
     Matrix operator/(const Matrix& other) const; //multiplication by an inverse of other matrix
     Matrix& operator*=(const Matrix& other);
     Matrix& operator/=(const Matrix& other);

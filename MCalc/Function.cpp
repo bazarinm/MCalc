@@ -156,6 +156,24 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
+        "^",
+        {
+            2, 3,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return pow(args[0].getScalar(), args[1].getScalar()); }
+                },
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() ^ args[1].getScalar(); }
+                },
+            }
+        }   
+    },
+
+    {
         "=",
         {   
             2, 0,
@@ -187,7 +205,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
                 },
             }
         }
-    }
+    },
 
     //AND SO ON
 };

@@ -180,6 +180,29 @@ Matrix Matrix::operator*(const Matrix& other) const { //product of 2 matrices
     return product;
 }
 
+Matrix Matrix::operator^(int power) const
+{
+    if (_size._rows != _size._columns)
+        throw std::runtime_error("matrix: matrix must be square");
+
+    Matrix result = *this;
+    if (power == 0)
+        result = Matrix(IDENTITY, _size._rows);
+    else {
+        bool inverse = false;
+        if (power < 0) {
+            inverse = true;
+            power *= -1;
+        }
+        for (int i = 1; i < power; ++i)
+            result *= result;
+        if (inverse)
+            result = result.inverse();
+    }
+
+    return result;
+}
+
 Matrix Matrix::operator*(double scalar) const { //product of 2 matrices
     Matrix product = *this;
 
@@ -190,8 +213,36 @@ Matrix Matrix::operator*(double scalar) const { //product of 2 matrices
     return product;
 }
 
+Matrix Matrix::operator/(double scalar) const
+{
+    return *this * (1 / scalar);
+}
+
+Matrix & Matrix::operator*=(double scalar)
+{
+    return *this = *this * scalar;
+}
+
 Matrix Matrix::operator/(const Matrix& other) const {
     return *this * other.inverse();
+}
+
+Matrix& Matrix::operator*=(const Matrix & other)
+{
+    if (getSize()._columns != other.getSize()._rows)
+        throw std::runtime_error("matrix: matrices' dimensions must agree ");
+
+    Matrix product(
+        { getSize()._rows, other.getSize()._columns },
+        std::vector<double>(getSize()._rows * other.getSize()._columns, 0)
+    );
+
+    for (std::size_t i = 0; i < getSize()._rows; ++i)
+        for (std::size_t j = 0; j < other.getSize()._columns; ++j)
+            for (std::size_t k = 0; k < getSize()._columns; ++k)
+                product.at(i, j) += at(i, k) * other.at(k, j);
+
+    return (*this = product);
 }
 
 void Matrix::swapRows(std::size_t row_1, std::size_t row_2) {
