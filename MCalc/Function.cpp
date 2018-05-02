@@ -157,7 +157,7 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const {
         }
     else {
         std::string description = "";
-        description += "does not take combination < ";
+        description += "does not take argument(s) < ";
         bool undefined_arguments = false;
         for (auto argument_type : argument_types) {
             switch (argument_type) {
@@ -167,7 +167,7 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const {
             }
         }
         if (undefined_arguments)
-            description = "undefined arguments ";
+            description = "undefined argument(s) ";
         else
             description += "> ";
 
