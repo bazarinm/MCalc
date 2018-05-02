@@ -130,7 +130,7 @@ void Lexer::fractional_part(const std::string& character) {
         process(character);
     }
 }
-
+-
 void Lexer::symbol(const std::string& character) {
     _result.emplace_back(Token::OPERATOR, _buffer);
     _buffer = "";
