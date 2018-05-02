@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex>
 
 std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     Dimension size = m.getSize();
@@ -54,6 +55,7 @@ int main() {
     while (1) {
         std::cout << std::endl << "MCalc>: ";
         std::getline(std::cin, input);
+
         if (input.empty())
             break;
         try {

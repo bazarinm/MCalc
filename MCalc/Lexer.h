@@ -39,6 +39,7 @@ private:
     std::vector<Token> _result;
 
     bool isDigit(const std::string&);
+    bool isNumber(const std::string & str) const;
     bool isAlpha(const std::string&);
     bool isBracket(const std::string&);
     bool isSquareBracket(const std::string&);

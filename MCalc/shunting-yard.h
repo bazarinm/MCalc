@@ -1,5 +1,5 @@
-#ifndef SHUNTING_YARD_H
-#define SHUNTING_YARD_H
+#ifndef SHUNTINGYARD_H
+#define SHUNTINGYARD_H
 
 #include <vector>
 #include <string>

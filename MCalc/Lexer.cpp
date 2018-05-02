@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <regex>
 #include <cctype>
 #include "Lexer.h"
 #include "Function.h"
@@ -14,6 +15,10 @@ std::vector<Token> Lexer::getResult() const {
 
 bool Lexer::isDigit(const std::string& character) {
     return isdigit(character[0]);
+}
+
+bool Lexer::isNumber(const std::string& str) const {
+    return std::regex_match(str, std::regex("[-]?[0-9]+[.]?[0-9]*"));
 }
 
 bool Lexer::isAlpha(const std::string& character) {
@@ -73,7 +78,11 @@ Matrix Lexer::strToMatrix(const std::string& matrixString) {
         std::vector<double> bufferRow;
         for (auto character : strRow) {
             if (isspace(character) && !pending) {
-                bufferRow.push_back(std::stod(buffer));
+                if (isNumber(buffer))
+                    bufferRow.push_back(std::stod(buffer));
+                else
+                    throw parsingError("parser: incorrect symbol < " + buffer + " > in matrix initialization");
+
                 buffer = "";
                 pending = true;
             }
@@ -81,10 +90,13 @@ Matrix Lexer::strToMatrix(const std::string& matrixString) {
                 buffer.push_back(character);
                 pending = false;
             }
-
         }
         if (!buffer.empty()) {
-            bufferRow.push_back(std::stod(buffer));
+            if (isNumber(buffer))
+                bufferRow.push_back(std::stod(buffer));
+            else
+                throw parsingError("parser: incorrect symbol < " + buffer + " > in matrix initialization");
+
             buffer = "";
             pending = true;
         }
