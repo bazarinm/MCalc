@@ -50,15 +50,16 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    Matrix ab(UPPER_TRIANGLE, 3, { 1, 2, 3, 4, 5, 6 });
-    Matrix CvG({ 3, 3 }, { 4, 3, 1, 0, -2, 11, -4, 5, 7 });
-    double aY = 3;
-    double _UU = 2;
+    Matrix A(UPPER_TRIANGLE, 3, { 1, 2, 3, 4, 5, 6 });
+    Matrix B({ 3, 3 }, { 4, 3, 1, 0, -2, 11, -4, 5, 7 });
+    Matrix C({ 2, 4 }, { 2, 1, 7, 3, 1.8, 1, -2, -1 });
+    Matrix D({ 8, 1 }, { 1, 0, 1, 0, 1, 0, 1, 0 });
 
-    Variable::assign("ab", ab);
-    Variable::assign("CvG", CvG);
-    Variable::assign("aY", aY);
-    Variable::assign("_UU", _UU);
+    Variable::assign("A", A);
+    Variable::assign("B", B);
+    Variable::assign("C", C);
+    Variable::assign("D", D);
+    Variable::assign("ans", 0);
 
     std::string input;
     while (1) {
