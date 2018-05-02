@@ -8,9 +8,16 @@
 #include <exception>
 #include <functional>
 
+const unsigned summation_priority = 1;
+const unsigned multiplication_priority = 2;
+const unsigned power_priority = 3;
+const unsigned function_priority = 4;
+
+using Arguments = const std::vector<Variable>&;
+
 std::map<std::string, FunctionInfo> Function::_database = {
     {
-        "", //aux
+        "", 
         {
             0, 0,
             FunctionInfo::FUNCTION, FunctionInfo::BOTH,
@@ -21,158 +28,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
                 }
             }
         }
-    },
-
-    //DATABASE GOES HERE:
-    {
-        "det", 
-        {
-            1, 4,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
-            {
-                {
-                    { Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix().determinant(); }
-                }
-            }
-        }
-    },
-
-    {
-        "*", 
-        {
-            2, 2,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
-            {
-                {
-                    { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getMatrix(); }
-                },
-                {
-                    { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() * args[1].getScalar(); }
-                },
-                {
-                    { Variable::MATRIX, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() * args[1].getScalar(); }
-                },
-                {
-                    { Variable::SCALAR, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[1].getMatrix() * args[0].getScalar(); }
-                },
-            }
-        }
-    },
-
-    {
-        "+", 
-        {
-            2, 1,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
-            {
-                {
-                    { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() + args[1].getMatrix(); }
-                },
-                {
-                    { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() + args[1].getScalar(); }
-                },
-            }
-        }
-    },
-
-    {
-        "-", 
-        {
-            2, 1,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
-            {
-                {
-                    { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() - args[1].getMatrix(); }
-                },
-                {
-                    { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() - args[1].getScalar(); }
-                },
-            }
-        }
-    },
-
-    {
-        "/",
-        {
-            2, 2,
-            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
-            {
-                {
-                    { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
-                },
-            }
-        }   
-    },
-
-    {
-        "eye",
-        {
-            1, 4,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
-            {
-                {
-                    { Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return Matrix(IDENTITY, args[0].getScalar()); }
-                },
-            }
-        }   
-    },
-
-    {
-        "diag",
-        {
-            1, 4,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
-            {
-                {
-                    { Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return Matrix(DIAGONAL, args[0].getMatrix().getEntries().size(), args[0].getMatrix().getEntries()); }
-                },
-            }
-        }   
-    },
-
-    {
-        "zeros",
-        {
-            1, 4,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
-            {
-                {
-                    { Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return Matrix(ZERO, args[0].getScalar()); }
-                },
-            }
-        }   
-    },
-
-    {
-        "^",
-        {
-            2, 3,
-            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
-            {
-                {
-                    { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return pow(args[0].getScalar(), args[1].getScalar()); }
-                },
-                {
-                    { Variable::MATRIX, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return args[0].getMatrix() ^ args[1].getScalar(); }
-                },
-            }
-        }   
-    },
+    }, //AUX
 
     {
         "=",
@@ -182,31 +38,184 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::VOID, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
                     { Variable::VOID, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
                     { Variable::MATRIX, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
                     { Variable::SCALAR, Variable::MATRIX },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](std::vector<Variable> args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                    [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
+                },
+            }
+        }
+    }, //ASSIGNMENT
+
+    //DATABASE GOES HERE:
+    {
+        "det", 
+        {
+            1, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().determinant(); }
+                }
+            }
+        }
+    },
+
+    {
+        "*", 
+        {
+            2, multiplication_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() * args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getScalar() * args[1].getScalar(); }
+                },
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() * args[1].getScalar(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[1].getMatrix() * args[0].getScalar(); }
                 },
             }
         }
     },
+
+    {
+        "+", 
+        {
+            2, summation_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() + args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getScalar() + args[1].getScalar(); }
+                },
+            }
+        }
+    },
+
+    {
+        "-", 
+        {
+            2, summation_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            {
+                {
+                    { Variable::MATRIX, Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() - args[1].getMatrix(); }
+                },
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getScalar() - args[1].getScalar(); }
+                },
+            }
+        }
+    },
+
+    {
+        "/",
+        {
+            2, multiplication_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
+                },
+            }
+        }   
+    },
+
+    {
+        "eye",
+        {
+            1, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::SCALAR },
+                    [](Arguments args) -> Variable { return Matrix(IDENTITY, abs(args[0].getScalar())); }
+                },
+            }
+        }   
+    },
+
+    {
+        "diag",
+        {
+            1, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](Arguments args) -> Variable { return Matrix(DIAGONAL, args[0].getMatrix().getEntries().size(), args[0].getMatrix().getEntries()); }
+                },
+            }
+        }   
+    },
+
+    {
+        "zeros",
+        {
+            1, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::SCALAR },
+                    [](Arguments args) -> Variable { return Matrix(ZERO, abs(args[0].getScalar())); }
+                },
+            }
+        }   
+    },
+
+    {
+        "^",
+        {
+            2, power_priority,
+            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::SCALAR, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return pow(args[0].getScalar(), args[1].getScalar()); }
+                },
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() ^ args[1].getScalar(); }
+                },
+            }
+        }   
+    },
+
+
 
     //AND SO ON
 };
