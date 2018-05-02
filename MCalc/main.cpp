@@ -60,9 +60,11 @@ int main() {
     while (1) {
         std::cout << std::endl << "> ";
         std::getline(std::cin, input);
+        if (input.empty())
+            break;
         std::cout << evaluate(shunting_yard(tokenize(input)));
     }
 
-    std::cin.get();
+    //std::cin.get();
     return 0;
 }
