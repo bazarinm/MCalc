@@ -1,6 +1,7 @@
 #include "Function.h"
 
 #include "Variable.h"
+#include <cmath>
 #include <map>
 #include <string>
 #include <vector>
@@ -26,7 +27,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "det", 
         {
-            1, 3,
+            1, 4,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
@@ -116,7 +117,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "eye",
         {
-            1, 3,
+            1, 4,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
@@ -130,7 +131,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "diag",
         {
-            1, 3,
+            1, 4,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
@@ -144,7 +145,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "zeros",
         {
-            1, 3,
+            1, 4,
             FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
             {
                 {
