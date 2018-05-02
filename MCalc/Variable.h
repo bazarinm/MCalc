@@ -4,7 +4,7 @@
 #include "Matrix.h"
 #include <map>
 
-const std::string default_name = "ans";
+const std::string constant_name = "";
 
 class Variable {
 public:

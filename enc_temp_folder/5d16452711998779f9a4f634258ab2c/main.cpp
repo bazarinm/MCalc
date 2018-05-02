@@ -63,7 +63,7 @@ int main() {
         if (input.empty())
             break;
         try {
-            std::cout << Variable::assign("ans", evaluate(shuntingYard(tokenize(input))));
+            std::cout << Variable::assign("ans", evaluate(shunting_yard(tokenize(input))));
         }
         catch (std::runtime_error err) {
             std::cout << err.what();

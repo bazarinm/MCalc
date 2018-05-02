@@ -63,7 +63,7 @@ bool Variable::isVariable(const std::string& name) {
 
 Variable Variable::assign(const std::string& name, const Variable& v) {
     if (name == constant_name)
-        throw std::runtime_error("Cant assign value to an expression");
+        throw std::runtime_error("Cant assign value to a constant");
 
     Variable assignment = v;
     assignment._name = name;
