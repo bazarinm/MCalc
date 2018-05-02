@@ -12,7 +12,8 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     for (std::size_t i = 0; i < size._rows; ++i) {
         for (std::size_t j = 0; j < size._columns; ++j)
             o << m.at(i, j) << " ";
-        std::cout << std::endl;
+        if (i != size._rows - 1)
+            std::cout << std::endl;
     }
 
     return o;
@@ -61,16 +62,17 @@ int main() {
 
     std::string input;
     while (1) {
-        std::cout << std::endl << "> ";
+        std::cout << std::endl << ">: ";
         std::getline(std::cin, input);
         if (input.empty())
             break;
         try {
-            std::cout << evaluate(shuntingYard(tokenize(input)));
+            std::cout << std::endl << evaluate(shuntingYard(tokenize(input)));
         }
-        catch (std::runtime_error err) {
+        catch (const std::runtime_error& err) {
             std::cout << err.what();
         }
+        std::cout << std::endl;
     }
 
     //std::cin.get();
