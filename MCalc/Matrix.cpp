@@ -343,6 +343,9 @@ double Matrix::determinant() const {
 }
 
 Matrix Matrix::inverse() const {
+    if (determinant() == 0)
+        throw std::runtime_error("matrix: matrix is not invertible");
+
 	Dimensions size = getSize();
 
 	std::size_t augm_entr_size = _size.rows + _size.columns;
@@ -359,10 +362,10 @@ Matrix Matrix::inverse() const {
 
 	for (std::size_t i = 0; i < _size.rows; ++i)
 		for (std::size_t j = 0; j < _size.columns; ++j)
-			augmented_entries[i][j] = _entries[i * _size.rows + j];
+			augmented_entries[i][j] = at(i, j);
 
-	augmented_entries.resize(_size.rows);
-	for (std::size_t i = 0; i < _size.rows; ++i)
+	augmented_entries.resize(augm_entr_size);
+	for (std::size_t i = 0; i < augm_entr_size; ++i)
 		augmented_entries[i].resize(augm_entr_size);
 
 	for (std::size_t i = 0; i < _size.rows; ++i)
@@ -412,6 +415,10 @@ Matrix Matrix::transpose() const
 }
 
 Matrix Matrix::least_squares(int exponent) const {
+    if (_size.rows != 2)
+        transpose();
+    if (_size.rows != 2)
+        throw std::runtime_error("matrix: input must be of size 2 by x or x by 2");
 
 	std::vector<double> a(exponent + 1);
 	std::vector<double> b(exponent + 1);
