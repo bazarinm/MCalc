@@ -416,9 +416,7 @@ Matrix Matrix::transpose() const
 
 Matrix Matrix::least_squares(int exponent) const {
     if (_size.rows != 2)
-        transpose();
-    if (_size.rows != 2)
-        throw std::runtime_error("matrix: input must be of size 2 by x or x by 2");
+        throw std::runtime_error("matrix: input must be of size 2 by x");
 
 	std::vector<double> a(exponent + 1);
 	std::vector<double> b(exponent + 1);

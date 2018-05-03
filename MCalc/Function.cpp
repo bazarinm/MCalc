@@ -245,7 +245,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "'",
         {
-            1, power_priority,
+            1, function_priority,
             FunctionInfo::OPERATOR, FunctionInfo::BOTH,
             {
                 {
