@@ -20,24 +20,21 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m) {
     return o;
 }
 
-std::ostream& operator<<(std::ostream& o, const Token& t) {
-    if (t.isOperand()) {
-        switch (t.getVariable().getType()) {
+std::ostream& operator<<(std::ostream& o, const Variable& v) {
+    o << v.getName();
+    switch (v.getType()) {
         case Variable::MATRIX:
-            o << t.getName() << " = ";
-            o << std::endl << t.getVariable().getMatrix();
+            o << " = ";
+            o << std::endl << v.getMatrix();
             break;
         case Variable::SCALAR:
-            o << t.getName() << " = ";
-            o << t.getVariable().getScalar();
+            o << " = ";
+            o << v.getScalar();
             break;
         case Variable::VOID:
-            o << t.getName() << " is undefined";
+            o << " is undefined";
             break;
-        }
     }
-    else if (t.isOperator())
-        o << " is a function ";
 
     return o;
 }
