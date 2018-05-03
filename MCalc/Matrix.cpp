@@ -343,58 +343,61 @@ double Matrix::determinant() const {
 }
 
 Matrix Matrix::inverse() const {
-    Dimensions size = getSize();
-    Matrix inverse(IDENTITY, size.rows);
+	Dimensions size = getSize();
 
-    //TODO: remake this
-    /*double temp = 0;
+	std::size_t augm_entr_size = _size.rows + _size.columns;
 
-    std::vector<std::vector<double>> inverse_entries;
-    std::size_t augm_entr_size = _size.rows + _size.rows;
-    std::vector<std::vector<double>> augmented_entries = _entries;
+	std::vector<std::vector<double>> inverse_entries(
+		_size.rows,
+		std::vector<double>(_size.columns)
+	);
 
-    inverse_entries.resize(_size.rows, std::vector<double>(_size.rows));
+	std::vector<std::vector<double>> augmented_entries(
+		_size.rows,
+		std::vector<double>(_size.columns)
+	);
 
-    augmented_entries.resize(augm_entr_size);
-    for (std::size_t i = 0; i < augm_entr_size; ++i)
-        augmented_entries[i].resize(augm_entr_size);
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		for (std::size_t j = 0; j < _size.columns; ++j)
+			augmented_entries[i][j] = _entries[i * _size.rows + j];
 
-    for (std::size_t i = 0; i < _size.rows; ++i)
-        for (std::size_t j = 0; j < augm_entr_size; ++j)
-            if (j == (i + _size.rows))
-                augmented_entries[i][j] = 1;
+	augmented_entries.resize(_size.rows);
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		augmented_entries[i].resize(augm_entr_size);
 
-    for (std::size_t i = _size.rows; i > 1; --i)
-        if (augmented_entries[i - 1][1] < augmented_entries[i][1])
-            for (std::size_t j = 0; j < augm_entr_size; ++j) {
-                temp = augmented_entries[i][j];
-                augmented_entries[i][j] = augmented_entries[i - 1][j];
-                augmented_entries[i - 1][j] = temp;
-            }
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			if (j == (i + _size.rows))
+				augmented_entries[i][j] = 1;
 
-    for (std::size_t i = 0; i < _size.rows; ++i)
-        for (std::size_t j = 0; j < augm_entr_size; ++j)
-            if (j != i) {
-                temp = augmented_entries[j][i] / augmented_entries[i][i];
-                for (std::size_t k = 0; k < augm_entr_size; ++k)
-                    augmented_entries[j][k] -= augmented_entries[i][k] * temp;
-            }
+	for (std::size_t i = _size.rows; i > 1; --i)
+		if (augmented_entries[i - 1][1] < augmented_entries[i][1])
+			for (std::size_t j = 0; j < augm_entr_size; ++j) 
+				std::swap(
+					augmented_entries[i][j], 
+					augmented_entries[i - 1][j]
+				);
 
-    for (std::size_t i = 0; i < _size.rows; ++i) {
-        temp = augmented_entries[i][i];
-        for (std::size_t j = 0; j < augm_entr_size; ++j)
-            augmented_entries[i][j] = augmented_entries[i][j] / temp;
-    }
+	for (std::size_t i = 0; i < _size.rows; ++i)
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			if (j != i) {
+				double temp = augmented_entries[j][i] / augmented_entries[i][i];
+				for (std::size_t k = 0; k < augm_entr_size; ++k)
+					augmented_entries[j][k] -= augmented_entries[i][k] * temp;
+			}
 
-    for (std::size_t i = 0; i < _size.rows; ++i) {
-        for (std::size_t j = 0; j < _size.rows; ++j)
-            inverse_entries[i][j] = augmented_entries[i][j + _size.rows];
-        std::cout << std::endl;
-    }
+	for (std::size_t i = 0; i < _size.rows; ++i) {
+		double temp = augmented_entries[i][i];
+		for (std::size_t j = 0; j < augm_entr_size; ++j)
+			augmented_entries[i][j] = augmented_entries[i][j] / temp;
+	}
 
-    return inverse_entries;*/
+	for (std::size_t i = 0; i < _size.rows; ++i) {
+		for (std::size_t j = 0; j < _size.rows; ++j)
+			inverse_entries[i][j] = augmented_entries[i][j + _size.rows];
+	}
 
-    return inverse;
+	return inverse_entries;
 }
 
 Matrix Matrix::transpose() const
@@ -406,4 +409,73 @@ Matrix Matrix::transpose() const
             transposed.at(j, i) = at(i, j);
 
     return transposed; 
+}
+
+Matrix Matrix::least_squares(int exponent) const {
+
+	std::vector<double> a(exponent + 1);
+	std::vector<double> b(exponent + 1);
+
+	std::vector<double> x(_size.columns);
+	std::vector<double> y(_size.columns);
+
+	for (int i = 0; i < _size.columns; ++i) {
+		x[i] = _entries[i];
+		y[i] = _entries[_size.columns + i];
+	}
+
+	std::vector<std::vector<double>> sum(
+		exponent + 1,
+		std::vector<double>(exponent + 1)
+	);
+
+	for (int i = 0; i < exponent + 1; ++i)
+		for (int j = 0; j < exponent + 1; ++j)
+		{
+			sum[i][j] = 0;
+			for (int k = 0; k < _size.columns; ++k)
+				sum[i][j] += pow(x[k], i + j);
+		}
+
+	for (int i = 0; i < exponent + 1; ++i) {
+		b[i] = 0;
+		for (int k = 0; k < _size.columns; ++k)
+			b[i] += pow(x[k], i) * y[k];
+	}
+
+	for (int i = 0; i < exponent; i++) {
+		int temp = i;
+		for (int j = i + 1; j < exponent + 1; ++j)
+			if (fabs(sum[temp][i]) < fabs(sum[j][i])) temp = j;
+
+		for (int k = i; k < exponent + 1; ++k)
+			std::swap(sum[temp][k], sum[i][k]);
+
+		std::swap(b[temp], b[i]);
+
+		for (int j = i + 1; j < exponent + 1; ++j) {
+			double c = -sum[j][i] / sum[i][i];
+			for (int k = i; k < exponent + 1; ++k)
+				sum[j][k] = sum[j][k] + c * sum[i][k];
+			b[j] = b[j] + c * b[i];
+		}
+	}
+
+	a[exponent] = b[exponent] / sum[exponent][exponent];
+
+	for (int i = exponent + 1 - 2; i >= 0; --i) {
+		for (int k = i + 1; k < exponent + 1; ++k)
+			b[i] = b[i] - a[k] * sum[i][k];
+		a[i] = b[i] / sum[i][i];
+	}
+
+	std::vector<std::vector<double>> coefficients(
+		1,
+		std::vector<double>(exponent + 1)
+	);
+
+	for (int i = 0; i < exponent + 1; ++i)
+		coefficients[0][i] = a[i];
+
+	return coefficients;
 }

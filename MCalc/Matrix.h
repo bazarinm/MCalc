@@ -82,8 +82,10 @@ public:
     Matrix& operator=(const Matrix& other) = default;
 
     double determinant() const;
-    Matrix inverse() const; //TODO: inverse
-    Matrix transpose() const; //TODO: transpose
+    Matrix inverse() const; 
+    Matrix transpose() const; 
+	Matrix least_squares(int exponent) const;
+
 private:
     Dimensions _size;
     std::vector<double> _entries;

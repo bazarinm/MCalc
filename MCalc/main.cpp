@@ -51,7 +51,7 @@ std::ostream& operator<<(std::ostream& o, const std::vector<T>& v) {
 }
 
 int main() {
-    std::string input;
+    /*std::string input;
     while (1) {
         std::cout << std::endl << "MCalc>: ";
         std::getline(std::cin, input);
@@ -78,7 +78,12 @@ int main() {
         }
 
         std::cout << std::endl;
-    }
+    }*/
+
+	Matrix a(2, 5, { 1, 2, 3, 4, 5, 5.3, 6.3, 4.8, 3.8, 3.3 });
+	Matrix b = a.least_squares(1);
+	std::cout << b;
+	std::cin.get();
 
     return 0;
 }
