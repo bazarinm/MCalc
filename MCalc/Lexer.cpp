@@ -49,7 +49,6 @@ bool Lexer::isInWord(char character) {
 /* any special symbols which correspond to a function */
 bool Lexer::isSpecialSymbol(char character) {
     return 1 
-        && !isMinus(character)
         && !std::isspace(character)
         && !std::isdigit(character)
         && !isWordStart(character)
