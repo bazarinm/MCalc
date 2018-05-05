@@ -8,13 +8,13 @@
 #include "Token.h"
 
 
-std::vector<Token> tokenize(const std::string& str) {
+std::vector<Token> tokenize(const std::string& input) {
     Lexer parser;
 
-    for (char ch : str) {
-        parser.process(std::string(1, ch));
+    for (char character : input) {
+        parser.process(character);
     }
-    parser.endOfStr();
+    parser.endOfInput();
 
     return parser.getResult();
 }

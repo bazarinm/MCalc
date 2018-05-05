@@ -21,7 +21,7 @@ Variable::Variable(const std::string& name) {
     }
 }
 
-Variable::Type Variable::getType() const {
+Variable::Types Variable::getType() const {
     return _type;
 }
 

@@ -4,8 +4,6 @@
 #include <cstddef>
 #include <vector>
 
-
-
 class Matrix {
 public:
     enum SquareTypes {
@@ -50,9 +48,6 @@ public:
     Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns);
 
     Matrix(const Matrix& other) = default; //copy
-
-    //AUX
-    void display() const; //temporary
 
     //GETTERS
     Dimensions getSize() const;

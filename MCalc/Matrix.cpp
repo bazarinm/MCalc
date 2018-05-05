@@ -8,26 +8,23 @@
 
 const double ERROR = 1E-9;
 
-//AUX
-void Matrix::display() const {
-    for (std::size_t i = 0; i < _size.rows; ++i) {
-        for(std::size_t j = 0; j < _size.columns; ++j)
-            std::cout << at(i, j) << " ";
-        std::cout << std::endl;
-    }
+//CONSTRUCTORS
+Matrix::Matrix() : _size({ 0, 0 }), _entries({}) 
+{
 }
 
-//CONSTRUCTORS
-Matrix::Matrix() : _size({ 0, 0 }), _entries({}) {}
-
-Matrix::Matrix(std::size_t size) : Matrix(ZERO, size, size) {}
+Matrix::Matrix(std::size_t size) : Matrix(ZERO, size, size) 
+{
+}
 
 Matrix::Matrix(std::size_t rows, std::size_t columns) :
     _size({ rows, columns }),
     _entries(std::vector<double>(_size.columns * _size.rows, 0))
-{}
+{
+}
 
-Matrix::Matrix(const std::vector<std::vector<double>>& entries) {
+Matrix::Matrix(const std::vector<std::vector<double>>& entries) 
+{
     if (entries.size() == 0)
         throw std::runtime_error("matrix: the initializer matrix is empty");
 
@@ -42,14 +39,16 @@ Matrix::Matrix(const std::vector<std::vector<double>>& entries) {
     }
 }
 
-Matrix::Matrix(std::size_t rows, std::size_t columns, const std::vector<double>& entries) : _size({ rows, columns }) {
+Matrix::Matrix(std::size_t rows, std::size_t columns, const std::vector<double>& entries) : _size({ rows, columns }) 
+{
     if (entries.size() != (_size.rows * _size.columns))
         throw std::runtime_error("matrix: an unexpected number of elements");
     
     _entries = entries;
 }
 
-Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& entries) : _size({size, size}) {
+Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& entries) : _size({size, size}) 
+{
     _entries = std::vector<double>(size * size, 0);
 
     std::size_t k = 0;
@@ -93,7 +92,8 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
 
 }
 
-Matrix::Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns) : _size({ rows, columns }) {
+Matrix::Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns) : _size({ rows, columns }) 
+{
     _entries = std::vector<double>(_size.rows * _size.columns, 0);
 
     std::random_device seed;
@@ -110,7 +110,8 @@ Matrix::Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t colu
     }
 }
 
-Matrix::Matrix(PredefinedSquareTypes type, std::size_t size): _size({ size, size }) {
+Matrix::Matrix(PredefinedSquareTypes type, std::size_t size): _size({ size, size }) 
+{
     _entries = std::vector<double>(size * size, 0);
 
     switch (type) {
@@ -156,14 +157,16 @@ Matrix Matrix::getColumn(std::size_t column) const
     return Matrix(_size.rows, 1, column_entries);
 }
 
-double& Matrix::at(std::size_t row, std::size_t column) {
+double& Matrix::at(std::size_t row, std::size_t column) 
+{
     if (row < _size.rows && column < _size.columns)
         return _entries[row * _size.columns + column];
     else
         throw std::runtime_error("matrix: subscript out of range");
 }
 
-double Matrix::at(std::size_t row, std::size_t column) const {
+double Matrix::at(std::size_t row, std::size_t column) const 
+{
     if (row < _size.rows && column < _size.columns)
         return _entries[row * _size.columns + column];
     else
@@ -171,7 +174,8 @@ double Matrix::at(std::size_t row, std::size_t column) const {
 }
 
 //OPERATORS
-Matrix Matrix::operator+(const Matrix& other) const { //sum of 2 matrices
+Matrix Matrix::operator+(const Matrix& other) const 
+{ 
     if (_size != other.getSize())
         throw std::runtime_error("matrix: matrices' dimensions must agree ");
 
@@ -183,18 +187,12 @@ Matrix Matrix::operator+(const Matrix& other) const { //sum of 2 matrices
     return sum;
 }
 
-Matrix Matrix::operator-(const Matrix & other) const {
-    //if (_size != other.getSize())
-    //    throw std::runtime_error("matrix: matrices' dimensions must agree ");
-    //Matrix residual = *this;
-    //for (std::size_t i = 0; i < _size._rows; ++i)
-    //    for (std::size_t j = 0; j < _size._columns; ++j)
-    //        residual.at(i, j) -= other.at(i, j);
-
-    return *this - (other * -1);
+Matrix Matrix::operator-(const Matrix& other) const {
+    return *this + (other * -1);
 }
 
-Matrix& Matrix::operator+=(const Matrix& other) {
+Matrix& Matrix::operator+=(const Matrix& other) 
+{
     if (getSize() != other.getSize())
         throw std::runtime_error("matrix: matrices' dimensions must agree ");
 
@@ -205,7 +203,8 @@ Matrix& Matrix::operator+=(const Matrix& other) {
     return *this;
 }
 
-Matrix Matrix::operator*(const Matrix& other) const { //product of 2 matrices
+Matrix Matrix::operator*(const Matrix& other) const 
+{ 
     if (getSize().columns != other.getSize().rows)
         throw std::runtime_error("matrix: matrices' dimensions must agree ");
 
@@ -248,7 +247,8 @@ Matrix Matrix::operator^(int power) const
     return result;
 }
 
-Matrix Matrix::operator*(double scalar) const { 
+Matrix Matrix::operator*(double scalar) const 
+{ 
     Matrix product = *this;
 
     for (std::size_t i = 0; i < getSize().rows; ++i)
@@ -294,7 +294,8 @@ Matrix& Matrix::operator*=(const Matrix & other)
     return (*this = product);
 }
 
-void Matrix::swapRows(std::size_t row_1, std::size_t row_2) {
+void Matrix::swapRows(std::size_t row_1, std::size_t row_2) 
+{
     for (std::size_t i = 0; i < getSize().columns; ++i) {
         double temp = at(row_1, i);
         at(row_1, i) = at(row_2, i);
@@ -302,7 +303,8 @@ void Matrix::swapRows(std::size_t row_1, std::size_t row_2) {
     }
 }
 
-double Matrix::determinant() const {
+double Matrix::determinant() const 
+{
     if (_size.columns != _size.rows)
         throw std::runtime_error("matrix: matrix must be square");
 
@@ -342,7 +344,8 @@ double Matrix::determinant() const {
     return det;
 }
 
-Matrix Matrix::inverse() const {
+Matrix Matrix::inverse() const 
+{
     if (determinant() == 0)
         throw std::runtime_error("matrix: matrix is not invertible");
 
@@ -414,7 +417,8 @@ Matrix Matrix::transpose() const
     return transposed; 
 }
 
-Matrix Matrix::least_squares(int exponent) const {
+Matrix Matrix::least_squares(int exponent) const 
+{
     if (_size.rows != 2)
         throw std::runtime_error("matrix: input must be of size 2 by x");
 

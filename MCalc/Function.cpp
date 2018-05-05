@@ -20,7 +20,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "", 
         {
             0, 0,
-            FunctionInfo::FUNCTION, FunctionInfo::BOTH,
+            FunctionInfo::BOTH,
             {
                 {
                     { },
@@ -28,13 +28,13 @@ std::map<std::string, FunctionInfo> Function::_database = {
                 }
             }
         }
-    }, //AUX
+    }, //AUX/EXAMPLE
 
     {
         "=",
         {   
             2, 0,
-            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::VOID, Variable::SCALAR },
@@ -65,11 +65,12 @@ std::map<std::string, FunctionInfo> Function::_database = {
     }, //ASSIGNMENT
 
     //DATABASE GOES HERE:
+
     {
         "det", 
         {
             1, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -83,7 +84,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "*", 
         {
             2, multiplication_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            FunctionInfo::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -109,7 +110,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "+", 
         {
             2, summation_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            FunctionInfo::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -127,7 +128,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "inv", 
         {
             1, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -141,7 +142,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "least", 
         {
             2, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
@@ -155,7 +156,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "-", 
         {
             2, summation_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            FunctionInfo::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -173,7 +174,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "/",
         {
             2, multiplication_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            FunctionInfo::LEFT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -187,7 +188,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "eye",
         {
             1, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR },
@@ -201,7 +202,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "diag",
         {
             1, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -218,7 +219,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "zeros",
         {
             2, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -232,7 +233,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "rand",
         {
             2, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -246,7 +247,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "'",
         {
             1, function_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::BOTH,
+            FunctionInfo::BOTH,
             {
                 {
                     { Variable::MATRIX },
@@ -260,7 +261,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         ":",
         {
             2, function_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            FunctionInfo::LEFT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
@@ -274,7 +275,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         ";",
         {
             2, function_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::LEFT,
+            FunctionInfo::LEFT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
@@ -288,7 +289,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "at",
         {
             3, function_priority,
-            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR, Variable::SCALAR },
@@ -302,7 +303,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
         "^",
         {
             2, power_priority,
-            FunctionInfo::OPERATOR, FunctionInfo::RIGHT,
+            FunctionInfo::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -316,28 +317,32 @@ std::map<std::string, FunctionInfo> Function::_database = {
         }   
     },
 
-
-
     //AND SO ON
 };
 
-Function::Function() : _name("") {}
-
-Function::Function(const std::string& name) : _name(name) {
-    auto search = _database.find(name);
-    if (search == _database.end()) 
-        throw std::runtime_error("function: no function <" + name + "> ");
+Function::Function() : _name("") 
+{
 }
 
-Variable Function::operator()(const std::vector<Variable>& arguments) const {
+Function::Function(const std::string& name) : _name(name) 
+{
+    auto search = _database.find(name);
+    if (search == _database.end())
+        throw std::runtime_error("function: no function <" + name + "> ");
+    else
+        _this_function_info = search->second;
+}
+
+Variable Function::operator()(const std::vector<Variable>& arguments) const 
+{
     ArgumentTypesVector argument_types;
     for (const Variable& argument : arguments)
         argument_types.push_back(argument.getType());
 
     std::string error_message = "function < " + _name + " >: ";
 
-    auto search = _database[_name]._function.find(argument_types);
-    if (search != _database[_name]._function.end())
+    auto search = _this_function_info._function.find(argument_types);
+    if (search != _this_function_info._function.end())
         try {
             return search->second(arguments);
         }
@@ -369,31 +374,15 @@ std::string Function::getName() const {
 }
 
 unsigned Function::getArity() const {
-    return _database[_name]._arity;
+    return _this_function_info._arity;
 }
 
 unsigned Function::getPriority() const {
-    return _database[_name]._priority;
+    return _this_function_info._priority;
 }
 
-FunctionInfo::InvocationType Function::getInvocationType() const
-{
-    return _database[_name]._invocation;
-}
-
-FunctionInfo::AssociativityType Function::getAssociativityType() const
-{
-    return _database[_name]._associativity;
-}
-
-bool Function::isOperator(const std::string& name) {
-    bool is_operator = false;
-
-    auto search = _database.find(name);
-    if (search != _database.end())
-        is_operator = search->second._invocation == FunctionInfo::OPERATOR;
-
-    return is_operator;
+FunctionInfo::AssociativityTypes Function::getAssociativityType() const {
+    return _this_function_info._associativity;
 }
 
 bool Function::isFunction(const std::string& name) {
@@ -401,7 +390,7 @@ bool Function::isFunction(const std::string& name) {
 
     auto search = _database.find(name);
     if (search != _database.end())
-        is_function = search->second._invocation == FunctionInfo::FUNCTION;
+        is_function = true;
    
     return is_function;
 }
@@ -413,6 +402,9 @@ bool Function::isLeftAssociative(const std::string& name)
     if (search != _database.end()) {
         isLeftAssociative = search->second._associativity != FunctionInfo::RIGHT;
     }
+    else
+        throw std::runtime_error("no function <" + name + "> ");
+
     return isLeftAssociative;
 }
 
@@ -423,15 +415,18 @@ bool Function::isRightAssociative(const std::string& name)
     if (search != _database.end()) {
         isRightAssociative = search->second._associativity != FunctionInfo::LEFT;
     }
+    else
+        throw std::runtime_error("no function <" + name + "> ");
+
     return isRightAssociative;
 }
 
 bool Function::isLeftAssociative() const {
-    return _database[_name]._associativity != FunctionInfo::RIGHT;
+    return _this_function_info._associativity != FunctionInfo::RIGHT;
 }
 
 bool Function::isRightAssociative() const {
-    return _database[_name]._associativity != FunctionInfo::LEFT;
+    return _this_function_info._associativity != FunctionInfo::LEFT;
 }
 
 unsigned Function::getArity(const std::string& name)
@@ -454,17 +449,7 @@ unsigned Function::getPriority(const std::string& name)
         throw std::runtime_error("no function <" + name + "> ");
 }
 
-FunctionInfo::InvocationType Function::getInvocationType(const std::string& name)
-{
-    auto search = _database.find(name);
-    if (search != _database.end()) {
-        return search->second._invocation;
-    }
-    else
-        throw std::runtime_error("no function <" + name + "> ");
-}
-
-FunctionInfo::AssociativityType Function::getAssociativityType(const std::string& name)
+FunctionInfo::AssociativityTypes Function::getAssociativityType(const std::string& name)
 {
     auto search = _database.find(name);
     if (search != _database.end()) {
@@ -472,15 +457,6 @@ FunctionInfo::AssociativityType Function::getAssociativityType(const std::string
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
-}
-
-bool Function::isOperator() const {
-    return _database[_name]._invocation == FunctionInfo::OPERATOR;
-}
-
-bool Function::isFunction() const
-{
-    return _database[_name]._invocation == FunctionInfo::FUNCTION;
 }
 
 

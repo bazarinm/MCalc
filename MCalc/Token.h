@@ -10,7 +10,7 @@ class Token
 public:
     enum Types {OPERATOR, OPERAND, BRACKET};
 
-    Token(Types, const std::string&);
+    Token(const std::string&);
     Token(const Variable&);
     Token(const Function&);
 
