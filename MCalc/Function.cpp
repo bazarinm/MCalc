@@ -146,7 +146,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix().least_squares((abs(args[1].getScalar()))); }
+                    [](Arguments args) -> Variable { return args[0].getMatrix().least_squares((std::abs(args[1].getScalar()))); }
                 },
             }
         }
@@ -192,7 +192,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(Matrix::IDENTITY, abs(args[0].getScalar())); }
+                    [](Arguments args) -> Variable { return Matrix(Matrix::IDENTITY, std::abs(args[0].getScalar())); }
                 },
             }
         }   
@@ -307,7 +307,7 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return pow(args[0].getScalar(), args[1].getScalar()); }
+                    [](Arguments args) -> Variable { return std::pow(args[0].getScalar(), args[1].getScalar()); }
                 },
                 {
                     { Variable::MATRIX, Variable::SCALAR },

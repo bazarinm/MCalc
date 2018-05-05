@@ -7,8 +7,6 @@
 #include <vector>
 #include <stack>
 
-const std::string answer_name = "ans";
-
 class evaluationError : public std::runtime_error {
 public:
     evaluationError(const std::string& msg) : std::runtime_error(msg) {}
@@ -19,9 +17,8 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
     std::vector<Variable> arguments;
 
     for (const Token& token : sorted_input) {
-        if (token.isOperand()) {
+        if (token.isOperand()) 
             variable_tokens.push(token);
-        }
         else if (token.isOperator()) {
             for (unsigned i = 0; i < token.getArity(); ++i) {
                 if (variable_tokens.empty())
@@ -47,15 +44,13 @@ Variable evaluate(const std::vector<Token>& sorted_input) {
             throw evaluationError("evaluation: extra open bracket(s) ");
     }
 
-    if (variable_tokens.size() == 1) {
-        Variable result = variable_tokens.top().getVariable();
-        if (result.isExpressionResult())
-            return Variable::assign(answer_name, result);
-        else
-            return result;
-    }
-    else
+    Variable result;
+    if (variable_tokens.size() == 1)
+        result = variable_tokens.top().getVariable();
+    else if (variable_tokens.size() != 0)
         throw evaluationError("input: there are unused variables ");
+
+    return result;
 }
 
 

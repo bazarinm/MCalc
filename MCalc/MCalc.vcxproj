@@ -69,6 +69,7 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MCalc.h" />
     <ClInclude Include="shunting-yard.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="tokenize.h" />
@@ -79,6 +80,7 @@
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MCalc.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Variable.cpp" />
   </ItemGroup>

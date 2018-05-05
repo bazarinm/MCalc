@@ -1,6 +1,10 @@
 #include "Variable.h"
+
 #include "Matrix.h"
+#include <string>
 #include <map>
+
+std::string Variable::constant_name = "$eval";
 
 std::map<std::string, Variable> Variable::_variables;
 
@@ -43,8 +47,7 @@ double Variable::getScalar() const {
         throw std::runtime_error("variable: " + _name + " is not a matrix ");
 }
 
-bool Variable::isExpressionResult() const
-{
+bool Variable::isExpressionResult() const {
     return _name == constant_name;
 }
 
@@ -57,14 +60,6 @@ bool Variable::isVariable(const std::string& name) {
 
     return result;
 }
-
-//void Variable::initialize(const std::string& name, const Variable& v) {
-//    auto search = _variables.find(name);
-//    if (search != _variables.end())
-//        throw std::runtime_error("This variable already exists");
-//    else
-//        _variables[name] = v;
-//}
 
 Variable Variable::assign(const std::string& name, const Variable& v) {
     if (name == constant_name)

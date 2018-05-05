@@ -2,9 +2,8 @@
 #define VARIABLE_H
 
 #include "Matrix.h"
+#include <string>
 #include <map>
-
-const std::string constant_name = "";
 
 class Variable {
 public:
@@ -30,6 +29,7 @@ private:
     Matrix _matrix;
     double _scalar;
 
+    static std::string constant_name;
     static std::map<std::string, Variable> _variables;
 };
 

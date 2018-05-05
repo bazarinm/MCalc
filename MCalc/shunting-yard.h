@@ -1,10 +1,10 @@
 #ifndef SHUNTINGYARD_H
 #define SHUNTINGYARD_H
 
+#include "Token.h"
 #include <vector>
 #include <string>
 #include <stack>
-#include "Token.h"
 
 class sortingError : public std::runtime_error {
 public:
@@ -38,8 +38,13 @@ std::vector<Token> shuntingYard(const std::vector<Token>& tokens) {
         else {
             unsigned token_priority = token.getPriority();
 
-            while (!(stack.empty() || stack.top().isOpenBracket())
-                    && ((stack.top().getPriority() > token_priority) || (stack.top().getPriority() == token_priority && token.isLeftAssociative()))) {
+            while (
+                    !(stack.empty() || stack.top().isOpenBracket()) 
+                    && (
+                        (stack.top().getPriority() > token_priority) 
+                        || (stack.top().getPriority() == token_priority && token.isLeftAssociative())
+                    )
+            ) {
                 output.push_back(stack.top());
                 stack.pop();
             }

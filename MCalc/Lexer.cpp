@@ -1,11 +1,12 @@
+#include "Lexer.h"
+
+#include "Function.h"
+#include "Token.h"
+#include "Matrix.h"
 #include <vector>
 #include <string>
 #include <regex>
 #include <cctype>
-#include "Lexer.h"
-#include "Function.h"
-#include "Variable.h"
-#include "Matrix.h"
 
 Lexer::Lexer() : _state(PENDING) 
 {
@@ -72,7 +73,8 @@ void Lexer::endOfInput() {
     process('\n');
 }
 
-Matrix Lexer::stringToMatrix(const std::string& matrixString) {
+Matrix Lexer::stringToMatrix(const std::string& matrixString) 
+{
     std::vector<std::string> splitedMatrixStr;
     std::string buffer;
     for (char character : matrixString) {
@@ -129,7 +131,8 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString) {
     }
 };
 
-void Lexer::process(char character) {
+void Lexer::process(char character) 
+{
     switch (_state) {
     case PENDING: pending(character); break;
     case MINUS: minus(character); break;
@@ -143,7 +146,8 @@ void Lexer::process(char character) {
     }
 }
 
-void Lexer::pending(char character) {
+void Lexer::pending(char character) 
+{
     if (isMinus(character)) {
         _buffer.push_back(character);
         _state = MINUS;
@@ -175,7 +179,8 @@ void Lexer::pending(char character) {
     //other symbols are ignored (spaces etc)
 }
 
-void Lexer::minus(char character) {
+void Lexer::minus(char character) 
+{
     if (isdigit(character)) {
         _buffer.push_back(character);
         _state = INTEGER_PART;
@@ -190,7 +195,8 @@ void Lexer::minus(char character) {
     }
 }
 
-void Lexer::integer_part(char character) {
+void Lexer::integer_part(char character) 
+{
     if (character == '.') {
         _buffer.push_back(character);
         _state = FRACTIONAL_PART;
@@ -206,7 +212,8 @@ void Lexer::integer_part(char character) {
     }
 }
 
-void Lexer::fractional_part(char character) {
+void Lexer::fractional_part(char character) 
+{
     if (isdigit(character)) {
         _buffer.push_back(character);
     }
@@ -218,14 +225,16 @@ void Lexer::fractional_part(char character) {
     }
 }
 
-void Lexer::symbol(char character) {
+void Lexer::symbol(char character) 
+{
     _result.emplace_back(_buffer);
     _buffer = "";
     _state = PENDING;
     process(character);
 }
 
-void Lexer::word(char character) {
+void Lexer::word(char character) 
+{
     if (isInWord(character)) {
         _buffer.push_back(character);
     }
@@ -237,14 +246,16 @@ void Lexer::word(char character) {
     }
 }
 
-void Lexer::bracket(char character) {
+void Lexer::bracket(char character) 
+{
     _result.emplace_back(_buffer);
     _buffer = "";
     _state = PENDING;
     process(character);
 }
 
-void Lexer::matrix(char character) {
+void Lexer::matrix(char character) 
+{
     if (character == ']') {
         _result.emplace_back(stringToMatrix(_buffer));
         _buffer = "";
@@ -255,7 +266,8 @@ void Lexer::matrix(char character) {
     }
 }
 
-void Lexer::unprocessable(char character) {
+void Lexer::unprocessable(char character) 
+{
     if (isUnprocessable(character)) {
         _buffer.push_back(character);
     } 

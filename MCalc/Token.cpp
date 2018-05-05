@@ -2,6 +2,7 @@
 
 #include "Variable.h"
 #include "Function.h"
+#include <string>
 
 Token::Token(const std::string& name): _name(name) 
 {
