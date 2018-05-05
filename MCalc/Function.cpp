@@ -124,6 +124,34 @@ std::map<std::string, FunctionInfo> Function::_database = {
     },
 
     {
+        "inv", 
+        {
+            1, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().inverse(); }
+                },
+            }
+        }
+    },
+
+    {
+        "least", 
+        {
+            2, function_priority,
+            FunctionInfo::FUNCTION, FunctionInfo::RIGHT,
+            {
+                {
+                    { Variable::MATRIX, Variable::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix().least_squares((abs(args[1].getScalar()))); }
+                },
+            }
+        }
+    },
+
+    {
         "-", 
         {
             2, summation_priority,
