@@ -18,7 +18,7 @@ public:
     std::string getName() const;
     Matrix getMatrix() const;
     double getScalar() const;
-    bool isExpressionResult() const;
+    bool isAssignmentResult() const;
 
     static Variable assign(const std::string& name, const Variable&);
 

@@ -5,6 +5,9 @@
 #include "shunting-yard.h"
 #include "tokenize.h"
 #include "Evaluate.h"
+#include <string>
+#include <exception>
+#include <iostream>
 
 namespace {
 
@@ -69,12 +72,12 @@ void MCalc::repl()
         try {
             Variable result = evaluate(shuntingYard(tokenize(input)));
 
-            if (result.isExpressionResult()) {
-                Variable::assign("ans", result);
-                std::cout << Variable("ans");
-            }
-            else
+            if (result.isAssignmentResult())
                 std::cout << result;
+            else {
+                std::cout << Variable::assign("ans", result);
+            }
+
             std::cout << std::endl;
         }
 
@@ -88,7 +91,7 @@ void MCalc::repl()
             std::cout << "Evaluation error: " << err.what();
         }
         catch (const std::runtime_error& err) {
-            std::cout << "Fatal error: " << err.what();
+            std::cout << "Program error: " << err.what();
             std::cin.get();
             break;
         }

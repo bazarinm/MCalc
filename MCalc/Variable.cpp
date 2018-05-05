@@ -47,8 +47,8 @@ double Variable::getScalar() const {
         throw std::runtime_error("variable: " + _name + " is not a matrix ");
 }
 
-bool Variable::isExpressionResult() const {
-    return _name == constant_name;
+bool Variable::isAssignmentResult() const {
+    return _name != constant_name;
 }
 
 bool Variable::isVariable(const std::string& name) {
