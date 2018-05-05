@@ -6,7 +6,7 @@
 
 std::string Variable::constant_name = "$eval";
 
-std::map<std::string, Variable> Variable::_variables;
+std::map<std::string, Variable> Variable::_variables = {};
 
 Variable::Variable() : _type(VOID), _name(constant_name) {}
 
