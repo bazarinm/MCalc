@@ -57,6 +57,17 @@ namespace {
         return o;
     }
 
+    bool isBadInput(const std::string& input) {
+        bool bad_input = false;
+        for (char c : input)
+            if (c < 0 || c > 128) {
+                bad_input = true;
+                break;
+            }
+
+        return bad_input;
+    }
+
 } //anonymous namespace end
 
 void MCalc::repl()
@@ -69,6 +80,12 @@ void MCalc::repl()
 
         if (input.empty())
             break;
+
+        if (isBadInput(input)) {
+            std::cout << "Input error: non-ascii characters in the input";
+            continue;
+        }
+
         try {
             Variable result = evaluate(shuntingYard(tokenize(input)));
 

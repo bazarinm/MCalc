@@ -8,6 +8,8 @@
 namespace {
     std::ostream& operator<<(std::ostream& o, const Matrix& m);
     std::ostream& operator<<(std::ostream& o, const Variable& v);
+
+    bool isBadInput(const std::string&);
 }
 
 namespace MCalc {
