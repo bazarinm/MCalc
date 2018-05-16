@@ -21,11 +21,11 @@ For example, ```[1.2 2 -3.1; -3 4.2 5]``` is a 2x3 *matrix*.
 
 To **assign** expression result to a variable, type its name and use ```=``` symbol before an expression.
 
-**Variable name** should begin only with an alphabetic character or a ```_``` symbol and contain only ```alphanumeric characters```.
+**Variable name** should begin only with an ```alphabetic character``` or a ```_``` symbol and contain only ```alphanumeric characters```.
 Variables can be defined and redefined inline and are able to store both *scalars* and *matrices*.
 
 ### Available functions:
-* **Basic arithmetic** operators ```("+", "-", "*", "/", "^")``` work both for matrices and scalars.
+* **Basic arithmetic** operators ```+```, ```-```, ```*```, ```/```, ```^``` work both for *matrices* and *scalars*.
 * ```'``` &mdash; **transpose** of a *matrix*.
 * ```rand(m n)``` &mdash; creates a **random** *m* by *n* *matrix*.
 * ```eye(n)``` &mdash; create an *n* by *n* **identity matrix**.
