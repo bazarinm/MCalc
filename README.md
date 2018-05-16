@@ -15,7 +15,9 @@ Parser uses finite-state machine to tokenize the input, then the shunting-yard a
 ***
 ## Usage
 
-To **initialize** a *matrix*, put numbers inside *square brackets* ```[]``` with each row separated by ```;```. For example, ```[1.2 2 -3.1; -3 4.2 5]``` is a *2x3 matrix*.
+To **initialize** a *matrix*, put numbers inside *square brackets* ```[]``` with each row separated by ```;```.
+
+For example, ```[1.2 2 -3.1; -3 4.2 5]``` is a *2x3 matrix*.
 
 To **assign** expression result to a variable, type its name and use ```=``` symbol before an expression.
 
