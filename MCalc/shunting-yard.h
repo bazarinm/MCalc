@@ -38,6 +38,7 @@ std::vector<Token> shuntingYard(const std::vector<Token>& tokens) {
         else {
             unsigned token_priority = token.getPriority();
 
+            //I dont like the looks of this logical expression
             while (
                     !(stack.empty() || stack.top().isOpenBracket()) 
                     && (
