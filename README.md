@@ -19,7 +19,7 @@ Variables can be defined and redefined inline and are able to store both scalars
 
 In addition to arithmetic operators, some functions are available:  
 ' --- transpose of a matrix.  
-rand (m n) --- creates a random m by n matrice.  
+rand (m n) --- creates a random m by n matrix.  
 eye (n) --- create an n by n identity matrix  
 diag (vector) --- creates a diagonal matrix with entries from a vector (1 by n matrix).  
 det/inv (matrix) --- compute a determinant/inverse of a matrix.   
@@ -34,3 +34,4 @@ and others...
 3) least ([1 2 3; 4 5 6] 2)
 4) a = 5 + 6 * (b = 3)
 5) 2 + 2
+and so on
