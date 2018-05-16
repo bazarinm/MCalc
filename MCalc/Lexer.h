@@ -46,7 +46,6 @@ private:
     bool isRoundBracket(char);
     bool isWordStart(char);
     bool isSquareBracket(char);
-    bool isUnprocessable(char);
     bool isMinus(char);
     bool isInWord(char);
     bool isSpecialSymbol(char);
