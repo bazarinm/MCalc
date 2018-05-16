@@ -31,8 +31,8 @@ Variables can be defined and redefined inline and are able to store both *scalar
 * ```eye(n)``` &mdash; create an *n* by *n* **identity matrix**.
 * ```diag(vector)``` &mdash; creates a **diagonal matrix** with entries from **a vector** *(1 by n matrix)*.
 * ```det/inv(matrix)``` &mdash; compute a **determinant/inverse** of a *matrix*.
-* ```at(matrix, r, c)``` &mdash; **get a number** from *rth* row and *cth* column of the *matrix*.
-* ```least(points, degree)``` &mdash; compute the best **approximation by a polinomial** of a given degree for a set of points. Uses **least squares** algorithm. ```points``` should be a **2 by n matrix** (so each column represents a point).
+* ```at(matrix r c)``` &mdash; **get a number** from *rth* row and *cth* column of the *matrix*.
+* ```least(points degree)``` &mdash; compute the best **approximation by a polinomial** of a given degree for a set of points. Uses **least squares** algorithm. ```points``` should be a **2 by n matrix** (so each column represents a point).
 
 ## Examples
 ```
