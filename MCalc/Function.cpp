@@ -13,8 +13,6 @@ const unsigned multiplication_priority = 2;
 const unsigned power_priority = 3;
 const unsigned function_priority = 4;
 
-using Arguments = const std::vector<Variable>&;
-
 std::map<std::string, FunctionInfo> Function::_database = {
     {
         "", 
@@ -24,11 +22,11 @@ std::map<std::string, FunctionInfo> Function::_database = {
             {
                 {
                     { },
-                    [](std::vector<Variable> args) -> Variable { return Variable(); }
+                    [](Arguments args) -> Variable { return Variable(); }
                 }
             }
         }
-    }, //AUX/EXAMPLE
+    }, //EXAMPLE
 
     {
         "=",

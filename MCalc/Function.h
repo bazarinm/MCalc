@@ -9,6 +9,7 @@
 
 using ArgumentTypesVector = std::vector<Variable::Types>;
 using FunctionBody = std::function<Variable(std::vector<Variable>)>;
+using Arguments = const std::vector<Variable>&;
 
 struct FunctionInfo {
     enum AssociativityTypes { LEFT, RIGHT, BOTH };
