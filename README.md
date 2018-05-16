@@ -17,8 +17,8 @@ To assign expression result to a variable, type its name and use "=" symbol befo
 Variable name should contain only alphabetic characters and numbers and begin only with an alphabetic or a "_" symbol.   
 Variables can be defined and redefined inline and are able to store both scalars and matrices.  
 
-Available functions:
-Basic arithmetic operators ("+", "-", "*", "/", "^") work both for matrices and scalars
+Available functions:  
+Basic arithmetic operators ("+", "-", "*", "/", "^") work both for matrices and scalars  
 ' --- transpose of a matrix.  
 rand (m n) --- creates a random m by n matrix.  
 eye (n) --- create an n by n identity matrix  
