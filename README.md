@@ -1,7 +1,8 @@
 # Matrix calculator
 
-Command line tool for working with matrices. Parses an input for variables, function calls and operators, then evaluates the expression. 
-Parser uses finite-state machine to tokenize the input, the shunting-yard algorithm is used for evaluation.
+Command line tool for working with matrices. Parses an input for variables, function calls, operators, and evaluates the expression. 
+Parser uses finite-state machine to tokenize the input, then the shunting-yard algorithm is used for evaluation.
+
 ***
 ## Installation
 
@@ -9,6 +10,7 @@ Parser uses finite-state machine to tokenize the input, the shunting-yard algori
 2) compile
 
 ## Usage
+
 To initialize a matrix, put numbers inside square brackets with each row separated by ";". For example, [1.2 2 -3.1; -3 4.2 5] is a 2x3 matrix.
 
 To assign expression result to a variable, type its name and use "=" symbol before an expression.  
@@ -26,6 +28,7 @@ least (points, degree) -- compute the best approximation by a polinomial of a gi
 and others...  
 
 ## Examples
+
 1) A = [1 2; 3 4]
 2) m = det (3 * (a = rand 3 3))
 3) least ([1 2 3; 4 5 6] 2)
