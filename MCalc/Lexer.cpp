@@ -20,20 +20,6 @@ bool Lexer::isNumber(const std::string& str) const {
     return std::regex_match(str, std::regex("[-]?[0-9]+[.]?[0-9]*"));
 }
 
-/* symbols that does not fit into any category */
-bool Lexer::isUnprocessable(char character) {
-    return !(0
-        || isMinus(character)
-        || std::isspace(character)
-        || std::isdigit(character)
-        || isWordStart(character)
-        || isInWord(character)
-        || isRoundBracket(character)
-        || isSquareBracket(character)
-        || isSpecialSymbol(character)
-        );
-}
-
 bool Lexer::isMinus(char character) {
     return character == '-';
 }
@@ -47,17 +33,16 @@ bool Lexer::isInWord(char character) {
     return isWordStart(character) || std::isdigit(character);
 }
 
-/* any special symbols that correspond to a function */
+/* any special symbols that do not fit into other categories */
 bool Lexer::isSpecialSymbol(char character) {
-    return 1 
-        && !std::isspace(character)
-        && !std::isdigit(character)
-        && !isWordStart(character)
-        && !isInWord(character)
-        && !isRoundBracket(character)
-        && !isSquareBracket(character)
-        && Function::isFunction(std::string(1, character)) 
-        ;
+    return !(0
+        || std::isspace(character)
+        || std::isdigit(character)
+        || isWordStart(character)
+        || isInWord(character)
+        || isRoundBracket(character)
+        || isSquareBracket(character)
+        );
 }
 
 bool Lexer::isRoundBracket(char character) {
@@ -171,10 +156,7 @@ void Lexer::pending(char character)
     else if (isSpecialSymbol(character)) {
         _buffer.push_back(character);
         _state = SYMBOL;
-    }
-    else if (isUnprocessable(character)) {
-        _buffer.push_back(character);
-        _state = UNPROCESSABLE;
+        //covers unprocessable cases too
     }
     //other valid symbols are ignored (spaces etc)
 }
@@ -227,9 +209,14 @@ void Lexer::fractional_part(char character)
 
 void Lexer::symbol(char character) 
 {
-    _result.emplace_back(Token::OPERATOR, _buffer);
-    _buffer = "";
-    _state = PENDING;
+    if (Function::isFunction(_buffer)) {
+        _result.emplace_back(Token::OPERATOR, _buffer);
+        _buffer = "";
+        _state = PENDING;
+    }
+    else {
+        _state = UNPROCESSABLE;
+    }
     process(character);
 }
 
@@ -272,13 +259,12 @@ void Lexer::matrix(char character)
 
 void Lexer::unprocessable(char character) 
 {
-    if (isUnprocessable(character)) {
-        _buffer.push_back(character);
-    } 
+    if (ignore_unprocessable) {
+        _buffer = "";
+        _state = PENDING;
+        process(character);
+    }
     else {
-        //process(character) //<-- uncomment this in case its ok to ignore unprocessable symbols
-        //_buffer = "";
-        //_state = PENDING;
         throw parsingError("parser: invalid sequence < " + _buffer + " >");
     }
 }

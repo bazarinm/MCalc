@@ -14,7 +14,7 @@ public:
 
 class Lexer
 {
-public:
+private:
     enum States {
         PENDING,
         MINUS,
@@ -27,12 +27,16 @@ public:
         UNPROCESSABLE,
     };
 
+    const bool ignore_unprocessable = false;
+
+public:
     Lexer();
 
     void process(char);
     void endOfInput();
 
     std::vector<Token> getResult() const;
+
 private:
     States _state;
     std::string _buffer;
