@@ -18,13 +18,13 @@ Variable name should contain only alphabetic characters and numbers and begin on
 Variables can be defined and redefined inline and are able to store both scalars and matrices.  
 
 In addition to arithmetic operators, some functions are available:  
-"'" -- transpose of a matrix.  
-rand (m n) -- creates a random m by n matrice.  
-eye (n) -- create an n by n identity matrix  
-diag (vector) -- creates a diagonal matrix with entries from a vector (1 by n matrix).  
-det/inv (matrix) -- compute a determinant/inverse of a matrix.   
-at (matrix, r, c) -- get a number from rth row and cth column of the matrix.  
-least (points, degree) -- compute the best approximation by a polinomial of a given degree for a set of points. Uses least squares algorithm. "points" should be a 2 by n matrix (so each column represents a point).  
+' --- transpose of a matrix.  
+rand (m n) --- creates a random m by n matrice.  
+eye (n) --- create an n by n identity matrix  
+diag (vector) --- creates a diagonal matrix with entries from a vector (1 by n matrix).  
+det/inv (matrix) --- compute a determinant/inverse of a matrix.   
+at (matrix, r, c) --- get a number from rth row and cth column of the matrix.  
+least (points, degree) --- compute the best approximation by a polinomial of a given degree for a set of points. Uses least squares algorithm. "points" should be a 2 by n matrix (so each column represents a point).  
 and others...  
 
 ## Examples
