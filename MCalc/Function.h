@@ -20,8 +20,6 @@ struct FunctionInfo {
     std::map<ArgumentTypesVector, FunctionBody> _function;
 };
 
-
-
 class Function
 {
 public:
