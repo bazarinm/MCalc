@@ -8,17 +8,13 @@
 #include <exception>
 #include <functional>
 
-const unsigned summation_priority = 1;
-const unsigned multiplication_priority = 2;
-const unsigned power_priority = 3;
-const unsigned function_priority = 4;
-
-std::map<std::string, FunctionInfo> Function::_database = {
+std::map<std::string, Function::FunctionInfo> Function::_database = {
     {
         "", 
         {
-            0, 0,
-            FunctionInfo::BOTH,
+            0, 
+            Priorities::ASSIGNMENT,
+            AssociativityTypes::BOTH,
             {
                 {
                     { },
@@ -31,8 +27,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "=",
         {   
-            2, 0,
-            FunctionInfo::RIGHT,
+            2, 
+            Priorities::ASSIGNMENT,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::VOID, Variable::SCALAR },
@@ -67,8 +64,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "det", 
         {
-            1, function_priority,
-            FunctionInfo::RIGHT,
+            1, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -81,8 +79,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "*", 
         {
-            2, multiplication_priority,
-            FunctionInfo::BOTH,
+            2, 
+            Priorities::MULTIPLICATION,
+            AssociativityTypes::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -107,8 +106,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "+", 
         {
-            2, summation_priority,
-            FunctionInfo::BOTH,
+            2, 
+            Priorities::SUMMATION,
+            AssociativityTypes::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -125,8 +125,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "inv", 
         {
-            1, function_priority,
-            FunctionInfo::RIGHT,
+            1, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::MATRIX },
@@ -139,12 +140,15 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "least", 
         {
-            2, function_priority,
-            FunctionInfo::RIGHT,
+            2, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix().least_squares((std::abs(args[1].getScalar()))); }
+                    [](Arguments args) -> Variable { return args[0].getMatrix().least_squares(
+                        std::abs(args[1].getScalar())
+                    ); }
                 },
             }
         }
@@ -153,8 +157,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "-", 
         {
-            2, summation_priority,
-            FunctionInfo::BOTH,
+            2, 
+            Priorities::SUMMATION,
+            AssociativityTypes::BOTH,
             {
                 {
                     { Variable::MATRIX, Variable::MATRIX },
@@ -171,8 +176,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "/",
         {
-            2, multiplication_priority,
-            FunctionInfo::LEFT,
+            2, 
+            Priorities::MULTIPLICATION,
+            AssociativityTypes::LEFT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -185,12 +191,16 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "eye",
         {
-            1, function_priority,
-            FunctionInfo::RIGHT,
+            1, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(Matrix::IDENTITY, std::abs(args[0].getScalar())); }
+                    [](Arguments args) -> Variable { return Matrix(
+                        Matrix::IDENTITY, 
+                        std::abs(args[0].getScalar())
+                    ); }
                 },
             }
         }   
@@ -199,15 +209,18 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "diag",
         {
-            1, function_priority,
-            FunctionInfo::RIGHT,
+            1, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::MATRIX },
                     [](Arguments args) -> Variable 
-                    { return Matrix(Matrix::DIAGONAL, 
+                    { return Matrix(
+                        Matrix::DIAGONAL, 
                         args[0].getMatrix().getEntries().size(), 
-                        args[0].getMatrix().getEntries()); }
+                        args[0].getMatrix().getEntries()
+                    ); }
                 },
             }
         }   
@@ -216,12 +229,17 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "zeros",
         {
-            2, function_priority,
-            FunctionInfo::RIGHT,
+            2, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(Matrix::ZERO, args[0].getScalar(), args[1].getScalar()); }
+                    [](Arguments args) -> Variable { return Matrix(
+                        Matrix::ZERO, 
+                        args[0].getScalar(), 
+                        args[1].getScalar()
+                    ); }
                 },
             }
         }   
@@ -230,12 +248,17 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "rand",
         {
-            2, function_priority,
-            FunctionInfo::RIGHT,
+            2, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return Matrix(Matrix::RANDOM, args[0].getScalar(), args[1].getScalar()); }
+                    [](Arguments args) -> Variable { return Matrix(
+                        Matrix::RANDOM, 
+                        args[0].getScalar(), 
+                        args[1].getScalar()
+                    ); }
                 },
             }
         }   
@@ -244,8 +267,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "'",
         {
-            1, function_priority,
-            FunctionInfo::BOTH,
+            1, 
+            Priorities::FUNCTION,
+            AssociativityTypes::BOTH,
             {
                 {
                     { Variable::MATRIX },
@@ -258,12 +282,15 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         ":",
         {
-            2, function_priority,
-            FunctionInfo::LEFT,
+            2, 
+            Priorities::FUNCTION,
+            AssociativityTypes::LEFT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix().getRow(args[1].getScalar()); }
+                    [](Arguments args) -> Variable { return args[0].getMatrix().getRow(
+                        std::abs(args[1].getScalar())
+                    ); }
                 },
             }
         }   
@@ -272,12 +299,15 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         ";",
         {
-            2, function_priority,
-            FunctionInfo::LEFT,
+            2, 
+            Priorities::FUNCTION,
+            AssociativityTypes::LEFT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix().getColumn(args[1].getScalar()); }
+                    [](Arguments args) -> Variable { return args[0].getMatrix().getColumn(
+                        std::abs(args[1].getScalar())
+                    ); }
                 },
             }
         }   
@@ -286,12 +316,16 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "at",
         {
-            3, function_priority,
-            FunctionInfo::RIGHT,
+            3, 
+            Priorities::FUNCTION,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::MATRIX, Variable::SCALAR, Variable::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix().at(args[1].getScalar(), args[2].getScalar()); }
+                    [](Arguments args) -> Variable { return args[0].getMatrix().at(
+                        std::abs(args[1].getScalar()), 
+                        std::abs(args[2].getScalar())
+                    ); }
                 },
             }
         }   
@@ -300,8 +334,9 @@ std::map<std::string, FunctionInfo> Function::_database = {
     {
         "^",
         {
-            2, power_priority,
-            FunctionInfo::RIGHT,
+            2, 
+            Priorities::POWER,
+            AssociativityTypes::RIGHT,
             {
                 {
                     { Variable::SCALAR, Variable::SCALAR },
@@ -376,10 +411,10 @@ unsigned Function::getArity() const {
 }
 
 unsigned Function::getPriority() const {
-    return _this_function_info._priority;
+    return static_cast<unsigned>(_this_function_info._priority);
 }
 
-FunctionInfo::AssociativityTypes Function::getAssociativityType() const {
+Function::AssociativityTypes Function::getAssociativityType() const {
     return _this_function_info._associativity;
 }
 
@@ -398,7 +433,7 @@ bool Function::isLeftAssociative(const std::string& name)
     bool isLeftAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        isLeftAssociative = search->second._associativity != FunctionInfo::RIGHT;
+        isLeftAssociative = search->second._associativity != AssociativityTypes::RIGHT;
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
@@ -411,7 +446,7 @@ bool Function::isRightAssociative(const std::string& name)
     bool isRightAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        isRightAssociative = search->second._associativity != FunctionInfo::LEFT;
+        isRightAssociative = search->second._associativity != AssociativityTypes::LEFT;
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
@@ -420,11 +455,11 @@ bool Function::isRightAssociative(const std::string& name)
 }
 
 bool Function::isLeftAssociative() const {
-    return _this_function_info._associativity != FunctionInfo::RIGHT;
+    return _this_function_info._associativity != AssociativityTypes::RIGHT;
 }
 
 bool Function::isRightAssociative() const {
-    return _this_function_info._associativity != FunctionInfo::LEFT;
+    return _this_function_info._associativity != AssociativityTypes::LEFT;
 }
 
 unsigned Function::getArity(const std::string& name)
@@ -441,13 +476,13 @@ unsigned Function::getPriority(const std::string& name)
 {
     auto search = _database.find(name);
     if (search != _database.end()) {
-        return search->second._priority;
+        return static_cast<unsigned>(search->second._priority);
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
 }
 
-FunctionInfo::AssociativityTypes Function::getAssociativityType(const std::string& name)
+Function::AssociativityTypes Function::getAssociativityType(const std::string& name)
 {
     auto search = _database.find(name);
     if (search != _database.end()) {
