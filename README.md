@@ -32,6 +32,6 @@ least (points, degree) &mdash; compute the best approximation by a polinomial of
 1) A = [1 2 3; 4 5 6] * [1 2 3; 4 5 6]'
 2) m = det (3 * (a = rand 3 3))
 3) least ([1 2 3; 4 5 6] 2)
-4) a = 5 + 6 * (b = 3)
-5) 2 + 2
+4) a = 5 + 6 * (b = 3)  
+5) 2 + 2  
 and so on
