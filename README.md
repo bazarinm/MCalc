@@ -28,7 +28,7 @@ least (points, degree) --- compute the best approximation by a polinomial of a g
 
 ## Examples
 
-1) A = [1 2; 3 4]
+1) A = [1 2 3; 4 5 6] * [1 2 3; 4 5 6]'
 2) m = det (3 * (a = rand 3 3))
 3) least ([1 2 3; 4 5 6] 2)
 4) a = 5 + 6 * (b = 3)
