@@ -14,7 +14,7 @@ Parser uses finite-state machine to tokenize the input, then the shunting-yard a
 To initialize a matrix, put numbers inside square brackets with each row separated by ";". For example, [1.2 2 -3.1; -3 4.2 5] is a 2x3 matrix.
 
 To assign expression result to a variable, type its name and use "=" symbol before an expression.  
-Variable name should contain only alphabetic characters and numbers and begin only with a character or a "_" symbol.   
+Variable name should contain only alphabetic characters and numbers and begin only with an alphabetic or a "_" symbol.   
 Variables can be defined and redefined inline and are able to store both scalars and matrices.  
 
 In addition to arithmetic operators, some functions are available:  
