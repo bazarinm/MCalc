@@ -1,4 +1,4 @@
-# Matrix calculator
+# MCalc
 
 Command line application for working with matrices.
 
