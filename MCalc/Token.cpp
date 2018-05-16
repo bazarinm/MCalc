@@ -4,18 +4,22 @@
 #include "Function.h"
 #include <string>
 
-Token::Token(const std::string& name): _name(name) 
+Token::Token(Types type, const std::string& name): _type(type), _name(name) 
 {
-    if (_name == "(" || _name == ")") {
-        _type = BRACKET;
-    }
-    else if (Function::isFunction(_name)) {
-        _type = OPERATOR;
-        _function = Function(_name);
-    }
-    else {
-        _type = OPERAND;
+    switch (_type)
+    {
+    case Token::OPERATOR:
+        if (Function::isFunction(_name))
+            _function = Function(_name);
+        else
+            throw std::runtime_error("token: " + _name + "is not a function ");
+        break;
+    case Token::OPERAND:
         _variable = Variable(_name);
+        break;
+    case Token::BRACKET:
+        //do nothing
+        break;
     }
 }
 
@@ -40,7 +44,7 @@ Variable Token::getVariable() const
     if (_type == OPERAND)
         return _variable;
     else
-        throw std::runtime_error("token: " + _name + "is not a function ");
+        throw std::runtime_error("token: " + _name + "is not a variable ");
 }
 
 Function Token::getFunction() const
