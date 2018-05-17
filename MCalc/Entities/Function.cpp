@@ -184,6 +184,14 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                     { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
                 },
+                {
+                    { Variable::Types::MATRIX, Variable::Types::MATRIX },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() / args[1].getMatrix(); }
+                },
+                {
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
+                    [](Arguments args) -> Variable { return args[0].getMatrix() / args[1].getScalar(); }
+                },
             }
         }   
     },
