@@ -1,7 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "../../Matrix/Matrix.h"
+#include "./Entities/Matrix/Matrix.h"
 #include "Token.h"
 #include <vector>
 #include <string>

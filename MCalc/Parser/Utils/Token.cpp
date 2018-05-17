@@ -1,7 +1,7 @@
 #include "Token.h"
 
-#include "../../Entities/Variable.h"
-#include "../../Entities/Function.h"
+#include "./Entities/Variable.h"
+#include "./Entities/Function.h"
 #include <exception>
 #include <vector>
 #include <string>

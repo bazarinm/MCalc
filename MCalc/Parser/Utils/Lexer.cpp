@@ -1,7 +1,7 @@
 #include "Lexer.h"
 
-#include "../../Entities/Function.h"
-#include "../../Matrix/Matrix.h"
+#include "./Entities/Function.h"
+#include "./Entities/Matrix/Matrix.h"
 #include "Token.h"
 #include <vector>
 #include <exception>

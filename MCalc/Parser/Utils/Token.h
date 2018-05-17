@@ -1,8 +1,8 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include "../../Entities/Function.h"
-#include "../../Entities/Variable.h"
+#include "./Entities/Function.h"
+#include "./Entities/Variable.h"
 #include <vector>
 #include <string>
 

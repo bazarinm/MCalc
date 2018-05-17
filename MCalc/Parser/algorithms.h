@@ -1,8 +1,8 @@
 #ifndef ALGORITHMS_H
 #define ALGORITHMS_H
 
-#include "../Entities/Variable.h"
-#include "./Utils/Token.h"
+#include "./Entities/Variable.h"
+#include "Utils/Token.h"
 #include <exception>
 #include <vector>
 #include <string>
