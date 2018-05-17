@@ -262,3 +262,6 @@ __pycache__/
 
 CMakeLists.txt
 cmake-build-debug
+
+*.sln
+*.vcxproj*
