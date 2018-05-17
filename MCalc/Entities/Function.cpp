@@ -354,7 +354,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
     //AND SO ON
 };
 
-Function::Function() : _name("") 
+Function::Function() : Function("") 
 {
 }
 
