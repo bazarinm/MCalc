@@ -11,16 +11,13 @@ namespace {
 
     std::ostream& operator<<(std::ostream& o, const Matrix& m) 
     {
-        const double EPSILON = 1E-4;
-        o.precision(4);
-
         Matrix::Dimensions size = m.getSize();
         for (std::size_t i = 0; i < size.rows; ++i) {
-            for (std::size_t j = 0; j < size.columns; ++j)
-                if (m.at(i, j) < EPSILON)
-                    o << 0 << " ";
-                else
-                    o << m.at(i, j) << " ";
+            for (std::size_t j = 0; j < size.columns; ++j) {
+                if (m.at(i, j) >= 0)
+                    o << " ";
+                o << m.at(i, j) << " ";
+            }
             if (i != size.rows - 1)
                 std::cout << std::endl;
         }
@@ -30,24 +27,27 @@ namespace {
 
     std::ostream& operator<<(std::ostream& o, const Variable& v) 
     {
-        o << v.getName() << " ";
+        o << v.getName();
 
         Matrix M;
         switch (v.getType()) {
         case Variable::Types::MATRIX:
-            M = v.getMatrix();
 
-            o << "is a " << M.getSize().rows;
-            o << "x" << M.getSize().columns << " matrix: ";
+            M = v.getMatrix();
+            o << " is a " << M.getSize().rows;
+            o << " by " << M.getSize().columns; 
+            o << " matrix: ";
             o << std::endl << v.getMatrix();
 
             break;
         case Variable::Types::SCALAR:
-            o << "= " << v.getScalar();
+
+            o << " = " << v.getScalar();
 
             break;
         case Variable::Types::VOID:
-            o << "is undefined ";
+
+            o << " is undefined ";
 
             break;
         }
@@ -70,9 +70,12 @@ namespace {
 
 void MCalc::repl()
 {
+    std::cout.precision(4);
+    std::cout << std::fixed;
+
     std::string input;
     while (1) {
-        std::cout << std::endl << "MCalc>: ";
+        std::cout << "MCalc>: ";
         std::getline(std::cin, input);
         std::cout << std::endl;
 
@@ -93,7 +96,7 @@ void MCalc::repl()
                 std::cout << Variable::assign("ans", result);
             }
 
-            std::cout << std::endl;
+            std::cout << std::endl << std::endl;
         }
         catch (const ExecutionError& err) {
             std::cout << "Error: " << err.what();
