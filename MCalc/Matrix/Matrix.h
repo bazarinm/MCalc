@@ -35,7 +35,7 @@ public:
         }
     };
 
-    //CONSTRUCTORS
+public:
     Matrix();
     Matrix(std::size_t size);
     Matrix(std::size_t rows, std::size_t columns);
@@ -49,7 +49,6 @@ public:
 
     Matrix(const Matrix& other) = default; //copy
 
-    //GETTERS
     Dimensions getSize() const;
     std::vector<double> getEntries() const;
     Matrix getRow(std::size_t) const;
@@ -57,7 +56,6 @@ public:
     double& at(std::size_t row, std::size_t column);
     double at(std::size_t row, std::size_t column) const;
 
-    //OPERATORS
     Matrix operator+(const Matrix& other) const; //sum of 2 matrices
     Matrix operator-(const Matrix& other) const;
     Matrix& operator+=(const Matrix& other);
