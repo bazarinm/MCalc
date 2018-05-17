@@ -1,8 +1,8 @@
 #include "algorithms.h"
 
+#include "./Entities/Variable.h"
 #include "Utils/Token.h"
 #include "Utils/Lexer.h"
-#include "./Entities/Variable.h"
 #include <algorithm>
 #include <exception>
 #include <string>
