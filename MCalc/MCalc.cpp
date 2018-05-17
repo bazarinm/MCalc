@@ -37,7 +37,7 @@ namespace {
             o << " is a " << M.getSize().rows;
             o << " by " << M.getSize().columns; 
             o << " matrix: ";
-            o << std::endl << v.getMatrix();
+            o << std::endl << M;
 
             break;
         case Variable::Types::SCALAR:
