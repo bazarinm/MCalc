@@ -1,7 +1,7 @@
 #ifndef VARIABLE_H 
 #define VARIABLE_H
 
-#include "Matrix.h"
+#include "./Matrix/Matrix.h"
 #include <string>
 #include <map>
 

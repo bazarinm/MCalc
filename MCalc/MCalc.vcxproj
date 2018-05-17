@@ -45,6 +45,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Mikhail\Desktop\MCalc\MCalc\MCalc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,24 +66,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Evaluate.h" />
-    <ClInclude Include="Function.h" />
-    <ClInclude Include="Lexer.h" />
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Entities\Function.h" />
+    <ClInclude Include="Entities\Variable.h" />
+    <ClInclude Include="Entities\Matrix\Matrix.h" />
     <ClInclude Include="MCalc.h" />
-    <ClInclude Include="shunting-yard.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="tokenize.h" />
-    <ClInclude Include="Variable.h" />
+    <ClInclude Include="Parser\algorithms.h" />
+    <ClInclude Include="Parser\Utils\Lexer.h" />
+    <ClInclude Include="Parser\Utils\Token.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Function.cpp" />
-    <ClCompile Include="Lexer.cpp" />
+    <ClCompile Include="Entities\Function.cpp" />
+    <ClCompile Include="Entities\Variable.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Entities\Matrix\Matrix.cpp" />
     <ClCompile Include="MCalc.cpp" />
-    <ClCompile Include="Token.cpp" />
-    <ClCompile Include="Variable.cpp" />
+    <ClCompile Include="Parser\algorithms.cpp" />
+    <ClCompile Include="Parser\Utils\Lexer.cpp" />
+    <ClCompile Include="Parser\Utils\Token.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,9 @@
 #include "Token.h"
 
-#include "Variable.h"
-#include "Function.h"
+#include "./Entities/Variable.h"
+#include "./Entities/Function.h"
+#include <exception>
+#include <vector>
 #include <string>
 
 Token::Token(Types type, const std::string& name): _type(type), _name(name) 

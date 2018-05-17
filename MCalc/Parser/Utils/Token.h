@@ -1,8 +1,9 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include "Variable.h"
-#include "Function.h"
+#include "./Entities/Function.h"
+#include "./Entities/Variable.h"
+#include <vector>
 #include <string>
 
 class Token

@@ -1,13 +1,11 @@
 #include "MCalc.h"
 
-#include "Matrix.h"
-#include "Variable.h"
-#include "shunting-yard.h"
-#include "tokenize.h"
-#include "Evaluate.h"
-#include <string>
+#include "Entities/Matrix/Matrix.h"
+#include "Entities/Variable.h"
+#include "Parser/algorithms.h"
 #include <exception>
 #include <iostream>
+#include <string>
 
 namespace {
 
@@ -80,14 +78,14 @@ void MCalc::repl()
 
         if (input.empty())
             break;
-
         if (isBadInput(input)) {
             std::cout << "Input error: non-ascii characters in the input";
             continue;
         }
 
         try {
-            Variable result = evaluate(shuntingYard(tokenize(input)));
+            using namespace ShuntingYard;
+            Variable result = evaluate(sort(tokenize(input)));
 
             if (result.isAssignmentResult())
                 std::cout << result;
@@ -97,20 +95,12 @@ void MCalc::repl()
 
             std::cout << std::endl;
         }
-
-        catch (const parsingError& err) {
-            std::cout << "Parsing error: " << err.what();
-        }
-        catch (const sortingError& err) {
-            std::cout << "Sorting error: " << err.what();
-        }
-        catch (const evaluationError& err) {
-            std::cout << "Evaluation error: " << err.what();
+        catch (const ExecutionError& err) {
+            std::cout << "Error: " << err.what();
         }
         catch (const std::runtime_error& err) {
             std::cout << "Program error: " << err.what();
-            std::cin.get();
-            break;
+            std::cout << std::endl << "Wait for bugfixes";
         }
 
     }

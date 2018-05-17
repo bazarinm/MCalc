@@ -1,6 +1,7 @@
 #include "MCalc.h"
 
-int main() {
+int main() 
+{
     MCalc::repl();
 
     return 0;

@@ -1,9 +1,10 @@
 #ifndef MCALC_H
 #define MCALC_H
 
-#include "Matrix.h"
-#include "Variable.h"
+#include "Entities/Matrix/Matrix.h"
+#include "Entities/Variable.h"
 #include <iostream>
+#include <string>
 
 namespace {
     std::ostream& operator<<(std::ostream& o, const Matrix& m);

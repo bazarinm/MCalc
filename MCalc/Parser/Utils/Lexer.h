@@ -1,16 +1,10 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "Matrix.h"
+#include "./Entities/Matrix/Matrix.h"
 #include "Token.h"
 #include <vector>
-#include <exception>
 #include <string>
-
-class parsingError : public std::runtime_error {
-public:
-    parsingError(const std::string& msg) : std::runtime_error(msg) {}
-};
 
 class Lexer
 {
