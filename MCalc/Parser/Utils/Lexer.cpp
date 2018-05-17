@@ -9,7 +9,13 @@
 #include <regex>
 #include <cctype>
 
-Lexer::Lexer() : _state(PENDING) 
+Lexer::Lexer() : _state(States::PENDING), _ignore_unprocessable(false)
+{
+}
+
+Lexer::Lexer(OnUnprocessable action) : 
+    _state(States::PENDING), 
+    _ignore_unprocessable(static_cast<bool>(action))
 {
 }
 
@@ -115,15 +121,15 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString)
 void Lexer::process(char character) 
 {
     switch (_state) {
-    case PENDING: pending(character); break;
-    case MINUS: minus(character); break;
-    case INTEGER_PART: integer_part(character); break;
-    case FRACTIONAL_PART: fractional_part(character); break;
-    case SYMBOL: symbol(character); break;
-    case WORD: word(character); break;
-    case BRACKET: bracket(character); break;
-    case MATRIX: matrix(character); break;
-    case UNPROCESSABLE: unprocessable(character); break;
+    case States::PENDING: pending(character); break;
+    case States::MINUS: minus(character); break;
+    case States::INTEGER_PART: integer_part(character); break;
+    case States::FRACTIONAL_PART: fractional_part(character); break;
+    case States::SYMBOL: symbol(character); break;
+    case States::WORD: word(character); break;
+    case States::BRACKET: bracket(character); break;
+    case States::MATRIX: matrix(character); break;
+    case States::UNPROCESSABLE: unprocessable(character); break;
     }
 }
 
@@ -131,27 +137,27 @@ void Lexer::pending(char character)
 {
     if (isMinus(character)) {
         _buffer.push_back(character);
-        _state = MINUS;
+        _state = States::MINUS;
     }
     else if (std::isdigit(character)) {
         _buffer.push_back(character);
-        _state = INTEGER_PART;
+        _state = States::INTEGER_PART;
     }
     else if (isWordStart(character)) {
         _buffer.push_back(character);
-        _state = WORD;
+        _state = States::WORD;
     }
     else if (isRoundBracket(character)) {
         _buffer.push_back(character);
-        _state = BRACKET;
+        _state = States::BRACKET;
     }
     else if (character == '[') {
         // _buffer.push_back(character);
-        _state = MATRIX;
+        _state = States::MATRIX;
     }
     else if (isSpecialSymbol(character)) {
         _buffer.push_back(character);
-        _state = SYMBOL;
+        _state = States::SYMBOL;
         //covers unprocessable cases too
     }
     //other valid symbols are ignored (spaces etc)
@@ -161,14 +167,14 @@ void Lexer::minus(char character)
 {
     if (isdigit(character)) {
         _buffer.push_back(character);
-        _state = INTEGER_PART;
+        _state = States::INTEGER_PART;
     }
     else if (isSpecialSymbol('-')) {
-        _state = SYMBOL;
+        _state = States::SYMBOL;
         process(character);
     }
     else {
-        _state = UNPROCESSABLE;
+        _state = States::UNPROCESSABLE;
         process(character);
     }
 }
@@ -177,7 +183,7 @@ void Lexer::integer_part(char character)
 {
     if (character == '.') {
         _buffer.push_back(character);
-        _state = FRACTIONAL_PART;
+        _state = States::FRACTIONAL_PART;
     }
     else if (isdigit(character)) {
         _buffer.push_back(character);
@@ -185,7 +191,7 @@ void Lexer::integer_part(char character)
     else {
         _result.emplace_back(std::stod(_buffer));
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
         process(character);
     }
 }
@@ -198,7 +204,7 @@ void Lexer::fractional_part(char character)
     else {
         _result.emplace_back(std::stod(_buffer));
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
         process(character);
     }
 }
@@ -206,12 +212,12 @@ void Lexer::fractional_part(char character)
 void Lexer::symbol(char character) 
 {
     if (Function::isFunction(_buffer)) {
-        _result.emplace_back(Token::OPERATOR, _buffer);
+        _result.emplace_back(Token::Types::OPERATOR, _buffer);
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
     }
     else {
-        _state = UNPROCESSABLE;
+        _state = States::UNPROCESSABLE;
     }
     process(character);
 }
@@ -223,21 +229,21 @@ void Lexer::word(char character)
     }
     else {
         if (Function::isFunction(_buffer))
-            _result.emplace_back(Token::OPERATOR, _buffer);
+            _result.emplace_back(Token::Types::OPERATOR, _buffer);
         else
-            _result.emplace_back(Token::OPERAND, _buffer);
+            _result.emplace_back(Token::Types::OPERAND, _buffer);
 
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
         process(character);
     }
 }
 
 void Lexer::bracket(char character) 
 {
-    _result.emplace_back(Token::BRACKET, _buffer);
+    _result.emplace_back(Token::Types::BRACKET, _buffer);
     _buffer = "";
-    _state = PENDING;
+    _state = States::PENDING;
     process(character);
 }
 
@@ -246,7 +252,7 @@ void Lexer::matrix(char character)
     if (character == ']') {
         _result.emplace_back(stringToMatrix(_buffer));
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
     }
     else {
         _buffer.push_back(character);
@@ -255,9 +261,9 @@ void Lexer::matrix(char character)
 
 void Lexer::unprocessable(char character) 
 {
-    if (ignore_unprocessable) {
+    if (_ignore_unprocessable) {
         _buffer = "";
-        _state = PENDING;
+        _state = States::PENDING;
         process(character);
     }
     else {

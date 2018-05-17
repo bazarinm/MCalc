@@ -32,27 +32,27 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::VOID, Variable::SCALAR },
+                    { Variable::Types::VOID, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
-                    { Variable::VOID, Variable::MATRIX },
+                    { Variable::Types::VOID, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
-                    { Variable::MATRIX, Variable::MATRIX },
+                    { Variable::Types::MATRIX, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
-                    { Variable::SCALAR, Variable::MATRIX },
+                    { Variable::Types::SCALAR, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Variable::assign(args[0].getName(), args[1]); }
                 },
             }
@@ -69,7 +69,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::MATRIX },
+                    { Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix().determinant(); }
                 }
             }
@@ -84,19 +84,19 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::BOTH,
             {
                 {
-                    { Variable::MATRIX, Variable::MATRIX },
+                    { Variable::Types::MATRIX, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix() * args[1].getMatrix(); }
                 },
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getScalar() * args[1].getScalar(); }
                 },
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix() * args[1].getScalar(); }
                 },
                 {
-                    { Variable::SCALAR, Variable::MATRIX },
+                    { Variable::Types::SCALAR, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[1].getMatrix() * args[0].getScalar(); }
                 },
             }
@@ -111,11 +111,11 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::BOTH,
             {
                 {
-                    { Variable::MATRIX, Variable::MATRIX },
+                    { Variable::Types::MATRIX, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix() + args[1].getMatrix(); }
                 },
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getScalar() + args[1].getScalar(); }
                 },
             }
@@ -130,7 +130,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::MATRIX },
+                    { Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix().inverse(); }
                 },
             }
@@ -145,7 +145,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().least_squares(
                         std::abs(args[1].getScalar())
                     ); }
@@ -162,11 +162,11 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::BOTH,
             {
                 {
-                    { Variable::MATRIX, Variable::MATRIX },
+                    { Variable::Types::MATRIX, Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix() - args[1].getMatrix(); }
                 },
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getScalar() - args[1].getScalar(); }
                 },
             }
@@ -181,7 +181,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::LEFT,
             {
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getScalar() / args[1].getScalar(); }
                 },
             }
@@ -196,7 +196,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::SCALAR },
+                    { Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::IDENTITY, 
                         std::abs(args[0].getScalar())
@@ -214,7 +214,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::MATRIX },
+                    { Variable::Types::MATRIX },
                     [](Arguments args) -> Variable 
                     { return Matrix(
                         Matrix::DIAGONAL, 
@@ -234,7 +234,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::ZERO, 
                         args[0].getScalar(), 
@@ -253,7 +253,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::RANDOM, 
                         args[0].getScalar(), 
@@ -272,7 +272,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::BOTH,
             {
                 {
-                    { Variable::MATRIX },
+                    { Variable::Types::MATRIX },
                     [](Arguments args) -> Variable { return args[0].getMatrix().transpose(); }
                 },
             }
@@ -287,7 +287,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::LEFT,
             {
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().getRow(
                         std::abs(args[1].getScalar())
                     ); }
@@ -304,7 +304,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::LEFT,
             {
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().getColumn(
                         std::abs(args[1].getScalar())
                     ); }
@@ -321,7 +321,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::MATRIX, Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().at(
                         std::abs(args[1].getScalar()), 
                         std::abs(args[2].getScalar())
@@ -339,11 +339,11 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
             AssociativityTypes::RIGHT,
             {
                 {
-                    { Variable::SCALAR, Variable::SCALAR },
+                    { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return std::pow(args[0].getScalar(), args[1].getScalar()); }
                 },
                 {
-                    { Variable::MATRIX, Variable::SCALAR },
+                    { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix() ^ args[1].getScalar(); }
                 },
             }
@@ -388,9 +388,9 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const
         bool undefined_arguments = false;
         for (auto argument_type : argument_types) {
             switch (argument_type) {
-            case Variable::MATRIX: description += "Matrix "; break;
-            case Variable::SCALAR: description += "Scalar "; break;
-            case Variable::VOID: undefined_arguments = true; break;
+            case Variable::Types::MATRIX: description += "Matrix "; break;
+            case Variable::Types::SCALAR: description += "Scalar "; break;
+            case Variable::Types::VOID: undefined_arguments = true; break;
             }
         }
         if (undefined_arguments)

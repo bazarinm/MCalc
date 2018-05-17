@@ -16,7 +16,7 @@ ExecutionError::ExecutionError(const std::string& msg) : std::runtime_error(msg)
 namespace ShuntingYard {
 
     std::vector<Token> tokenize(const std::string& input) {
-        Lexer parser;
+        Lexer parser(Lexer::OnUnprocessable::STOP);
         for (char character : input) {
             try {
                 parser.process(character);

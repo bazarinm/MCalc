@@ -8,8 +8,13 @@
 
 class Lexer
 {
+public:
+    enum class OnUnprocessable : bool {
+        STOP, IGNORE
+    };
+
 private:
-    enum States {
+    enum class States {
         PENDING,
         MINUS,
         INTEGER_PART,
@@ -21,10 +26,9 @@ private:
         UNPROCESSABLE,
     };
 
-    const bool ignore_unprocessable = false;
-
 public:
     Lexer();
+    Lexer(OnUnprocessable);
 
     void process(char);
     void endOfInput();
@@ -35,6 +39,7 @@ private:
     States _state;
     std::string _buffer;
     std::vector<Token> _result;
+    bool _ignore_unprocessable;
 
     bool isNumber(const std::string&) const;
     bool isRoundBracket(char);

@@ -34,7 +34,7 @@ namespace {
 
         Matrix M;
         switch (v.getType()) {
-        case Variable::MATRIX:
+        case Variable::Types::MATRIX:
             M = v.getMatrix();
 
             o << "is a " << M.getSize().rows;
@@ -42,11 +42,11 @@ namespace {
             o << std::endl << v.getMatrix();
 
             break;
-        case Variable::SCALAR:
+        case Variable::Types::SCALAR:
             o << "= " << v.getScalar();
 
             break;
-        case Variable::VOID:
+        case Variable::Types::VOID:
             o << "is undefined ";
 
             break;

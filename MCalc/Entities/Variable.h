@@ -7,8 +7,9 @@
 
 class Variable {
 public:
-    enum Types { MATRIX, SCALAR, VOID };
+    enum class Types { MATRIX, SCALAR, VOID };
 
+public:
     Variable();
     Variable(const Matrix&);
     Variable(double);
@@ -29,7 +30,7 @@ private:
     Matrix _matrix;
     double _scalar;
 
-    static std::string constant_name;
+    const static std::string constant_name;
     static std::map<std::string, Variable> _variables;
 };
 

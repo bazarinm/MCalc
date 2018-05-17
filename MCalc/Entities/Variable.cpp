@@ -4,15 +4,15 @@
 #include <string>
 #include <map>
 
-std::string Variable::constant_name = "$eval";
+const std::string Variable::constant_name = "";
 
 std::map<std::string, Variable> Variable::_variables = {};
 
-Variable::Variable() : _type(VOID), _name(constant_name) {}
+Variable::Variable() : _type(Types::VOID), _name(constant_name) {}
 
-Variable::Variable(const Matrix& matrix) : _type(MATRIX), _matrix(matrix), _name(constant_name) {}
+Variable::Variable(const Matrix& matrix) : _type(Types::MATRIX), _matrix(matrix), _name(constant_name) {}
 
-Variable::Variable(double scalar) : _type(SCALAR), _scalar(scalar), _name(constant_name) {}
+Variable::Variable(double scalar) : _type(Types::SCALAR), _scalar(scalar), _name(constant_name) {}
 
 Variable::Variable(const std::string& name) {
     auto search = _variables.find(name);
@@ -20,7 +20,7 @@ Variable::Variable(const std::string& name) {
         *this = search->second;
     else {
         _name = name;
-        _type = VOID;
+        _type = Types::VOID;
         assign(name, *this);
     }
 }
@@ -30,7 +30,7 @@ Variable::Types Variable::getType() const {
 }
 
 Matrix Variable::getMatrix() const {
-    if (_type == MATRIX)
+    if (_type == Types::MATRIX)
         return _matrix;
     else
         throw std::runtime_error("variable: " + _name + " is not a matrix ");
@@ -41,7 +41,7 @@ std::string Variable::getName() const {
 }
 
 double Variable::getScalar() const {
-    if (_type == SCALAR)
+    if (_type == Types::SCALAR)
         return _scalar;
     else
         throw std::runtime_error("variable: " + _name + " is not a matrix ");
