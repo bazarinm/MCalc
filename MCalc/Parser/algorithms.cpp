@@ -4,7 +4,7 @@
 #include "Utils/Token.h"
 #include "Utils/Lexer.h"
 #include <algorithm>
-#include <exception>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <stack>

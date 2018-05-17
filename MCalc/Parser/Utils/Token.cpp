@@ -2,7 +2,7 @@
 
 #include "./Entities/Variable.h"
 #include "./Entities/Function.h"
-#include <exception>
+#include <stdexcept>
 #include <vector>
 #include <string>
 

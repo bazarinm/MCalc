@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <exception>
+#include <stdexcept>
 #include <functional>
 
 std::map<std::string, Function::FunctionInfo> Function::_database = {

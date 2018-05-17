@@ -3,7 +3,7 @@
 
 #include "./Entities/Variable.h"
 #include "Utils/Token.h"
-#include <exception>
+#include <stdexcept>
 #include <vector>
 #include <string>
 

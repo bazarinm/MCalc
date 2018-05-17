@@ -4,7 +4,7 @@
 #include "./Entities/Matrix/Matrix.h"
 #include "Token.h"
 #include <vector>
-#include <exception>
+#include <stdexcept>
 #include <string>
 #include <regex>
 #include <cctype>

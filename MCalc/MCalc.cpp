@@ -3,7 +3,7 @@
 #include "Entities/Matrix/Matrix.h"
 #include "Entities/Variable.h"
 #include "Parser/algorithms.h"
-#include <exception>
+#include <stdexcept>
 #include <iostream>
 #include <string>
 
