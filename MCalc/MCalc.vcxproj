@@ -69,7 +69,7 @@
     <ClInclude Include="Entities\Function.h" />
     <ClInclude Include="Entities\Variable.h" />
     <ClInclude Include="Entities\Matrix\Matrix.h" />
-    <ClInclude Include="MCalc\MCalc.h" />
+    <ClInclude Include="MCalc.h" />
     <ClInclude Include="Parser\algorithms.h" />
     <ClInclude Include="Parser\Utils\Lexer.h" />
     <ClInclude Include="Parser\Utils\Token.h" />
@@ -79,7 +79,7 @@
     <ClCompile Include="Entities\Variable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Matrix\Matrix.cpp" />
-    <ClCompile Include="MCalc\MCalc.cpp" />
+    <ClCompile Include="MCalc.cpp" />
     <ClCompile Include="Parser\algorithms.cpp" />
     <ClCompile Include="Parser\Utils\Lexer.cpp" />
     <ClCompile Include="Parser\Utils\Token.cpp" />

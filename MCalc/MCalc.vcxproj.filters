@@ -30,10 +30,10 @@
     <ClInclude Include="Entities\Variable.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Entities\Matrix\Matrix.h">
+    <ClInclude Include="MCalc.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="MCalc\MCalc.h">
+    <ClInclude Include="Entities\Matrix\Matrix.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="Entities\Matrix\Matrix.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="MCalc\MCalc.cpp">
+    <ClCompile Include="MCalc.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>

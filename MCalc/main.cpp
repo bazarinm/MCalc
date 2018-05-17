@@ -1,4 +1,4 @@
-#include "MCalc/MCalc.h"
+#include "MCalc.h"
 
 int main() 
 {
