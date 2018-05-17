@@ -13,7 +13,7 @@ public:
 };
 
 namespace ShuntingYard {
-    std::vector<Token> tokenize(const std::string & input);
+    std::vector<Token> tokenize(const std::string& input);
     std::vector<Token> sort(const std::vector<Token>& tokens);
     Variable evaluate(const std::vector<Token>& sorted_input);
 }
