@@ -2,10 +2,10 @@
 #define FUNCTION_H
 
 #include "Variable.h"
+#include <functional>
+#include <string>
 #include <vector>
 #include <map>
-#include <string>
-#include <functional>
 
 class Function
 {

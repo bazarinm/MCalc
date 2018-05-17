@@ -1,9 +1,10 @@
 #include "Lexer.h"
 
-#include "Function.h"
+#include "../../Entities/Function.h"
+#include "../../Matrix/Matrix.h"
 #include "Token.h"
-#include "Matrix.h"
 #include <vector>
+#include <exception>
 #include <string>
 #include <regex>
 #include <cctype>
@@ -84,7 +85,7 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString)
                 if (isNumber(buffer))
                     bufferRow.push_back(std::stod(buffer));
                 else
-                    throw parsingError("parser: incorrect symbol < " + buffer + " > in matrix initialization");
+                    throw std::runtime_error("parser: incorrect symbol < " + buffer + " > in matrix initialization");
 
                 buffer = "";
                 pending = true;
@@ -98,7 +99,7 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString)
             if (isNumber(buffer))
                 bufferRow.push_back(std::stod(buffer));
             else
-                throw parsingError("parser: incorrect symbol < " + buffer + " > in matrix initialization");
+                throw std::runtime_error("parser: incorrect symbol < " + buffer + " > in matrix initialization");
 
             buffer = "";
             pending = true;
@@ -108,12 +109,7 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString)
         }
     }
 
-    try { 
-        return Matrix(matrixVector); 
-    }
-    catch (std::runtime_error err) { 
-        throw parsingError(err.what()); 
-    }
+    return Matrix(matrixVector); 
 };
 
 void Lexer::process(char character) 
@@ -265,6 +261,6 @@ void Lexer::unprocessable(char character)
         process(character);
     }
     else {
-        throw parsingError("parser: invalid sequence < " + _buffer + " >");
+        throw std::runtime_error("parser: invalid sequence < " + _buffer + " >");
     }
 }

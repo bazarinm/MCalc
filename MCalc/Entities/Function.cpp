@@ -1,6 +1,6 @@
-#include "Function.h"
+#include "./Function.h"
 
-#include "Variable.h"
+#include "./Variable.h"
 #include <cmath>
 #include <map>
 #include <string>

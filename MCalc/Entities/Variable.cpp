@@ -1,6 +1,6 @@
-#include "Variable.h"
+#include "./Variable.h"
 
-#include "Matrix.h"
+#include "../Matrix/Matrix.h"
 #include <string>
 #include <map>
 
