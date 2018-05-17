@@ -147,7 +147,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().least_squares(
-                        std::abs(args[1].getScalar())
+                        static_cast<int>(std::abs(args[1].getScalar()))
                     ); }
                 },
             }
@@ -199,7 +199,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                     { Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::PredefinedSquareTypes::IDENTITY, 
-                        std::abs(args[0].getScalar())
+                        static_cast<std::size_t>(std::abs(args[0].getScalar()))
                     ); }
                 },
             }
@@ -237,8 +237,8 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                     { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::PredefinedRectangleTypes::ZERO, 
-                        args[0].getScalar(), 
-                        args[1].getScalar()
+                        static_cast<std::size_t>(std::abs(args[0].getScalar())),
+                        static_cast<std::size_t>(std::abs(args[1].getScalar()))
                     ); }
                 },
             }
@@ -256,8 +256,8 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                     { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
                         Matrix::PredefinedRectangleTypes::RANDOM,
-                        args[0].getScalar(), 
-                        args[1].getScalar()
+                        static_cast<std::size_t>(std::abs(args[0].getScalar())), 
+                        static_cast<std::size_t>(std::abs(args[1].getScalar()))
                     ); }
                 },
             }
@@ -289,7 +289,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().getRow(
-                        std::abs(args[1].getScalar())
+                        static_cast<std::size_t>(std::abs(args[1].getScalar()))
                     ); }
                 },
             }
@@ -306,7 +306,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::MATRIX, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().getColumn(
-                        std::abs(args[1].getScalar())
+                        static_cast<std::size_t>(std::abs(args[1].getScalar()))
                     ); }
                 },
             }
@@ -323,8 +323,8 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::MATRIX, Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return args[0].getMatrix().at(
-                        std::abs(args[1].getScalar()), 
-                        std::abs(args[2].getScalar())
+                        static_cast<std::size_t>(std::abs(args[1].getScalar())),
+                        static_cast<std::size_t>(std::abs(args[2].getScalar()))
                     ); }
                 },
             }
@@ -344,7 +344,8 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 },
                 {
                     { Variable::Types::MATRIX, Variable::Types::SCALAR },
-                    [](Arguments args) -> Variable { return args[0].getMatrix() ^ args[1].getScalar(); }
+                    [](Arguments args) -> Variable { return 
+                    args[0].getMatrix() ^ static_cast<int>(args[1].getScalar()); }
                 },
             }
         }   

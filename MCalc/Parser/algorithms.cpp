@@ -59,12 +59,10 @@ namespace ShuntingYard {
 
                 //this logical expression is too complicated
                 while (
-                    !(stack.empty() || stack.top().isOpenBracket())
-                    && (
-                    (stack.top().getPriority() > token_priority)
-                        || (stack.top().getPriority() == token_priority && token.isLeftAssociative())
-                        )
-                    ) {
+                    !(stack.empty() || stack.top().isOpenBracket()) 
+                    && ((stack.top().getPriority() > token_priority) 
+                        || (stack.top().getPriority() == token_priority 
+                            && token.isLeftAssociative()))) {
                     output.push_back(stack.top());
                     stack.pop();
                 }
@@ -99,8 +97,7 @@ namespace ShuntingYard {
                 std::reverse(arguments.begin(), arguments.end());
 
                 try {
-                    Variable result = token.invoke(arguments);
-                    variable_tokens.push(result);
+                    variable_tokens.push(token.invoke(arguments));
                 }
                 catch (const std::runtime_error& err) {
                     throw ExecutionError(err.what());

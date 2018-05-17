@@ -75,7 +75,7 @@ void MCalc::repl()
 
     std::string input;
     while (1) {
-        std::cout << "MCalc>: ";
+        std::cout << std::endl << "MCalc>: ";
         std::getline(std::cin, input);
         std::cout << std::endl;
 
@@ -96,7 +96,7 @@ void MCalc::repl()
                 std::cout << Variable::assign("ans", result);
             }
 
-            std::cout << std::endl << std::endl;
+            std::cout << std::endl;
         }
         catch (const ExecutionError& err) {
             std::cout << "Error: " << err.what();
