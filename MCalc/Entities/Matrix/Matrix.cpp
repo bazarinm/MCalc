@@ -6,12 +6,11 @@
 #include <random>
 #include <string>
 
-//CONSTRUCTORS
 Matrix::Matrix() : _size({ 0, 0 }), _entries({}) 
 {
 }
 
-Matrix::Matrix(std::size_t size) : Matrix(ZERO, size, size) 
+Matrix::Matrix(std::size_t size) : Matrix(PredefinedRectangleTypes::ZERO, size, size)
 {
 }
 
@@ -51,7 +50,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
 
     std::size_t k = 0;
     switch (type) {
-    case DIAGONAL : 
+    case SquareTypes::DIAGONAL : 
         if (entries.size() != size)
             throw std::runtime_error("matrix: an unexpected number of elements ");
 
@@ -59,7 +58,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
             _entries[i * _size.rows + i] = entries[i];
 
         break;
-    case UPPER_TRIANGLE:
+    case SquareTypes::UPPER_TRIANGLE:
         if (entries.size() != (size * size + size) / 2)
             throw std::runtime_error("matrix: an unexpected number of elements ");
 
@@ -68,7 +67,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
                 _entries[i * size + j] = entries[k++]; 
 
         break;
-    case LOWER_TRIANGLE:
+    case SquareTypes::LOWER_TRIANGLE:
         if (entries.size() != (size * size + size) / 2)
             throw std::runtime_error("matrix: an unexpected number of elements ");
 
@@ -77,7 +76,7 @@ Matrix::Matrix(SquareTypes type, std::size_t size, const std::vector<double>& en
                 _entries[i * size + j] = entries[k++];
 
         break;
-    case SYMMETRIC:
+    case SquareTypes::SYMMETRIC:
         if (entries.size() != (size * size + size) / 2)
             throw std::runtime_error("matrix: an unexpected number of elements ");
 
@@ -98,13 +97,13 @@ Matrix::Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t colu
     std::default_random_engine rand(seed());
     std::uniform_int_distribution<int> discrete(0, 9);
     switch (type) {
-    case RANDOM:
+    case PredefinedRectangleTypes::RANDOM:
         for (std::size_t i = 0; i < _size.rows; ++i)
             for (std::size_t j = 0; j < _size.columns; ++j)
                 _entries[i * _size.columns + j] = discrete(rand);
 
         break;
-    case ZERO: break; //already zero
+    case PredefinedRectangleTypes::ZERO: break; //already zero
     }
 }
 
@@ -113,7 +112,7 @@ Matrix::Matrix(PredefinedSquareTypes type, std::size_t size): _size({ size, size
     _entries = std::vector<double>(size * size, 0);
 
     switch (type) {
-    case IDENTITY :
+    case PredefinedSquareTypes::IDENTITY:
         for (std::size_t i = 0; i < size; ++i)
             _entries[i * _size.columns + i] = 1;
 
@@ -226,7 +225,7 @@ Matrix Matrix::operator^(int power) const
 
     Matrix result;
     if (power == 0)
-        result = Matrix(IDENTITY, _size.rows);
+        result = Matrix(PredefinedSquareTypes::IDENTITY, _size.rows);
     else {
         result = *this;
         bool inverse = false;
@@ -419,6 +418,8 @@ Matrix Matrix::transpose() const
 
 Matrix Matrix::least_squares(int exponent) const 
 {
+    if (exponent < 0)
+        throw std::runtime_error("matrix: exponent must be a positive value");
     if (_size.rows != 2)
         throw std::runtime_error("matrix: input must be of size 2 by x ");
 
@@ -428,7 +429,7 @@ Matrix Matrix::least_squares(int exponent) const
 	std::vector<double> x(_size.columns);
 	std::vector<double> y(_size.columns);
 
-	for (int i = 0; i < _size.columns; ++i) {
+	for (std::size_t i = 0; i < _size.columns; ++i) {
 		x[i] = _entries[i];
 		y[i] = _entries[_size.columns + i];
 	}
@@ -442,13 +443,13 @@ Matrix Matrix::least_squares(int exponent) const
 		for (int j = 0; j < exponent + 1; ++j)
 		{
 			sum[i][j] = 0;
-			for (int k = 0; k < _size.columns; ++k)
+			for (std::size_t k = 0; k < _size.columns; ++k)
 				sum[i][j] += pow(x[k], i + j);
 		}
 
 	for (int i = 0; i < exponent + 1; ++i) {
 		b[i] = 0;
-		for (int k = 0; k < _size.columns; ++k)
+		for (std::size_t k = 0; k < _size.columns; ++k)
 			b[i] += pow(x[k], i) * y[k];
 	}
 
@@ -487,4 +488,11 @@ Matrix Matrix::least_squares(int exponent) const
 		coefficients[0][i] = a[i];
 
 	return coefficients;
+}
+
+bool Matrix::Dimensions::operator==(const Dimensions& other) const {
+    return rows == other.rows && columns == other.columns;
+}
+bool Matrix::Dimensions::operator!=(const Dimensions& other) const {
+    return !(*this == other);
 }

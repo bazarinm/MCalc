@@ -6,20 +6,17 @@
 
 class Matrix {
 public:
-    enum SquareTypes {
+    enum class SquareTypes {
         UPPER_TRIANGLE, LOWER_TRIANGLE,
         SYMMETRIC, DIAGONAL
     };
-
-    enum RectangleTypes {
+    enum class RectangleTypes {
         FULL
     };
-
-    enum PredefinedSquareTypes {
+    enum class PredefinedSquareTypes {
         IDENTITY
     };
-
-    enum PredefinedRectangleTypes {
+    enum class PredefinedRectangleTypes {
         ZERO, RANDOM
     };
 
@@ -27,12 +24,8 @@ public:
         std::size_t rows;
         std::size_t columns;
 
-        bool operator==(const Dimensions& other) const {
-            return rows == other.rows && columns == other.columns;
-        }
-        bool operator!=(const Dimensions& other) const {
-            return !(*this == other);
-        }
+        bool operator==(const Dimensions& other) const;
+        bool operator!=(const Dimensions& other) const;
     };
 
 public:
@@ -42,7 +35,7 @@ public:
     Matrix(std::size_t rows, std::size_t columns, const std::vector<double>& entries);
     Matrix(const std::vector<std::vector<double>>& entries);
 
-    Matrix(RectangleTypes type, std::size_t rows, std::size_t columns, const std::vector<double>& entries);
+    //Matrix(RectangleTypes type, std::size_t rows, std::size_t columns, const std::vector<double>& entries);
     Matrix(SquareTypes type, std::size_t size, const std::vector<double>& entries);
     Matrix(PredefinedSquareTypes type, std::size_t size);
     Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns);
@@ -59,18 +52,18 @@ public:
     Matrix operator+(const Matrix& other) const; //sum of 2 matrices
     Matrix operator-(const Matrix& other) const;
     Matrix& operator+=(const Matrix& other);
-    Matrix& operator-=(const Matrix& other);
+    //Matrix& operator-=(const Matrix& other);
 
     Matrix operator*(const Matrix& other) const; //product of 2 matrices
     Matrix operator^(int power) const; 
     Matrix operator/(const Matrix& other) const; //multiplication by an inverse of other matrix
     Matrix& operator*=(const Matrix& other);
-    Matrix& operator/=(const Matrix& other);
+    //Matrix& operator/=(const Matrix& other);
 
     Matrix operator*(double scalar) const; //multiplication by a scalar
     Matrix operator/(double scalar) const;
     Matrix& operator*=(double scalar);
-    Matrix& operator/=(double scalar);
+    //Matrix& operator/=(double scalar);
 
     Matrix& operator=(const Matrix& other) = default;
 

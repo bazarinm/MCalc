@@ -57,7 +57,7 @@ namespace ShuntingYard {
             else {
                 unsigned token_priority = token.getPriority();
 
-                //I dont like the looks of this logical expression
+                //this logical expression is too complicated
                 while (
                     !(stack.empty() || stack.top().isOpenBracket())
                     && (

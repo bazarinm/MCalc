@@ -198,7 +198,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
-                        Matrix::IDENTITY, 
+                        Matrix::PredefinedSquareTypes::IDENTITY, 
                         std::abs(args[0].getScalar())
                     ); }
                 },
@@ -217,7 +217,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                     { Variable::Types::MATRIX },
                     [](Arguments args) -> Variable 
                     { return Matrix(
-                        Matrix::DIAGONAL, 
+                        Matrix::SquareTypes::DIAGONAL, 
                         args[0].getMatrix().getEntries().size(), 
                         args[0].getMatrix().getEntries()
                     ); }
@@ -236,7 +236,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
-                        Matrix::ZERO, 
+                        Matrix::PredefinedRectangleTypes::ZERO, 
                         args[0].getScalar(), 
                         args[1].getScalar()
                     ); }
@@ -255,7 +255,7 @@ std::map<std::string, Function::FunctionInfo> Function::_database = {
                 {
                     { Variable::Types::SCALAR, Variable::Types::SCALAR },
                     [](Arguments args) -> Variable { return Matrix(
-                        Matrix::RANDOM, 
+                        Matrix::PredefinedRectangleTypes::RANDOM,
                         args[0].getScalar(), 
                         args[1].getScalar()
                     ); }
