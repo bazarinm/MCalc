@@ -1,6 +1,6 @@
 #include "MCalc.h"
 
-#include "./Matrix/Matrix.h"
+#include "./Entities/Matrix/Matrix.h"
 #include "./Entities/Variable.h"
 #include "./Parser/algorithms.h"
 #include <exception>
@@ -78,7 +78,6 @@ void MCalc::repl()
 
         if (input.empty())
             break;
-
         if (isBadInput(input)) {
             std::cout << "Input error: non-ascii characters in the input";
             continue;
