@@ -102,17 +102,6 @@ void MCalc::repl()
             std::cout << "Program error: " << err.what();
             std::cout << std::endl << "Wait for bugfixes";
         }
-        catch (...) {
-            try {
-                std::rethrow_exception(std::current_exception());
-            }
-            catch (const std::exception& err) {
-                std::cout << "Fatal error: " << err.what();
-                std::cout << std::endl << "Wait for bugfixes ";
-                std::cout << std::endl << "Press any key for exit ";
-                break;
-            }
-        }
 
     }
 } 
