@@ -7,8 +7,8 @@
 #include <string>
 
 namespace {
-    std::ostream& operator<<(std::ostream& o, const Matrix& m);
-    std::ostream& operator<<(std::ostream& o, const Variable& v);
+    std::ostream& operator<<(std::ostream&, const Matrix&);
+    std::ostream& operator<<(std::ostream&, const Variable&);
 
     bool isBadInput(const std::string&);
 }

@@ -78,11 +78,11 @@ namespace ShuntingYard {
         return output;
     }
 
-    Variable evaluate(const std::vector<Token>& sorted_input) {
+    Variable evaluate(const std::vector<Token>& sorted_tokens) {
         std::stack<Token> variable_tokens;
         std::vector<Variable> arguments;
 
-        for (const Token& token : sorted_input) {
+        for (const Token& token : sorted_tokens) {
             if (token.isOperand())
                 variable_tokens.push(token);
             else if (token.isOperator()) {

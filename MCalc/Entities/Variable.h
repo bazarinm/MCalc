@@ -21,7 +21,7 @@ public:
     double getScalar() const;
     bool isAssignmentResult() const;
 
-    static Variable assign(const std::string& name, const Variable&);
+    static Variable assign(const std::string&, const Variable&);
 
     static bool isVariable(const std::string&);
 private:

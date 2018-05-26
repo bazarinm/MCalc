@@ -9,13 +9,13 @@
 
 class ExecutionError : public std::runtime_error {
 public:
-    ExecutionError(const std::string& msg);
+    ExecutionError(const std::string&);
 };
 
 namespace ShuntingYard {
     std::vector<Token> tokenize(const std::string& input);
     std::vector<Token> sort(const std::vector<Token>& tokens);
-    Variable evaluate(const std::vector<Token>& sorted_input);
+    Variable evaluate(const std::vector<Token>& sorted_tokens);
 }
 
 #endif

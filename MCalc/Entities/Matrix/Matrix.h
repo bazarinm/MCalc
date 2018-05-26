@@ -24,21 +24,21 @@ public:
         std::size_t rows;
         std::size_t columns;
 
-        bool operator==(const Dimensions& other) const;
-        bool operator!=(const Dimensions& other) const;
+        bool operator==(const Dimensions&) const;
+        bool operator!=(const Dimensions&) const;
     };
 
 public:
     Matrix();
-    Matrix(std::size_t size);
+    Matrix(std::size_t);
     Matrix(std::size_t rows, std::size_t columns);
     Matrix(std::size_t rows, std::size_t columns, const std::vector<double>& entries);
     Matrix(const std::vector<std::vector<double>>& entries);
 
     //Matrix(RectangleTypes type, std::size_t rows, std::size_t columns, const std::vector<double>& entries);
-    Matrix(SquareTypes type, std::size_t size, const std::vector<double>& entries);
-    Matrix(PredefinedSquareTypes type, std::size_t size);
-    Matrix(PredefinedRectangleTypes type, std::size_t rows, std::size_t columns);
+    Matrix(SquareTypes, std::size_t, const std::vector<double>& entries);
+    Matrix(PredefinedSquareTypes, std::size_t);
+    Matrix(PredefinedRectangleTypes, std::size_t rows, std::size_t columns);
 
     Matrix(const Matrix& other) = default; //copy
 
@@ -49,15 +49,15 @@ public:
     double& at(std::size_t row, std::size_t column);
     double at(std::size_t row, std::size_t column) const;
 
-    Matrix operator+(const Matrix& other) const; //sum of 2 matrices
-    Matrix operator-(const Matrix& other) const;
-    Matrix& operator+=(const Matrix& other);
+    Matrix operator+(const Matrix&) const; //sum of 2 matrices
+    Matrix operator-(const Matrix&) const;
+    Matrix& operator+=(const Matrix&);
     //Matrix& operator-=(const Matrix& other);
 
-    Matrix operator*(const Matrix& other) const; //product of 2 matrices
+    Matrix operator*(const Matrix&) const; //product of 2 matrices
     Matrix operator^(int power) const; 
-    Matrix operator/(const Matrix& other) const; //multiplication by an inverse of other matrix
-    Matrix& operator*=(const Matrix& other);
+    Matrix operator/(const Matrix&) const; //multiplication by an inverse of other matrix
+    Matrix& operator*=(const Matrix&);
     //Matrix& operator/=(const Matrix& other);
 
     Matrix operator*(double scalar) const; //multiplication by a scalar
