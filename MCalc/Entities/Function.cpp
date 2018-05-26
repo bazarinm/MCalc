@@ -388,7 +388,7 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const
         try {
             return search->second(arguments);
         }
-        catch (const std::runtime_error err) {
+        catch (const std::runtime_error& err) {
             throw std::runtime_error(error_message + err.what());
         }
     else {
