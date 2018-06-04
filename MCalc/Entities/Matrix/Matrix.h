@@ -40,8 +40,6 @@ public:
     Matrix(PredefinedSquareTypes, std::size_t);
     Matrix(PredefinedRectangleTypes, std::size_t rows, std::size_t columns);
 
-    Matrix(const Matrix& other) = default; //copy
-
     const Dimensions& getSize() const;
     const std::vector<double>& getEntries() const;
     Matrix getRow(std::size_t) const;

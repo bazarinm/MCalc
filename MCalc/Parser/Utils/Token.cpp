@@ -16,9 +16,11 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name)
         else
             throw std::runtime_error("token: " + _name + "is not a function ");
         break;
+
     case Types::OPERAND:
         _variable = Variable(_name);
         break;
+
     case Types::BRACKET:
         //do nothing
         break;

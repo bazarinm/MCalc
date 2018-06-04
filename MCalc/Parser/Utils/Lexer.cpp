@@ -65,6 +65,7 @@ void Lexer::endOfInput() {
     process('\n');
 }
 
+//TO DO: remake this
 Matrix Lexer::stringToMatrix(const std::string& matrixString) const
 {
     std::vector<std::string> splitedMatrixStr;
