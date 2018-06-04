@@ -16,12 +16,12 @@ public:
     Variable(const std::string&);
 
     Types getType() const;
-    std::string getName() const;
-    Matrix getMatrix() const;
+    const std::string& getName() const;
+    const Matrix& getMatrix() const;
     double getScalar() const;
     bool isAssignmentResult() const;
 
-    static Variable assign(const std::string&, const Variable&);
+    static const Variable& assign(const std::string&, const Variable&);
 
     static bool isVariable(const std::string&);
 private:

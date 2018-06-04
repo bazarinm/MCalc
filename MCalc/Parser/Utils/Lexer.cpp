@@ -19,7 +19,7 @@ Lexer::Lexer(OnUnprocessable action) :
 {
 }
 
-std::vector<Token> Lexer::getResult() const {
+const std::vector<Token>& Lexer::getResult() const {
     return _result;
 };
 
@@ -27,21 +27,21 @@ bool Lexer::isNumber(const std::string& str) const {
     return std::regex_match(str, std::regex("[-]?[0-9]+[.]?[0-9]*"));
 }
 
-bool Lexer::isMinus(char character) {
+bool Lexer::isMinus(char character) const {
     return character == '-';
 }
 
-bool Lexer::isWordStart(char character) {
+bool Lexer::isWordStart(char character) const {
     return std::isalpha(character) || character == '_';
 }
 
 
-bool Lexer::isInWord(char character) {
+bool Lexer::isInWord(char character) const {
     return isWordStart(character) || std::isdigit(character);
 }
 
 /* any special symbols that do not fit into other categories */
-bool Lexer::isSpecialSymbol(char character) {
+bool Lexer::isSpecialSymbol(char character) const {
     return !(0
         || std::isspace(character)
         || std::isdigit(character)
@@ -52,12 +52,12 @@ bool Lexer::isSpecialSymbol(char character) {
         );
 }
 
-bool Lexer::isRoundBracket(char character) {
+bool Lexer::isRoundBracket(char character) const {
     return character == '(' || character == ')';
 }
 
 
-bool Lexer::isSquareBracket(char character) {
+bool Lexer::isSquareBracket(char character) const {
     return character == '[' || character == ']';
 }
 
@@ -65,7 +65,7 @@ void Lexer::endOfInput() {
     process('\n');
 }
 
-Matrix Lexer::stringToMatrix(const std::string& matrixString) 
+Matrix Lexer::stringToMatrix(const std::string& matrixString) const
 {
     std::vector<std::string> splitedMatrixStr;
     std::string buffer;
@@ -120,7 +120,8 @@ Matrix Lexer::stringToMatrix(const std::string& matrixString)
 
 void Lexer::process(char character) 
 {
-    switch (_state) {
+    switch (_state) 
+    {
     case States::PENDING: pending(character); break;
     case States::MINUS: minus(character); break;
     case States::INTEGER_PART: integer_part(character); break;

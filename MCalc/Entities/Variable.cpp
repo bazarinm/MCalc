@@ -10,9 +10,11 @@ std::map<std::string, Variable> Variable::_variables = {};
 
 Variable::Variable() : _type(Types::VOID), _name(constant_name) {}
 
-Variable::Variable(const Matrix& matrix) : _type(Types::MATRIX), _matrix(matrix), _name(constant_name) {}
+Variable::Variable(const Matrix& matrix) : 
+    _type(Types::MATRIX), _matrix(matrix), _name(constant_name) {}
 
-Variable::Variable(double scalar) : _type(Types::SCALAR), _scalar(scalar), _name(constant_name) {}
+Variable::Variable(double scalar) : 
+    _type(Types::SCALAR), _scalar(scalar), _name(constant_name) {}
 
 Variable::Variable(const std::string& name) {
     auto search = _variables.find(name);
@@ -29,14 +31,14 @@ Variable::Types Variable::getType() const {
     return _type;
 }
 
-Matrix Variable::getMatrix() const {
+const Matrix& Variable::getMatrix() const {
     if (_type == Types::MATRIX)
         return _matrix;
     else
         throw std::runtime_error("variable: " + _name + " is not a matrix ");
 }
 
-std::string Variable::getName() const {
+const std::string& Variable::getName() const {
     return _name;
 }
 
@@ -61,7 +63,7 @@ bool Variable::isVariable(const std::string& name) {
     return result;
 }
 
-Variable Variable::assign(const std::string& name, const Variable& v) {
+const Variable& Variable::assign(const std::string& name, const Variable& v) {
     if (name == constant_name)
         throw std::runtime_error("variable: can't assign value to an expression ");
 

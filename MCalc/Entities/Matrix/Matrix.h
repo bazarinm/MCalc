@@ -42,8 +42,8 @@ public:
 
     Matrix(const Matrix& other) = default; //copy
 
-    Dimensions getSize() const;
-    std::vector<double> getEntries() const;
+    const Dimensions& getSize() const;
+    const std::vector<double>& getEntries() const;
     Matrix getRow(std::size_t) const;
     Matrix getColumn(std::size_t) const;
     double& at(std::size_t row, std::size_t column);

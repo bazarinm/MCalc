@@ -37,7 +37,7 @@ public:
 
     Variable operator()(const std::vector<Variable>&) const;
 
-    std::string getName() const;
+    const std::string& getName() const;
     unsigned getArity() const;
     unsigned getPriority() const;
     AssociativityTypes getAssociativityType() const;

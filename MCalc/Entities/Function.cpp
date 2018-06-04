@@ -396,7 +396,8 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const
         description += "does not take argument(s) < ";
         bool undefined_arguments = false;
         for (auto argument_type : argument_types) {
-            switch (argument_type) {
+            switch (argument_type) 
+            {
             case Variable::Types::MATRIX: description += "Matrix "; break;
             case Variable::Types::SCALAR: description += "Scalar "; break;
             case Variable::Types::VOID: undefined_arguments = true; break;
@@ -411,7 +412,7 @@ Variable Function::operator()(const std::vector<Variable>& arguments) const
     }
 }
 
-std::string Function::getName() const {
+const std::string& Function::getName() const {
     return _name;
 }
 
@@ -442,7 +443,8 @@ bool Function::isLeftAssociative(const std::string& name)
     bool isLeftAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        isLeftAssociative = search->second._associativity != AssociativityTypes::RIGHT;
+        isLeftAssociative = 
+            search->second._associativity != AssociativityTypes::RIGHT;
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
@@ -455,7 +457,8 @@ bool Function::isRightAssociative(const std::string& name)
     bool isRightAssociative = false;
     auto search = _database.find(name);
     if (search != _database.end()) {
-        isRightAssociative = search->second._associativity != AssociativityTypes::LEFT;
+        isRightAssociative = 
+            search->second._associativity != AssociativityTypes::LEFT;
     }
     else
         throw std::runtime_error("no function <" + name + "> ");
@@ -491,7 +494,8 @@ unsigned Function::getPriority(const std::string& name)
         throw std::runtime_error("no function <" + name + "> ");
 }
 
-Function::AssociativityTypes Function::getAssociativityType(const std::string& name)
+Function::AssociativityTypes 
+Function::getAssociativityType(const std::string& name)
 {
     auto search = _database.find(name);
     if (search != _database.end()) {

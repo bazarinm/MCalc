@@ -18,9 +18,9 @@ public:
 
     Types getType() const;
 
-    std::string getName() const;
-    Variable getVariable() const;
-    Function getFunction() const;
+    const std::string& getName() const;
+    const Variable& getVariable() const;
+    const Function& getFunction() const;
 
     bool isOperand() const;
     bool isOperator() const;

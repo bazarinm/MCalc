@@ -25,11 +25,13 @@ Token::Token(Types type, const std::string& name): _type(type), _name(name)
     }
 }
 
-Token::Token(const Variable& v) : _type(Types::OPERAND), _variable(v), _name(v.getName())
+Token::Token(const Variable& v) : 
+    _type(Types::OPERAND), _variable(v), _name(v.getName())
 {
 }
 
-Token::Token(const Function& f) : _type(Types::OPERATOR), _function(f), _name(f.getName())
+Token::Token(const Function& f) : 
+    _type(Types::OPERATOR), _function(f), _name(f.getName())
 {
 }
 
@@ -37,11 +39,11 @@ Token::Types Token::getType() const {
     return _type;
 }
 
-std::string Token::getName() const {
+const std::string& Token::getName() const {
     return _name;
 }
 
-Variable Token::getVariable() const 
+const Variable& Token::getVariable() const 
 {
     if (_type == Types::OPERAND)
         return _variable;
@@ -49,7 +51,7 @@ Variable Token::getVariable() const
         throw std::runtime_error("token: " + _name + "is not a variable ");
 }
 
-Function Token::getFunction() const
+const Function& Token::getFunction() const
 {
     if (_type == Types::OPERATOR)
         return _function;

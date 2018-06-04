@@ -17,7 +17,7 @@ namespace ShuntingYard {
 
     std::vector<Token> tokenize(const std::string& input) {
         Lexer parser(Lexer::OnUnprocessable::STOP);
-        for (char character : input) {
+        for (const auto& character : input) {
             try {
                 parser.process(character);
             }
@@ -34,6 +34,7 @@ namespace ShuntingYard {
         std::vector<Token> output;
         std::stack<Token> stack;
 
+        //TO DO: maybe remake this with switch
         for (const auto& token : tokens) {
             if (token.isOperand()) {
                 output.push_back(token);
@@ -57,7 +58,8 @@ namespace ShuntingYard {
             else {
                 unsigned token_priority = token.getPriority();
 
-                //this logical expression is too complicated
+                //wtf I dont even get what is going on
+                //TO DO: simplify this
                 while (
                     !(stack.empty() || stack.top().isOpenBracket()) 
                     && ((stack.top().getPriority() > token_priority) 
@@ -82,10 +84,14 @@ namespace ShuntingYard {
         std::stack<Token> variable_tokens;
         std::vector<Variable> arguments;
 
-        for (const Token& token : sorted_tokens) {
-            if (token.isOperand())
-                variable_tokens.push(token);
-            else if (token.isOperator()) {
+        for (const auto& token : sorted_tokens) 
+            switch (token.getType()) 
+            {
+            case Token::Types::OPERAND: 
+                variable_tokens.push(token); 
+                break;
+
+            case Token::Types::OPERATOR: 
                 for (unsigned i = 0; i < token.getArity(); ++i) {
                     if (variable_tokens.empty())
                         throw ExecutionError("input: too few variables ");
@@ -102,20 +108,28 @@ namespace ShuntingYard {
                 catch (const std::runtime_error& err) {
                     throw ExecutionError(err.what());
                 }
-
                 arguments.clear();
-            }
-            else
+
+                break;
+
+            case Token::Types::BRACKET:
                 throw ExecutionError("evaluation: extra open bracket(s) ");
-        }
 
-        Variable result;
-        if (variable_tokens.size() == 1)
-            result = variable_tokens.top().getVariable();
-        else if (variable_tokens.size() != 0)
+            default: 
+                throw std::runtime_error("evaluation: unknown token type ");
+            }
+
+        switch (variable_tokens.size())
+        {
+        case 0:
+            return Variable();
+
+        case 1:
+            return variable_tokens.top().getVariable();
+
+        default:
             throw ExecutionError("input: there are unused variables ");
-
-        return result;
+        }
     }
 
 

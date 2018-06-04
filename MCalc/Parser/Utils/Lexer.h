@@ -33,7 +33,7 @@ public:
     void process(char);
     void endOfInput();
 
-    std::vector<Token> getResult() const;
+    const std::vector<Token>& getResult() const;
 
 private:
     States _state;
@@ -42,14 +42,14 @@ private:
     bool _ignore_unprocessable;
 
     bool isNumber(const std::string&) const;
-    bool isRoundBracket(char);
-    bool isWordStart(char);
-    bool isSquareBracket(char);
-    bool isMinus(char);
-    bool isInWord(char);
-    bool isSpecialSymbol(char);
+    bool isRoundBracket(char) const;
+    bool isWordStart(char) const;
+    bool isSquareBracket(char) const;
+    bool isMinus(char) const;
+    bool isInWord(char) const;
+    bool isSpecialSymbol(char) const;
 
-    Matrix stringToMatrix(const std::string&);
+    Matrix stringToMatrix(const std::string&) const;
 
     void pending(char);
     void minus(char);
