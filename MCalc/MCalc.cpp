@@ -30,15 +30,13 @@ namespace {
     {
         o << v.getName();
 
-        Matrix M;
         switch (v.getType()) 
         {
         case Variable::Types::MATRIX:
-            M = v.getMatrix();
-            o << " is a " << M.getSize().rows;
-            o << " by " << M.getSize().columns; 
+            o << " is a " << v.getMatrix().getSize().rows;
+            o << " by " << v.getMatrix().getSize().columns;
             o << " matrix: ";
-            o << std::endl << M;
+            o << std::endl << v.getMatrix();
             break;
 
         case Variable::Types::SCALAR:
@@ -75,7 +73,7 @@ namespace MCalc {
 
         std::string input;
         while (true) {
-            std::cout << std::endl << "MCalc>: ";
+            std::cout << "MCalc>: ";
             std::getline(std::cin, input);
             std::cout << std::endl;
 
@@ -95,12 +93,12 @@ namespace MCalc {
                 else {
                     std::cout << Variable::assign("ans", result);
                 }
-
-                std::cout << std::endl;
             }
             catch (const ExecutionError& err) {
                 std::cout << "Error: " << err.what();
             }
+
+            std::cout << std::endl << std::endl;
         }
     }
 

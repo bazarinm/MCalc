@@ -25,16 +25,21 @@ namespace ShuntingYard {
                 throw ExecutionError(err.what());
             }
         }
-        parser.endOfInput();
+        try {
+            parser.endOfInput();
+        }
+        catch (const std::runtime_error& err) {
+            throw ExecutionError(err.what());
+        }
 
         return parser.getResult();
     }
 
+    //TO DO: maybe remake this with switch
     std::vector<Token> sort(const std::vector<Token>& tokens) {
         std::vector<Token> output;
         std::stack<Token> stack;
 
-        //TO DO: maybe remake this with switch
         for (const auto& token : tokens) {
             if (token.isOperand()) {
                 output.push_back(token);
@@ -99,9 +104,7 @@ namespace ShuntingYard {
                     arguments.push_back(variable_tokens.top().getVariable());
                     variable_tokens.pop();
                 }
-
                 std::reverse(arguments.begin(), arguments.end());
-
                 try {
                     variable_tokens.push(token.invoke(arguments));
                 }
@@ -109,7 +112,6 @@ namespace ShuntingYard {
                     throw ExecutionError(err.what());
                 }
                 arguments.clear();
-
                 break;
 
             case Token::Types::BRACKET:
